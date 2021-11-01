@@ -22,7 +22,7 @@ internal class SheetParser(
 
     fun parse(): List<ParsedRecord> {
         return try {
-            val metadata = com.vortexa.refinery.MetadataParser(definition.metadataParserDefinition, sheet).extractMetadata()
+            val metadata = MetadataParser(definition.metadataParserDefinition, sheet).extractMetadata()
             val tableParsers = resolveTableParsers(metadata)
             tableParsers.flatMap { it.parse() }
         } catch (e: ManagedException) {

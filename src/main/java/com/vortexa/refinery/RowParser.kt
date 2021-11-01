@@ -24,8 +24,9 @@ import java.time.format.DateTimeParseException
  * Includes access to metadata like sheet name, anchors and any key value pairs you might have extracted
  * @property rowParserData holder for the metadata. access through rowParserData.metadata
  */
-abstract class RowParser(val rowParserData: RowParserData,
-                         private val exceptionManager: ExceptionManager) {
+abstract class RowParser(
+    private val rowParserData: RowParserData,
+    private val exceptionManager: ExceptionManager) {
 
     private val requiredStringCellParser = RequiredStringCellParser()
 

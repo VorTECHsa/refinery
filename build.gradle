@@ -1,9 +1,7 @@
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.5.31"
+    id "maven-publish"
 }
-
-apply plugin: "java"
-apply plugin: "kotlin"
 
 group 'com.vortexa.refinery'
 version '1.0-SNAPSHOT'
@@ -40,4 +38,17 @@ test {
     useJUnitPlatform()
 }
 
+publishing {
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/vortexa/refinery"
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
 
