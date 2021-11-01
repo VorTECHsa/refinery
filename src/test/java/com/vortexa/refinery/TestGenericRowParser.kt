@@ -1,6 +1,5 @@
-package com.vortexa.normalisation.parser
+package com.vortexa.refinery
 
-import com.vortexa.refinery.WorkbookParser
 import com.vortexa.refinery.configuration.testDefinition
 import com.vortexa.refinery.exceptions.ExceptionManager
 import com.vortexa.refinery.result.GenericParsedRecord
