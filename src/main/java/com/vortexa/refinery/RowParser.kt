@@ -25,8 +25,9 @@ import java.time.format.DateTimeParseException
  * @property rowParserData holder for the metadata. access through rowParserData.metadata
  */
 abstract class RowParser(
-    private val rowParserData: RowParserData,
-    private val exceptionManager: ExceptionManager) {
+    val rowParserData: RowParserData,
+    private val exceptionManager: ExceptionManager
+) {
 
     private val requiredStringCellParser = RequiredStringCellParser()
 
