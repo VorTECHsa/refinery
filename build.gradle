@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.vortexa.refinery'
-version '1.0-SNAPSHOT'
+version '0.0.1-SNAPSHOT'
 
 java {
     toolchain {
@@ -39,6 +39,15 @@ test {
 }
 
 publishing {
+
+    publications {
+        mavenJava(MavenPublication) {
+            pom {
+                name = 'Refinery'
+                url = 'https://github.com/VorTECHsa/refinery'
+            }
+        }
+    }
 
     repositories {
         maven {
