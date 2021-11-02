@@ -12,7 +12,6 @@ class WorkbookParser(
     private val exceptionManager: ExceptionManager = ExceptionManager()
 ) {
 
-
     fun parse(): List<ParsedRecord> {
         return try {
             workbook

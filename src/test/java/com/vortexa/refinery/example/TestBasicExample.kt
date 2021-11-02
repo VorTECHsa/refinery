@@ -1,6 +1,5 @@
 package com.vortexa.refinery.example
 
-import com.vortexa.refinery.GenericRowParser
 import com.vortexa.refinery.WorkbookParser
 import com.vortexa.refinery.cell.HeaderCell
 import com.vortexa.refinery.dsl.SheetParserDefinition
@@ -31,9 +30,7 @@ class TestBasicExample {
                                 HeaderCell("goal diff"),
                                 HeaderCell("points"),
                                 HeaderCell("date")
-                            ),
-                            optionalColumns = setOf(),
-                            ::GenericRowParser
+                            )
                         )
                     )
                 )

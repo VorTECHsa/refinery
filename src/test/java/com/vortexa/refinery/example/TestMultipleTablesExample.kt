@@ -32,9 +32,7 @@ class TestMultipleTablesExample {
                                 HeaderCell("goal diff"),
                                 HeaderCell("points"),
                                 HeaderCell("date")
-                            ),
-                            optionalColumns = setOf(),
-                            ::GenericRowParser
+                            )
                         ),
                         // 2nd table
                         TableParserDefinition(
@@ -44,9 +42,7 @@ class TestMultipleTablesExample {
                                 HeaderCell("home score"),
                                 HeaderCell("guest score"),
                                 HeaderCell("date")
-                            ),
-                            optionalColumns = setOf(),
-                            ::GenericRowParser
+                            )
                         )
                     )
                 )

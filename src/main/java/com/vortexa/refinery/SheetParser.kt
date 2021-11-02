@@ -70,7 +70,7 @@ internal class SheetParser(
                     .asSequence()
                     .filter { it.cellType == CellType.STRING }
                     .map { it.stringCellValue.trim().lowercase() }
-                if (cellValues.any { it.contains(sd.anchor) } && !sd.isHeaderRow(this)) {
+                if (cellValues.any { it.contains(sd.anchor.lowercase()) } && !sd.isHeaderRow(this)) {
                     return sd
                 }
             } else if (sd.isHeaderRow(this)) {
