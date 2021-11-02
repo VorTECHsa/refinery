@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run:
           name: Build and deploy the artifact
-          command: ./gradlew build publish
+          command: ./gradlew build publish -Pversion=${CIRCLE_BRANCH}.${CIRCLE_BUILD_NUM}
       - run:
           name: Save test results
           command: |
