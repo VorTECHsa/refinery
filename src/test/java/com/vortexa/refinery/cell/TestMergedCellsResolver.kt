@@ -16,8 +16,8 @@ class TestMergedCellsResolver {
     @Test
     fun `should throw if cell column index is negative`() {
         // expect
-        assertThatThrownBy { MergedCellsResolver.CellLocation(-1, 0) }
+        assertThatThrownBy { MergedCellsResolver.CellLocation(0, -1) }
             .isInstanceOf(IllegalArgumentException::class.java)
-            .hasMessage("row index should be non-negative")
+            .hasMessage("column index should be non-negative")
     }
 }
