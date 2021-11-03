@@ -1,6 +1,5 @@
-package com.vortexa.refinery.example
+package com.vortexa.refinery.example.extraction
 
-import com.vortexa.refinery.GenericRowParser
 import com.vortexa.refinery.WorkbookParser
 import com.vortexa.refinery.cell.HeaderCell
 import com.vortexa.refinery.dsl.SheetParserDefinition
@@ -13,7 +12,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import java.time.LocalDate
 
-class TestMultipleTablesExample {
+class MultipleTablesExample {
 
     @Test
     fun `should extract data from multiple tables within the spreadsheet`() {

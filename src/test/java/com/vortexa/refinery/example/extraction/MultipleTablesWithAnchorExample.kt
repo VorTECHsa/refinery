@@ -1,4 +1,4 @@
-package com.vortexa.refinery.example
+package com.vortexa.refinery.example.extraction
 
 import com.vortexa.refinery.WorkbookParser
 import com.vortexa.refinery.cell.HeaderCell
@@ -11,7 +11,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import java.io.File
 
-class TestMultipleTablesWithAnchorExample {
+class MultipleTablesWithAnchorExample {
 
     @Test
     fun `should extract data from multiple tables with the same headers but different anchors`() {
