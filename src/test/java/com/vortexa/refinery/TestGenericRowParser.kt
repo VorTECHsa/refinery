@@ -33,7 +33,7 @@ class TestGenericRowParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
                         "string" to "one",
-                        "number" to 1.0,
+                        "number" to 1,
                         "date" to LocalDateTime.of(2021, 1, 1, 0, 0),
                         "optional_str" to "exist",
                         "row_number" to 2,
@@ -44,7 +44,7 @@ class TestGenericRowParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
                         "string" to "two",
-                        "number" to 2.0,
+                        "number" to 2,
                         "date" to LocalDateTime.of(2021, 1, 2, 0, 0),
                         "row_number" to 3,
                         "uncaptured" to "Alice"
@@ -54,7 +54,7 @@ class TestGenericRowParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
                         "string" to "three",
-                        "number" to 3.0,
+                        "number" to 3,
                         "date" to LocalDateTime.of(2021, 1, 3, 0, 0),
                         "row_number" to 4
                     )

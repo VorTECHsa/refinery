@@ -61,8 +61,8 @@ class MultipleTablesWithAnchorExample {
                         "row_number" to 3,
                         "anchor" to "Group A",
                         "team" to "PSG",
-                        "plays" to 3.0,
-                        "points" to 7.0,
+                        "plays" to 3,
+                        "points" to 7,
                     )
                 ),
                 GenericParsedRecord(
@@ -71,8 +71,8 @@ class MultipleTablesWithAnchorExample {
                         "row_number" to 4,
                         "anchor" to "Group A",
                         "team" to "Manchester City",
-                        "plays" to 3.0,
-                        "points" to 6.0,
+                        "plays" to 3,
+                        "points" to 6,
                     )
                 ),
                 GenericParsedRecord(
@@ -81,8 +81,8 @@ class MultipleTablesWithAnchorExample {
                         "row_number" to 5,
                         "anchor" to "Group A",
                         "team" to "Club Brugge",
-                        "plays" to 3.0,
-                        "points" to 4.0,
+                        "plays" to 3,
+                        "points" to 4,
                     )
                 ),
                 GenericParsedRecord(
@@ -91,8 +91,8 @@ class MultipleTablesWithAnchorExample {
                         "row_number" to 6,
                         "anchor" to "Group A",
                         "team" to "RB Leipzig",
-                        "plays" to 3.0,
-                        "points" to 0.0,
+                        "plays" to 3,
+                        "points" to 0,
                     )
                 ),
                 // data from table 2
@@ -102,8 +102,8 @@ class MultipleTablesWithAnchorExample {
                         "row_number" to 11,
                         "anchor" to "Group B",
                         "team" to "Liverpool",
-                        "plays" to 3.0,
-                        "points" to 9.0,
+                        "plays" to 3,
+                        "points" to 9,
                     )
                 ),
                 GenericParsedRecord(
@@ -112,8 +112,8 @@ class MultipleTablesWithAnchorExample {
                         "row_number" to 12,
                         "anchor" to "Group B",
                         "team" to "Atletico Madrid",
-                        "plays" to 3.0,
-                        "points" to 4.0,
+                        "plays" to 3,
+                        "points" to 4,
                     )
                 ),
                 GenericParsedRecord(
@@ -122,8 +122,8 @@ class MultipleTablesWithAnchorExample {
                         "row_number" to 13,
                         "anchor" to "Group B",
                         "team" to "FC Porto",
-                        "plays" to 3.0,
-                        "points" to 4.0,
+                        "plays" to 3,
+                        "points" to 4,
                     )
                 ),
                 GenericParsedRecord(
@@ -132,8 +132,8 @@ class MultipleTablesWithAnchorExample {
                         "row_number" to 14,
                         "anchor" to "Group B",
                         "team" to "AC Milan",
-                        "plays" to 3.0,
-                        "points" to 0.0,
+                        "plays" to 3,
+                        "points" to 0,
                     )
                 ),
             )

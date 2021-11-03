@@ -55,8 +55,8 @@ class DividerExample {
                         "row_number" to 3,
                         "divider" to "Group A",
                         "team" to "PSG",
-                        "plays" to 3.0,
-                        "points" to 7.0,
+                        "plays" to 3,
+                        "points" to 7,
                     )
                 ),
                 GenericParsedRecord(
@@ -65,8 +65,8 @@ class DividerExample {
                         "row_number" to 4,
                         "divider" to "Group A",
                         "team" to "Manchester City",
-                        "plays" to 3.0,
-                        "points" to 6.0,
+                        "plays" to 3,
+                        "points" to 6,
                     )
                 ),
                 GenericParsedRecord(
@@ -75,8 +75,8 @@ class DividerExample {
                         "row_number" to 5,
                         "divider" to "Group A",
                         "team" to "Club Brugge",
-                        "plays" to 3.0,
-                        "points" to 4.0,
+                        "plays" to 3,
+                        "points" to 4,
                     )
                 ),
                 GenericParsedRecord(
@@ -85,8 +85,8 @@ class DividerExample {
                         "row_number" to 6,
                         "divider" to "Group A",
                         "team" to "RB Leipzig",
-                        "plays" to 3.0,
-                        "points" to 0.0,
+                        "plays" to 3,
+                        "points" to 0,
                     )
                 ),
                 // data after the 2nd divider "Group B"
@@ -96,8 +96,8 @@ class DividerExample {
                         "row_number" to 8,
                         "divider" to "Group B",
                         "team" to "Liverpool",
-                        "plays" to 3.0,
-                        "points" to 9.0,
+                        "plays" to 3,
+                        "points" to 9,
                     )
                 ),
                 GenericParsedRecord(
@@ -106,8 +106,8 @@ class DividerExample {
                         "row_number" to 9,
                         "divider" to "Group B",
                         "team" to "Atletico Madrid",
-                        "plays" to 3.0,
-                        "points" to 4.0,
+                        "plays" to 3,
+                        "points" to 4,
                     )
                 ),
                 GenericParsedRecord(
@@ -116,8 +116,8 @@ class DividerExample {
                         "row_number" to 10,
                         "divider" to "Group B",
                         "team" to "FC Porto",
-                        "plays" to 3.0,
-                        "points" to 4.0,
+                        "plays" to 3,
+                        "points" to 4,
                     )
                 ),
                 GenericParsedRecord(
@@ -126,8 +126,8 @@ class DividerExample {
                         "row_number" to 11,
                         "divider" to "Group B",
                         "team" to "AC Milan",
-                        "plays" to 3.0,
-                        "points" to 0.0,
+                        "plays" to 3,
+                        "points" to 0,
                     )
                 ),
             )

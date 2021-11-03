@@ -18,6 +18,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+import kotlin.math.round
 
 /**
  * Used to define how to parse your rows
@@ -160,12 +161,16 @@ abstract class RowParser(
     private fun getCellValue(cell: Cell): Any? {
         val cellType = if (cell.cellType == CellType.FORMULA) cell.cachedFormulaResultType else cell.cellType
         return when (cellType) {
-            CellType.NUMERIC -> if (DateUtil.isCellDateFormatted(cell))
-                cell.localDateTimeCellValue else cell.numericCellValue
+            CellType.NUMERIC -> return if (DateUtil.isCellDateFormatted(cell)) {
+                cell.localDateTimeCellValue
+            } else {
+                val doubleValue = cell.numericCellValue
+                if (doubleValue == round(doubleValue)) doubleValue.toInt() else doubleValue
+            }
             CellType.BOOLEAN -> cell.booleanCellValue
             CellType.STRING -> cell.stringCellValue
             else -> null
-        } ?: return null
+        }
     }
 
 }

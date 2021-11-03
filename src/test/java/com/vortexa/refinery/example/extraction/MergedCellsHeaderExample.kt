@@ -54,8 +54,8 @@ class MergedCellsHeaderExample {
                         "row_number" to 2,
                         "home team" to "Manchester City",
                         "guest team" to "RB Leipzig",
-                        "score_3" to 6.0,
-                        "score_4" to 3.0,
+                        "score_3" to 6,
+                        "score_4" to 3,
                         "date" to LocalDate.of(2021, 9, 15).atStartOfDay(),
                     )
                 ),
@@ -65,8 +65,8 @@ class MergedCellsHeaderExample {
                         "row_number" to 3,
                         "home team" to "Club Brugge",
                         "guest team" to "PSG",
-                        "score_3" to 1.0,
-                        "score_4" to 1.0,
+                        "score_3" to 1,
+                        "score_4" to 1,
                         "date" to LocalDate.of(2021, 9, 15).atStartOfDay(),
                     )
                 ),
@@ -76,8 +76,8 @@ class MergedCellsHeaderExample {
                         "row_number" to 4,
                         "home team" to "RB Leipzig",
                         "guest team" to "Club Brugge",
-                        "score_3" to 1.0,
-                        "score_4" to 2.0,
+                        "score_3" to 1,
+                        "score_4" to 2,
                         "date" to LocalDate.of(2021, 9, 28).atStartOfDay(),
                     )
                 ),
@@ -87,8 +87,8 @@ class MergedCellsHeaderExample {
                         "row_number" to 5,
                         "home team" to "PSG",
                         "guest team" to "Manchester City",
-                        "score_3" to 2.0,
-                        "score_4" to 0.0,
+                        "score_3" to 2,
+                        "score_4" to 0,
                         "date" to LocalDate.of(2021, 9, 28).atStartOfDay(),
                     )
                 ),
@@ -98,8 +98,8 @@ class MergedCellsHeaderExample {
                         "row_number" to 6,
                         "home team" to "Club Brugge",
                         "guest team" to "Manchester City",
-                        "score_3" to 1.0,
-                        "score_4" to 5.0,
+                        "score_3" to 1,
+                        "score_4" to 5,
                         "date" to LocalDate.of(2021, 10, 19).atStartOfDay(),
                     )
                 ),
@@ -109,8 +109,8 @@ class MergedCellsHeaderExample {
                         "row_number" to 7,
                         "home team" to "PSG",
                         "guest team" to "RB Leipzig",
-                        "score_3" to 3.0,
-                        "score_4" to 2.0,
+                        "score_3" to 3,
+                        "score_4" to 2,
                         "date" to LocalDate.of(2021, 10, 19).atStartOfDay(),
                     )
                 )

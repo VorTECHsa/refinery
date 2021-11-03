@@ -60,7 +60,7 @@ class TestReportsParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
                         "string" to "one",
-                        "number" to 1.0,
+                        "number" to 1,
                         "date" to LocalDateTime.of(2021, 1, 1, 0, 0),
                         "optional_str" to "exist",
                         "anchor" to "table 1",
@@ -71,7 +71,7 @@ class TestReportsParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
                         "string" to "four",
-                        "number" to 4.0,
+                        "number" to 4,
                         "date" to LocalDateTime.of(2021, 1, 4, 0, 0),
                         "anchor" to "table 2",
                         "row_number" to 10
@@ -81,7 +81,7 @@ class TestReportsParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
                         "string" to "three",
-                        "number" to 3.0,
+                        "number" to 3,
                         "date" to LocalDateTime.of(2021, 1, 3, 0, 0),
                         "anchor" to "table 3",
                         "row_number" to 20
@@ -131,7 +131,7 @@ class TestReportsParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
                         "string" to "one",
-                        "number" to 1.0,
+                        "number" to 1,
                         "date" to LocalDateTime.of(2021, 1, 1, 0, 0),
                         "optional_str" to "exist",
                         "row_number" to 3
@@ -141,7 +141,7 @@ class TestReportsParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
                         "string" to "four",
-                        "number" to 4.0,
+                        "number" to 4,
                         "date" to LocalDateTime.of(2021, 1, 4, 0, 0),
                         "row_number" to 10
                     )
@@ -150,7 +150,7 @@ class TestReportsParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
                         "string" to "three",
-                        "number" to 3.0,
+                        "number" to 3,
                         "date" to LocalDateTime.of(2021, 1, 3, 0, 0),
                         "row_number" to 20
                     )
@@ -199,7 +199,7 @@ class TestReportsParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
                         "string" to "one",
-                        "number" to 1.0,
+                        "number" to 1,
                         "date" to LocalDateTime.of(2021, 1, 1, 0, 0),
                         "optional_str" to "exist",
                         "row_number" to 2
@@ -209,7 +209,7 @@ class TestReportsParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet2",
                         "string" to "four",
-                        "number" to 4.0,
+                        "number" to 4,
                         "date" to LocalDateTime.of(2021, 1, 4, 0, 0),
                         "optional_str" to "exist",
                         "row_number" to 2
@@ -219,7 +219,7 @@ class TestReportsParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet2",
                         "string" to "six",
-                        "number" to 6.0,
+                        "number" to 6,
                         "date" to LocalDateTime.of(2021, 1, 6, 0, 0),
                         "row_number" to 4
                     )
@@ -270,7 +270,7 @@ class TestReportsParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
                         "string" to "one",
-                        "number" to 1.0,
+                        "number" to 1,
                         "date" to LocalDateTime.of(2021, 1, 1, 0, 0),
                         "optional_str_4" to "exist",
                         "optional_str_5" to "exist2",
@@ -281,7 +281,7 @@ class TestReportsParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
                         "string" to "two",
-                        "number" to 2.0,
+                        "number" to 2,
                         "date" to LocalDateTime.of(2021, 1, 2, 0, 0),
                         "optional_str_4" to "exist",
                         "optional_str_5" to "exist2",
@@ -292,7 +292,7 @@ class TestReportsParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
                         "string" to "three",
-                        "number" to 3.0,
+                        "number" to 3,
                         "date" to LocalDateTime.of(2021, 1, 3, 0, 0),
                         "row_number" to 4
                     )
@@ -301,7 +301,7 @@ class TestReportsParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
                         "string" to "four and five",
-                        "number" to 4.0,
+                        "number" to 4,
                         "date" to LocalDateTime.of(2021, 1, 4, 0, 0),
                         "optional_str_4" to "same",
                         "optional_str_5" to "same",
@@ -312,7 +312,7 @@ class TestReportsParser {
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
                         "string" to "four and five",
-                        "number" to 5.0,
+                        "number" to 5,
                         "date" to LocalDateTime.of(2021, 1, 5, 0, 0),
                         "row_number" to 6
                     )
@@ -360,18 +360,18 @@ class TestReportsParser {
                 GenericParsedRecord(
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
-                        "number1" to 1.00,
-                        "number2" to 1.00,
+                        "number1" to 1,
+                        "number2" to 1,
                         "date" to LocalDateTime.of(2021, 1, 1, 0, 0),
-                        "formula" to 2.00,
+                        "formula" to 2,
                         "row_number" to 3
                     )
                 ),
                 GenericParsedRecord(
                     mapOf(
                         "spreadsheet_name" to "Sheet1",
-                        "number1" to 1.00,
-                        "number2" to 2.00,
+                        "number1" to 1,
+                        "number2" to 2,
                         "date" to LocalDateTime.of(2021, 1, 2, 0, 0),
                         "formula" to LocalDateTime.of(2021, 1, 3, 0, 0),
                         "row_number" to 4
