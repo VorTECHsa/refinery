@@ -3,7 +3,7 @@ package com.vortexa.refinery.cell
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 
-class MergedCellsResolverTest {
+class TestMergedCellsResolver {
 
     @Test
     fun `should throw if cell row index is negative`() {
