@@ -1,6 +1,5 @@
 package com.vortexa.refinery.cell
 
-import com.google.common.base.Preconditions.checkArgument
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_BLANK_AS_NULL
 import org.apache.poi.ss.usermodel.Sheet
@@ -33,8 +32,8 @@ class MergedCellsResolver(sheet: Sheet) {
     data class CellLocation(val rowIndex: Int, val columnIndex: Int) {
 
         init {
-            checkArgument(rowIndex >= 0, "row index should be non-negative")
-            checkArgument(columnIndex >= 0, "column index should be non-negative")
+            if (rowIndex < 0) throw IllegalArgumentException("row index should be non-negative")
+            if (columnIndex < 0) throw IllegalArgumentException("column index should be non-negative")
         }
     }
 }
