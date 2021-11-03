@@ -1,4 +1,4 @@
-package com.vortexa.refinery.example
+package com.vortexa.refinery.example.extraction
 
 import com.vortexa.refinery.WorkbookParser
 import com.vortexa.refinery.cell.HeaderCell
@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import java.time.LocalDate
 
-class TestBasicExample {
+class SimpleExample {
 
     @Test
     fun `should extract data from the basic example`() {
