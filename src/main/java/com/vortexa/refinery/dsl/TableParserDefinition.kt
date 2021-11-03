@@ -1,5 +1,6 @@
 package com.vortexa.refinery.dsl
 
+import com.vortexa.refinery.GenericRowParser
 import com.vortexa.refinery.RowParser
 import com.vortexa.refinery.cell.AbstractHeaderCell
 import com.vortexa.refinery.exceptions.ExceptionManager
@@ -19,8 +20,8 @@ import org.apache.poi.ss.usermodel.Row
  */
 data class TableParserDefinition(
     val requiredColumns: Set<AbstractHeaderCell>,
-    val optionalColumns: Set<AbstractHeaderCell>,
-    val rowParserFactory: (rowParserData: RowParserData, exceptionManager: ExceptionManager) -> RowParser,
+    val optionalColumns: Set<AbstractHeaderCell> = setOf(),
+    val rowParserFactory: (rowParserData: RowParserData, exceptionManager: ExceptionManager) -> RowParser = ::GenericRowParser,
     val anchor: String? = null,
     val hasDivider: Boolean = false
 ) {
