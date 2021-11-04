@@ -13,7 +13,7 @@ import java.time.LocalDateTime
 class TestGenericRowParser {
 
     @Test
-    fun `test generic row parser parses table and provides the correct raw parsed output`() {
+    fun `test generic row parser parses table and provides the correct raw parsed output including uncaptured headers`() {
         // given
         val file = File(
             javaClass.classLoader.getResource("spreadsheet_examples/test_spreadsheet_uncaptured.xlsx")!!.file
@@ -37,7 +37,8 @@ class TestGenericRowParser {
                         "date" to LocalDateTime.of(2021, 1, 1, 0, 0),
                         "optional_str" to "exist",
                         "row_number" to 2,
-                        "uncaptured" to "Bob"
+                        "uncaptured" to "Bob",
+                        "double" to 1.05,
                     )
                 ),
                 GenericParsedRecord(
@@ -47,7 +48,8 @@ class TestGenericRowParser {
                         "number" to 2,
                         "date" to LocalDateTime.of(2021, 1, 2, 0, 0),
                         "row_number" to 3,
-                        "uncaptured" to "Alice"
+                        "uncaptured" to "Alice",
+                        "double" to 2.5,
                     )
                 ),
                 GenericParsedRecord(
@@ -56,7 +58,8 @@ class TestGenericRowParser {
                         "string" to "three",
                         "number" to 3,
                         "date" to LocalDateTime.of(2021, 1, 3, 0, 0),
-                        "row_number" to 4
+                        "row_number" to 4,
+                        "double" to 3.14,
                     )
                 )
             )

@@ -193,7 +193,7 @@ class TestExceptionManagement {
         )
         val workbook: Workbook = WorkbookFactory.create(file)
         val expectedException = ExceptionManager.ExceptionData(
-            UncapturedHeadersException("uncaptured @ 5"),
+            UncapturedHeadersException("uncaptured @ 5, double @ 6"),
             ExceptionManager.Location("Sheet1", 1)
         )
 
