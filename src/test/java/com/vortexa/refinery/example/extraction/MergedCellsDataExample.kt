@@ -53,8 +53,8 @@ class MergedCellsDataExample {
                         "spreadsheet_name" to "data with merged cells",
                         "row_number" to 2,
                         "team" to "PSG",
-                        "plays" to 3.0,
-                        "points" to 7.0,
+                        "plays" to 3,
+                        "points" to 7,
                     )
                 ),
                 GenericParsedRecord(
@@ -62,8 +62,8 @@ class MergedCellsDataExample {
                         "spreadsheet_name" to "data with merged cells",
                         "row_number" to 3,
                         "team" to "Manchester City",
-                        "plays" to 3.0,
-                        "points" to 6.0,
+                        "plays" to 3,
+                        "points" to 6,
                     )
                 ),
                 GenericParsedRecord(
@@ -71,8 +71,8 @@ class MergedCellsDataExample {
                         "spreadsheet_name" to "data with merged cells",
                         "row_number" to 4,
                         "team" to "Club Brugge",
-                        "plays" to 3.0,
-                        "points" to 4.0,
+                        "plays" to 3,
+                        "points" to 4,
                     )
                 ),
                 GenericParsedRecord(
@@ -80,8 +80,8 @@ class MergedCellsDataExample {
                         "spreadsheet_name" to "data with merged cells",
                         "row_number" to 5,
                         "team" to "RB Leipzig",
-                        "plays" to 3.0,
-                        "points" to 0.0,
+                        "plays" to 3,
+                        "points" to 0,
                     )
                 )
             )

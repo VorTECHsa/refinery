@@ -9,15 +9,13 @@ import com.vortexa.refinery.result.GenericParsedRecord
 import com.vortexa.refinery.result.Metadata
 import com.vortexa.refinery.result.ParsedRecord
 import com.vortexa.refinery.result.RowParserData
-import org.apache.poi.ss.usermodel.Cell
-import org.apache.poi.ss.usermodel.CellType
-import org.apache.poi.ss.usermodel.DateUtil
-import org.apache.poi.ss.usermodel.Row
+import org.apache.poi.ss.usermodel.*
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_BLANK_AS_NULL
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+import kotlin.math.round
 
 /**
  * Used to define how to parse your rows
@@ -160,12 +158,16 @@ abstract class RowParser(
     private fun getCellValue(cell: Cell): Any? {
         val cellType = if (cell.cellType == CellType.FORMULA) cell.cachedFormulaResultType else cell.cellType
         return when (cellType) {
-            CellType.NUMERIC -> if (DateUtil.isCellDateFormatted(cell))
-                cell.localDateTimeCellValue else cell.numericCellValue
+            CellType.NUMERIC -> return if (DateUtil.isCellDateFormatted(cell)) {
+                cell.localDateTimeCellValue
+            } else {
+                val doubleValue = cell.numericCellValue
+                if (doubleValue == round(doubleValue)) doubleValue.toInt() else doubleValue
+            }
             CellType.BOOLEAN -> cell.booleanCellValue
             CellType.STRING -> cell.stringCellValue
             else -> null
-        } ?: return null
+        }
     }
 
 }
