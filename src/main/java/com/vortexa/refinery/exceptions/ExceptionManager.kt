@@ -4,12 +4,11 @@ class ExceptionManager {
 
     val exceptions = mutableListOf<ExceptionData>()
 
-    fun register(exception: ManagedException, location: Location? = null) {
-        exceptions.add(ExceptionData(exception, location))
-    }
-
     fun register(exception: Exception, location: Location? = null) {
-        exceptions.add(ExceptionData(UncategorizedException(exception.toString()), location))
+        when (exception) {
+            is ManagedException -> exceptions.add(ExceptionData(exception, location))
+            else -> exceptions.add(ExceptionData(UncategorizedException(exception.toString()), location))
+        }
     }
 
     fun containsCritical(): Boolean {

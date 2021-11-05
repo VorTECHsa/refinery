@@ -34,7 +34,7 @@ abstract class RowParser(
     fun toRecordOrDefault(row: Row): ParsedRecord {
         val parsedRecord = try {
             toRecord(row)
-        } catch (e: ManagedException) {
+        } catch (e: RuntimeException) {
             exceptionManager.register(e, ExceptionManager.Location(row.sheet.sheetName, row.rowNum + 1))
             val data = extractAllData(row)
             return GenericParsedRecord(data)
@@ -78,7 +78,6 @@ abstract class RowParser(
         return true
     }
 
-
     /**
      * Extracts all data in denormalized way as a Map<String, Any>
      *
@@ -105,8 +104,15 @@ abstract class RowParser(
     }
 
     protected fun parseOptionalFieldAsInteger(row: Row, headerCell: HeaderCell): Int? {
-        val cell = findCell(row, headerCell)
-        return cell?.toString()?.trim()?.toIntOrNull()
+        val cell = findCell(row, headerCell) ?: return null
+        return when (cell.cellType) {
+            CellType.NUMERIC -> {
+                val doubleValue = cell.numericCellValue
+                if (doubleValue == round(doubleValue)) doubleValue.toInt() else null
+            }
+            CellType.STRING -> cell.stringCellValue.trim().toIntOrNull()
+            else -> null
+        }
     }
 
     protected fun parseOptionalFieldAsDateTime(row: Row, headerCell: HeaderCell): LocalDateTime? {
