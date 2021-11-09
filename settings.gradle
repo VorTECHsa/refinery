@@ -1,1 +1,8 @@
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        google()
+    }
+}
+
 rootProject.name = 'refinery'

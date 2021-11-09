@@ -15,10 +15,6 @@ java {
     withSourcesJar()
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     // the only implementation it actually needs
     api "org.apache.poi:poi:5.0.0"
