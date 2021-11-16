@@ -37,8 +37,14 @@ data class TableParserDefinition(
     }
 
     fun resolveHeaderCellIndex(cell: Cell): Pair<AbstractHeaderCell, Int>? {
-        val headerCellOrNull = allColumns().firstOrNull { hc -> hc.contains(cell.stringCellValue) }
-        return if (headerCellOrNull == null) null else Pair(headerCellOrNull, cell.columnIndex)
+        val headerCellOrNull = allColumns().filter { hc -> hc.contains(cell.stringCellValue) }
+        val maxCellOrNull = when {
+            headerCellOrNull.isEmpty() -> null
+            headerCellOrNull.size == 1 -> headerCellOrNull.first()
+            else -> headerCellOrNull.maxByOrNull { it.maxContainsLength(cell.stringCellValue)!! }
+
+        }
+        return if (maxCellOrNull == null) null else Pair(maxCellOrNull, cell.columnIndex)
     }
 
     private fun allColumns(): Set<AbstractHeaderCell> = requiredColumns + optionalColumns

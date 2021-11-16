@@ -1,10 +1,8 @@
 package com.vortexa.refinery
 
 import com.vortexa.refinery.cell.HeaderCell
-import com.vortexa.refinery.cell.RequiredStringCellParser
 import com.vortexa.refinery.exceptions.CellParserException
 import com.vortexa.refinery.exceptions.ExceptionManager
-import com.vortexa.refinery.exceptions.ManagedException
 import com.vortexa.refinery.result.GenericParsedRecord
 import com.vortexa.refinery.result.Metadata
 import com.vortexa.refinery.result.ParsedRecord
@@ -27,7 +25,7 @@ abstract class RowParser(
     private val exceptionManager: ExceptionManager
 ) {
 
-    private val requiredStringCellParser = RequiredStringCellParser()
+    private val requiredFieldParser = RequiredFieldParser()
 
     abstract fun toRecord(row: Row): ParsedRecord
 
@@ -88,19 +86,28 @@ abstract class RowParser(
         return rowParserData.metadata.allData() + rowData + (Metadata.ROW_NUMBER to row.rowNum + 1)
     }
 
-    protected fun parseRequiredFieldAsString(row: Row, headerCell: HeaderCell): String {
-        val cell = findCell(row, headerCell)
-        return requiredStringCellParser.parse(cell)
-    }
-
     protected fun parseOptionalFieldAsString(row: Row, headerCell: HeaderCell): String? {
         val cell = findCell(row, headerCell)
         return cell?.toString()?.trim()
     }
 
+    protected fun parseRequiredFieldAsString(row: Row, headerCell: HeaderCell): String {
+        val value = parseOptionalFieldAsString(row, headerCell)
+        return requiredFieldParser.parse(value)
+    }
+
     protected fun parseOptionalFieldAsDouble(row: Row, headerCell: HeaderCell): Double? {
-        val cell = findCell(row, headerCell)
-        return cell?.toString()?.trim()?.toDoubleOrNull()
+        val cell = findCell(row, headerCell) ?: return null
+        return when (cell.cellType) {
+            CellType.NUMERIC -> cell.numericCellValue
+            CellType.STRING -> cell.stringCellValue.trim().toDoubleOrNull()
+            else -> null
+        }
+    }
+
+    protected fun parseRequiredFieldAsDouble(row: Row, headerCell: HeaderCell): Double {
+        val value = parseOptionalFieldAsDouble(row, headerCell)
+        return requiredFieldParser.parse(value) as Double
     }
 
     protected fun parseOptionalFieldAsInteger(row: Row, headerCell: HeaderCell): Int? {
@@ -115,6 +122,11 @@ abstract class RowParser(
         }
     }
 
+    protected fun parseRequiredFieldAsInteger(row: Row, headerCell: HeaderCell): Int {
+        val value = parseOptionalFieldAsInteger(row, headerCell)
+        return requiredFieldParser.parse(value) as Int
+    }
+
     protected fun parseOptionalFieldAsDateTime(row: Row, headerCell: HeaderCell): LocalDateTime? {
         val cell = findCell(row, headerCell)
         return if (cell != null && cell.toString().isNotBlank() && cell.cellType == CellType.NUMERIC) {
@@ -124,7 +136,13 @@ abstract class RowParser(
         }
     }
 
-    protected fun parseOptionalDateWithFormat(row: Row, headerCell: HeaderCell, format: DateTimeFormatter): LocalDate? {
+    protected fun parseRequiredFieldAsDateTime(row: Row, headerCell: HeaderCell): LocalDateTime {
+        val value = parseOptionalFieldAsDateTime(row, headerCell)
+        return requiredFieldParser.parse(value) as LocalDateTime
+    }
+
+    protected fun parseOptionalFieldAsDateWithFormat(row: Row, headerCell: HeaderCell,
+                                                     format: DateTimeFormatter): LocalDate? {
         val cell = findCell(row, headerCell)
         return if (cell != null && cell.toString().isNotBlank()) {
             try {
@@ -135,6 +153,11 @@ abstract class RowParser(
         } else {
             null
         }
+    }
+
+    protected fun parseRequiredFieldAsDateWithFormat(row: Row, headerCell: HeaderCell, format: DateTimeFormatter): LocalDate {
+        val value = parseOptionalFieldAsDateWithFormat(row, headerCell, format)
+        return requiredFieldParser.parse(value) as LocalDate
     }
 
     private fun findCell(row: Row, headerCell: HeaderCell): Cell? {
