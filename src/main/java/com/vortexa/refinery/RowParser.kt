@@ -1,15 +1,18 @@
 package com.vortexa.refinery
 
+import com.vortexa.refinery.cell.DoubleCellParser
 import com.vortexa.refinery.cell.HeaderCell
-import com.vortexa.refinery.cell.RequiredStringCellParser
+import com.vortexa.refinery.cell.StringCellParser
 import com.vortexa.refinery.exceptions.CellParserException
 import com.vortexa.refinery.exceptions.ExceptionManager
-import com.vortexa.refinery.exceptions.ManagedException
 import com.vortexa.refinery.result.GenericParsedRecord
 import com.vortexa.refinery.result.Metadata
 import com.vortexa.refinery.result.ParsedRecord
 import com.vortexa.refinery.result.RowParserData
-import org.apache.poi.ss.usermodel.*
+import org.apache.poi.ss.usermodel.Cell
+import org.apache.poi.ss.usermodel.CellType
+import org.apache.poi.ss.usermodel.DateUtil
+import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_BLANK_AS_NULL
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -27,7 +30,8 @@ abstract class RowParser(
     private val exceptionManager: ExceptionManager
 ) {
 
-    private val requiredStringCellParser = RequiredStringCellParser()
+    private val stringParser = StringCellParser()
+    private val doubleParser = DoubleCellParser()
 
     abstract fun toRecord(row: Row): ParsedRecord
 
@@ -90,17 +94,22 @@ abstract class RowParser(
 
     protected fun parseRequiredFieldAsString(row: Row, headerCell: HeaderCell): String {
         val cell = findCell(row, headerCell)
-        return requiredStringCellParser.parse(cell)
+        return stringParser.parse(cell)
     }
 
     protected fun parseOptionalFieldAsString(row: Row, headerCell: HeaderCell): String? {
         val cell = findCell(row, headerCell)
-        return cell?.toString()?.trim()
+        return stringParser.tryParse(cell)
+    }
+
+    protected fun parseRequiredFieldAsDouble(row: Row, headerCell: HeaderCell): Double {
+        val cell = findCell(row, headerCell)
+        return doubleParser.parse(cell)
     }
 
     protected fun parseOptionalFieldAsDouble(row: Row, headerCell: HeaderCell): Double? {
         val cell = findCell(row, headerCell)
-        return cell?.toString()?.trim()?.toDoubleOrNull()
+        return doubleParser.tryParse(cell)
     }
 
     protected fun parseOptionalFieldAsInteger(row: Row, headerCell: HeaderCell): Int? {
