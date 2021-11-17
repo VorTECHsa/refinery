@@ -1,17 +1,17 @@
 package com.vortexa.refinery
 
-import com.vortexa.refinery.cell.HeaderCell
-import com.vortexa.refinery.cell.RequiredStringCellParser
+import com.vortexa.refinery.cell.*
 import com.vortexa.refinery.exceptions.CellParserException
 import com.vortexa.refinery.exceptions.ExceptionManager
-import com.vortexa.refinery.exceptions.ManagedException
 import com.vortexa.refinery.result.GenericParsedRecord
 import com.vortexa.refinery.result.Metadata
 import com.vortexa.refinery.result.ParsedRecord
 import com.vortexa.refinery.result.RowParserData
-import org.apache.poi.ss.usermodel.*
+import org.apache.poi.ss.usermodel.Cell
+import org.apache.poi.ss.usermodel.CellType
+import org.apache.poi.ss.usermodel.DateUtil
+import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_BLANK_AS_NULL
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -27,7 +27,10 @@ abstract class RowParser(
     private val exceptionManager: ExceptionManager
 ) {
 
-    private val requiredStringCellParser = RequiredStringCellParser()
+    private val stringParser = StringCellParser()
+    private val doubleParser = DoubleCellParser()
+    private val intParser = IntCellParser()
+    private val dateTimeParser = DateTimeCellParser()
 
     abstract fun toRecord(row: Row): ParsedRecord
 
@@ -90,47 +93,69 @@ abstract class RowParser(
 
     protected fun parseRequiredFieldAsString(row: Row, headerCell: HeaderCell): String {
         val cell = findCell(row, headerCell)
-        return requiredStringCellParser.parse(cell)
+        return stringParser.parse(cell)
     }
 
     protected fun parseOptionalFieldAsString(row: Row, headerCell: HeaderCell): String? {
         val cell = findCell(row, headerCell)
-        return cell?.toString()?.trim()
+        return stringParser.tryParse(cell)
+    }
+
+    protected fun parseRequiredFieldAsDouble(row: Row, headerCell: HeaderCell): Double {
+        val cell = findCell(row, headerCell)
+        return doubleParser.parse(cell)
     }
 
     protected fun parseOptionalFieldAsDouble(row: Row, headerCell: HeaderCell): Double? {
         val cell = findCell(row, headerCell)
-        return cell?.toString()?.trim()?.toDoubleOrNull()
+        return doubleParser.tryParse(cell)
+    }
+
+    protected fun parseRequiredFieldAsInteger(row: Row, headerCell: HeaderCell): Int {
+        val cell = findCell(row, headerCell)
+        return intParser.parse(cell)
     }
 
     protected fun parseOptionalFieldAsInteger(row: Row, headerCell: HeaderCell): Int? {
-        val cell = findCell(row, headerCell) ?: return null
-        return when (cell.cellType) {
-            CellType.NUMERIC -> {
-                val doubleValue = cell.numericCellValue
-                if (doubleValue == round(doubleValue)) doubleValue.toInt() else null
-            }
-            CellType.STRING -> cell.stringCellValue.trim().toIntOrNull()
-            else -> null
-        }
+        val cell = findCell(row, headerCell)
+        return intParser.tryParse(cell)
+    }
+
+    protected fun parseRequiredFieldAsDateTime(row: Row, headerCell: HeaderCell): LocalDateTime {
+        val cell = findCell(row, headerCell)
+        return dateTimeParser.parse(cell)
     }
 
     protected fun parseOptionalFieldAsDateTime(row: Row, headerCell: HeaderCell): LocalDateTime? {
         val cell = findCell(row, headerCell)
-        return if (cell != null && cell.toString().isNotBlank() && cell.cellType == CellType.NUMERIC) {
-            cell.localDateTimeCellValue
-        } else {
-            null
-        }
+        return dateTimeParser.tryParse(cell)
     }
 
-    protected fun parseOptionalDateWithFormat(row: Row, headerCell: HeaderCell, format: DateTimeFormatter): LocalDate? {
+    protected fun parseOptionalDateTimeWithFormat(
+        row: Row,
+        headerCell: HeaderCell,
+        format: DateTimeFormatter
+    ): LocalDateTime? {
         val cell = findCell(row, headerCell)
+        return tryParseDateTimeWithFormat(cell, format)
+    }
+
+    protected fun parseRequiredDateTimeWithFormat(
+        row: Row,
+        headerCell: HeaderCell,
+        format: DateTimeFormatter
+    ): LocalDateTime {
+        val cell = findCell(row, headerCell)
+        return tryParseDateTimeWithFormat(cell, format)
+            ?: throw CellParserException("Failed to parse ${cell?.toString()} as date time with format $format")
+    }
+
+    private fun tryParseDateTimeWithFormat(cell: Cell?, format: DateTimeFormatter): LocalDateTime? {
         return if (cell != null && cell.toString().isNotBlank()) {
             try {
-                LocalDate.parse(cell.toString(), format)
+                LocalDateTime.parse(cell.toString(), format)
             } catch (exception: DateTimeParseException) {
-                throw CellParserException("Could not parse as date $cell")
+                return null
             }
         } else {
             null
