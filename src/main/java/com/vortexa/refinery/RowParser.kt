@@ -12,7 +12,6 @@ import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.DateUtil
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_BLANK_AS_NULL
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -132,13 +131,31 @@ abstract class RowParser(
         return dateTimeParser.tryParse(cell)
     }
 
-    protected fun parseOptionalDateWithFormat(row: Row, headerCell: HeaderCell, format: DateTimeFormatter): LocalDate? {
+    protected fun parseOptionalDateTimeWithFormat(
+        row: Row,
+        headerCell: HeaderCell,
+        format: DateTimeFormatter
+    ): LocalDateTime? {
         val cell = findCell(row, headerCell)
+        return tryParseDateTimeWithFormat(cell, format)
+    }
+
+    protected fun parseRequiredDateTimeWithFormat(
+        row: Row,
+        headerCell: HeaderCell,
+        format: DateTimeFormatter
+    ): LocalDateTime {
+        val cell = findCell(row, headerCell)
+        return tryParseDateTimeWithFormat(cell, format)
+            ?: throw CellParserException("Failed to parse ${cell?.toString()} as date time with format $format")
+    }
+
+    private fun tryParseDateTimeWithFormat(cell: Cell?, format: DateTimeFormatter): LocalDateTime? {
         return if (cell != null && cell.toString().isNotBlank()) {
             try {
-                LocalDate.parse(cell.toString(), format)
+                LocalDateTime.parse(cell.toString(), format)
             } catch (exception: DateTimeParseException) {
-                throw CellParserException("Could not parse as date $cell")
+                return null
             }
         } else {
             null
