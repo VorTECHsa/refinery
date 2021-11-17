@@ -1,7 +1,10 @@
 package com.vortexa.refinery.cell
 
-import org.apache.poi.ss.usermodel.*
+import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellType.*
+import org.apache.poi.ss.usermodel.Sheet
+import org.apache.poi.ss.usermodel.Workbook
+import org.apache.poi.ss.usermodel.WorkbookFactory
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -75,6 +78,12 @@ open class CellParserTest {
     protected fun doubleAsStringCell(): Cell {
         val cell = sheet[1, 7]!!
         assertThat(cell.cellType).isEqualTo(STRING)
+        return cell
+    }
+
+    protected fun doubleInt(): Cell {
+        val cell = sheet[1, 8]!!
+        assertThat(cell.cellType).isEqualTo(NUMERIC)
         return cell
     }
 
