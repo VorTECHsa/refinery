@@ -1,7 +1,6 @@
 package com.vortexa.refinery
 
 import com.vortexa.refinery.cell.*
-import com.vortexa.refinery.exceptions.CellParserException
 import com.vortexa.refinery.exceptions.ExceptionManager
 import com.vortexa.refinery.result.GenericParsedRecord
 import com.vortexa.refinery.result.Metadata
@@ -14,7 +13,6 @@ import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_BLANK_AS_NULL
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
 import kotlin.math.round
 
 /**
@@ -31,6 +29,7 @@ abstract class RowParser(
     private val doubleParser = DoubleCellParser()
     private val intParser = IntCellParser()
     private val dateTimeParser = DateTimeCellParser()
+    private val dateTimeFormatParser = DateTimeFormatCellParser()
 
     abstract fun toRecord(row: Row): ParsedRecord
 
@@ -137,7 +136,7 @@ abstract class RowParser(
         format: DateTimeFormatter
     ): LocalDateTime? {
         val cell = findCell(row, headerCell)
-        return tryParseDateTimeWithFormat(cell, format)
+        return dateTimeFormatParser.tryParse(cell, format)
     }
 
     protected fun parseRequiredDateTimeWithFormat(
@@ -146,20 +145,7 @@ abstract class RowParser(
         format: DateTimeFormatter
     ): LocalDateTime {
         val cell = findCell(row, headerCell)
-        return tryParseDateTimeWithFormat(cell, format)
-            ?: throw CellParserException("Failed to parse ${cell?.toString()} as date time with format $format")
-    }
-
-    private fun tryParseDateTimeWithFormat(cell: Cell?, format: DateTimeFormatter): LocalDateTime? {
-        return if (cell != null && cell.toString().isNotBlank()) {
-            try {
-                LocalDateTime.parse(cell.toString(), format)
-            } catch (exception: DateTimeParseException) {
-                return null
-            }
-        } else {
-            null
-        }
+        return dateTimeFormatParser.parse(cell, format)
     }
 
     private fun findCell(row: Row, headerCell: HeaderCell): Cell? {

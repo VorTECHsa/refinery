@@ -87,6 +87,24 @@ open class CellParserTest {
         return cell
     }
 
+    protected fun dateTime(): Cell {
+        val cell = sheet[1, 9]!!
+        assertThat(cell.cellType).isEqualTo(NUMERIC)
+        return cell
+    }
+
+    protected fun dateStr(): Cell {
+        val cell = sheet[1, 10]!!
+        assertThat(cell.cellType).isEqualTo(STRING)
+        return cell
+    }
+
+    protected fun dateTimeStr(): Cell {
+        val cell = sheet[1, 11]!!
+        assertThat(cell.cellType).isEqualTo(STRING)
+        return cell
+    }
+
     private operator fun Sheet.get(rowIndex: Int, columnIndex: Int): Cell? {
         return this.getRow(rowIndex).getCell(columnIndex)
     }
