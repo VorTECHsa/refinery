@@ -29,7 +29,6 @@ abstract class RowParser(
     private val doubleParser = DoubleCellParser()
     private val intParser = IntCellParser()
     private val dateTimeParser = DateTimeCellParser()
-    private val dateTimeFormatParser = DateTimeFormatCellParser()
 
     abstract fun toRecord(row: Row): ParsedRecord
 
@@ -130,22 +129,22 @@ abstract class RowParser(
         return dateTimeParser.tryParse(cell)
     }
 
-    protected fun parseOptionalDateTimeWithFormat(
-        row: Row,
-        headerCell: HeaderCell,
-        format: DateTimeFormatter
-    ): LocalDateTime? {
-        val cell = findCell(row, headerCell)
-        return dateTimeFormatParser.tryParse(cell, format)
-    }
-
-    protected fun parseRequiredDateTimeWithFormat(
+    protected fun parseRequiredFieldAsDateTime(
         row: Row,
         headerCell: HeaderCell,
         format: DateTimeFormatter
     ): LocalDateTime {
         val cell = findCell(row, headerCell)
-        return dateTimeFormatParser.parse(cell, format)
+        return DateTimeFormatCellParser(format).parse(cell)
+    }
+
+    protected fun parseOptionalFieldAsDateTime(
+        row: Row,
+        headerCell: HeaderCell,
+        format: DateTimeFormatter
+    ): LocalDateTime? {
+        val cell = findCell(row, headerCell)
+        return DateTimeFormatCellParser(format).tryParse(cell)
     }
 
     private fun findCell(row: Row, headerCell: HeaderCell): Cell? {
