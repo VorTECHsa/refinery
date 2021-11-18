@@ -1,7 +1,6 @@
 package com.vortexa.refinery
 
 import com.vortexa.refinery.cell.*
-import com.vortexa.refinery.exceptions.CellParserException
 import com.vortexa.refinery.exceptions.ExceptionManager
 import com.vortexa.refinery.result.GenericParsedRecord
 import com.vortexa.refinery.result.Metadata
@@ -14,7 +13,6 @@ import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_BLANK_AS_NULL
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
 import kotlin.math.round
 
 /**
@@ -131,35 +129,22 @@ abstract class RowParser(
         return dateTimeParser.tryParse(cell)
     }
 
-    protected fun parseOptionalDateTimeWithFormat(
-        row: Row,
-        headerCell: HeaderCell,
-        format: DateTimeFormatter
-    ): LocalDateTime? {
-        val cell = findCell(row, headerCell)
-        return tryParseDateTimeWithFormat(cell, format)
-    }
-
-    protected fun parseRequiredDateTimeWithFormat(
+    protected fun parseRequiredFieldAsDateTime(
         row: Row,
         headerCell: HeaderCell,
         format: DateTimeFormatter
     ): LocalDateTime {
         val cell = findCell(row, headerCell)
-        return tryParseDateTimeWithFormat(cell, format)
-            ?: throw CellParserException("Failed to parse ${cell?.toString()} as date time with format $format")
+        return DateTimeFormatCellParser(format).parse(cell)
     }
 
-    private fun tryParseDateTimeWithFormat(cell: Cell?, format: DateTimeFormatter): LocalDateTime? {
-        return if (cell != null && cell.toString().isNotBlank()) {
-            try {
-                LocalDateTime.parse(cell.toString(), format)
-            } catch (exception: DateTimeParseException) {
-                return null
-            }
-        } else {
-            null
-        }
+    protected fun parseOptionalFieldAsDateTime(
+        row: Row,
+        headerCell: HeaderCell,
+        format: DateTimeFormatter
+    ): LocalDateTime? {
+        val cell = findCell(row, headerCell)
+        return DateTimeFormatCellParser(format).tryParse(cell)
     }
 
     private fun findCell(row: Row, headerCell: HeaderCell): Cell? {
