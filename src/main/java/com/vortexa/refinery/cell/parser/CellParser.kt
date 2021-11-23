@@ -1,4 +1,4 @@
-package com.vortexa.refinery.cell
+package com.vortexa.refinery.cell.parser
 
 import com.vortexa.refinery.exceptions.CellParserException
 import org.apache.poi.ss.usermodel.Cell

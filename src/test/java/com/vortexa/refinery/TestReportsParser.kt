@@ -236,7 +236,7 @@ class TestReportsParser {
         val date = HeaderCell("date")
         val optionalString = HeaderCell("optional_str")
         val optionalString2 = HeaderCell("optional_str2")
-        val mergedCols = MergedHeaderCell("optional_str", listOf(optionalString, optionalString2))
+        val mergedCols = MergedHeaderCell(HeaderCell("optional_str"), listOf(optionalString, optionalString2))
 
         val definition = WorkbookParserDefinition(
             spreadsheetParserDefinitions = listOf(

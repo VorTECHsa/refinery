@@ -1,6 +1,5 @@
 package com.vortexa.refinery.cell
 
-class MergedHeaderCell(pattern: String, val headerCells: List<HeaderCell>) :
-    AbstractHeaderCell(listOf(pattern)) {
-
+class MergedHeaderCell(val headerCell: IHeaderCell, val headerCells: List<IHeaderCell>) : IHeaderCell {
+    override fun contains(s: String) = headerCell.contains(s)
 }

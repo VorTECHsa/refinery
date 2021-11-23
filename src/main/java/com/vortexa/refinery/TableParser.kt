@@ -1,8 +1,7 @@
 package com.vortexa.refinery
 
-import com.vortexa.refinery.cell.HeaderCell
+import com.vortexa.refinery.cell.IHeaderCell
 import com.vortexa.refinery.cell.MergedCellsResolver
-import com.vortexa.refinery.cell.MergedHeaderCell
 import com.vortexa.refinery.dsl.TableParserDefinition
 import com.vortexa.refinery.exceptions.ExceptionManager
 import com.vortexa.refinery.exceptions.TableParserException
@@ -29,7 +28,7 @@ internal class TableParser(
     fun parse(): List<ParsedRecord> {
         val headerRow = findHeaderRow() ?: return emptyList()
         val tableLocationWithHeader = TableLocationWithHeader(location.minRow, headerRow.rowNum, location.maxRow)
-        val columnHeaders = mapColumnHeaders(headerRow)
+        val columnHeaders = definition.resolveHeaderCellIndex(headerRow)
         val allHeadersMapping = mapAllHeaders(headerRow)
         checkUncapturedHeaders(columnHeaders, allHeadersMapping, tableLocationWithHeader)
         val enrichedMetadata = enrichMetadata()
@@ -50,7 +49,7 @@ internal class TableParser(
     }
 
     private fun checkUncapturedHeaders(
-        columnHeaders: Map<HeaderCell, Int>,
+        columnHeaders: Map<IHeaderCell, Int>,
         allHeadersMapping: Map<String, Int>,
         tableLocationWithHeader: TableLocationWithHeader
     ) {
@@ -79,7 +78,7 @@ internal class TableParser(
     }
 
     private fun parseTableWithDividers(
-        columnHeaders: Map<HeaderCell, Int>,
+        columnHeaders: Map<IHeaderCell, Int>,
         enrichedMetadata: Metadata,
         location: TableLocationWithHeader,
         allHeadersMapping: Map<String, Int>
@@ -154,20 +153,6 @@ internal class TableParser(
             )
             null
         }
-    }
-
-    private fun mapColumnHeaders(headerRow: Row): Map<HeaderCell, Int> {
-        return headerRow.cellIterator().asSequence()
-            .mapNotNull { cell -> definition.resolveHeaderCellIndex(cell) }
-            .flatMap {
-                when (val cell = it.first) {
-                    is HeaderCell -> listOf(Pair(cell, it.second))
-                    is MergedHeaderCell -> {
-                        cell.headerCells.mapIndexed { i, hc -> Pair(hc, it.second + i) }
-                    }
-                }
-            }
-            .toMap()
     }
 
     private fun mapAllHeaders(headerRow: Row): Map<String, Int> {
