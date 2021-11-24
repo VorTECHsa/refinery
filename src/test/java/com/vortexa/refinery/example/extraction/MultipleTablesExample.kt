@@ -1,7 +1,7 @@
 package com.vortexa.refinery.example.extraction
 
 import com.vortexa.refinery.WorkbookParser
-import com.vortexa.refinery.cell.HeaderCell
+import com.vortexa.refinery.cell.StringHeaderCell
 import com.vortexa.refinery.dsl.SheetParserDefinition
 import com.vortexa.refinery.dsl.TableParserDefinition
 import com.vortexa.refinery.dsl.WorkbookParserDefinition
@@ -25,22 +25,22 @@ class MultipleTablesExample {
                         // 1st table
                         TableParserDefinition(
                             requiredColumns = setOf(
-                                HeaderCell("team"),
-                                HeaderCell("plays"),
-                                HeaderCell("wins"),
-                                HeaderCell("goal diff"),
-                                HeaderCell("points"),
-                                HeaderCell("date")
+                                StringHeaderCell("team"),
+                                StringHeaderCell("plays"),
+                                StringHeaderCell("wins"),
+                                StringHeaderCell("goal diff"),
+                                StringHeaderCell("points"),
+                                StringHeaderCell("date")
                             )
                         ),
                         // 2nd table
                         TableParserDefinition(
                             requiredColumns = setOf(
-                                HeaderCell("home team"),
-                                HeaderCell("guest team"),
-                                HeaderCell("home score"),
-                                HeaderCell("guest score"),
-                                HeaderCell("date")
+                                StringHeaderCell("home team"),
+                                StringHeaderCell("guest team"),
+                                StringHeaderCell("home score"),
+                                StringHeaderCell("guest score"),
+                                StringHeaderCell("date")
                             )
                         )
                     )

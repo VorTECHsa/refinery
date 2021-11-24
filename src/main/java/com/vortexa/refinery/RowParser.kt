@@ -90,49 +90,49 @@ abstract class RowParser(
         return rowParserData.metadata.allData() + rowData + (Metadata.ROW_NUMBER to row.rowNum + 1)
     }
 
-    protected fun parseRequiredFieldAsString(row: Row, headerCell: IHeaderCell): String {
+    protected fun parseRequiredFieldAsString(row: Row, headerCell: HeaderCell): String {
         val cell = findCell(row, headerCell)
         return stringParser.parse(cell)
     }
 
-    protected fun parseOptionalFieldAsString(row: Row, headerCell: IHeaderCell): String? {
+    protected fun parseOptionalFieldAsString(row: Row, headerCell: HeaderCell): String? {
         val cell = findCell(row, headerCell)
         return stringParser.tryParse(cell)
     }
 
-    protected fun parseRequiredFieldAsDouble(row: Row, headerCell: IHeaderCell): Double {
+    protected fun parseRequiredFieldAsDouble(row: Row, headerCell: HeaderCell): Double {
         val cell = findCell(row, headerCell)
         return doubleParser.parse(cell)
     }
 
-    protected fun parseOptionalFieldAsDouble(row: Row, headerCell: IHeaderCell): Double? {
+    protected fun parseOptionalFieldAsDouble(row: Row, headerCell: HeaderCell): Double? {
         val cell = findCell(row, headerCell)
         return doubleParser.tryParse(cell)
     }
 
-    protected fun parseRequiredFieldAsInteger(row: Row, headerCell: IHeaderCell): Int {
+    protected fun parseRequiredFieldAsInteger(row: Row, headerCell: HeaderCell): Int {
         val cell = findCell(row, headerCell)
         return intParser.parse(cell)
     }
 
-    protected fun parseOptionalFieldAsInteger(row: Row, headerCell: IHeaderCell): Int? {
+    protected fun parseOptionalFieldAsInteger(row: Row, headerCell: HeaderCell): Int? {
         val cell = findCell(row, headerCell)
         return intParser.tryParse(cell)
     }
 
-    protected fun parseRequiredFieldAsDateTime(row: Row, headerCell: IHeaderCell): LocalDateTime {
+    protected fun parseRequiredFieldAsDateTime(row: Row, headerCell: HeaderCell): LocalDateTime {
         val cell = findCell(row, headerCell)
         return dateTimeParser.parse(cell)
     }
 
-    protected fun parseOptionalFieldAsDateTime(row: Row, headerCell: IHeaderCell): LocalDateTime? {
+    protected fun parseOptionalFieldAsDateTime(row: Row, headerCell: HeaderCell): LocalDateTime? {
         val cell = findCell(row, headerCell)
         return dateTimeParser.tryParse(cell)
     }
 
     protected fun parseRequiredFieldAsDateTime(
         row: Row,
-        headerCell: IHeaderCell,
+        headerCell: HeaderCell,
         format: DateTimeFormatter
     ): LocalDateTime {
         val cell = findCell(row, headerCell)
@@ -141,14 +141,14 @@ abstract class RowParser(
 
     protected fun parseOptionalFieldAsDateTime(
         row: Row,
-        headerCell: IHeaderCell,
+        headerCell: HeaderCell,
         format: DateTimeFormatter
     ): LocalDateTime? {
         val cell = findCell(row, headerCell)
         return DateTimeFormatCellParser(format).tryParse(cell)
     }
 
-    private fun findCell(row: Row, headerCell: IHeaderCell): Cell? {
+    private fun findCell(row: Row, headerCell: HeaderCell): Cell? {
         val cellIndex = rowParserData.headerMap[headerCell] ?: return null
         return findCellByIndex(row, cellIndex)
     }

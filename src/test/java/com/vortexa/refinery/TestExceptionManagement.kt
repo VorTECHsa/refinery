@@ -1,6 +1,6 @@
 package com.vortexa.refinery
 
-import com.vortexa.refinery.cell.HeaderCell
+import com.vortexa.refinery.cell.StringHeaderCell
 import com.vortexa.refinery.configuration.*
 import com.vortexa.refinery.dsl.SheetParserDefinition
 import com.vortexa.refinery.dsl.TableParserDefinition
@@ -145,10 +145,10 @@ class TestExceptionManagement {
     @Test
     fun `test parsing forgotten header raises an exception`() {
         // given
-        val string = HeaderCell("string")
-        val number = HeaderCell("number")
-        val date = HeaderCell("date")
-        val optionalString = HeaderCell("optional_str")
+        val string = StringHeaderCell("string")
+        val number = StringHeaderCell("number")
+        val date = StringHeaderCell("date")
+        val optionalString = StringHeaderCell("optional_str")
 
         val definition = WorkbookParserDefinition(
             spreadsheetParserDefinitions = listOf(

@@ -2,7 +2,7 @@ package com.vortexa.refinery.example.transformation
 
 import com.vortexa.refinery.RowParser
 import com.vortexa.refinery.WorkbookParser
-import com.vortexa.refinery.cell.HeaderCell
+import com.vortexa.refinery.cell.StringHeaderCell
 import com.vortexa.refinery.dsl.SheetParserDefinition
 import com.vortexa.refinery.dsl.TableParserDefinition
 import com.vortexa.refinery.dsl.WorkbookParserDefinition
@@ -22,12 +22,12 @@ class CustomRowParserExample {
     fun `should extract and transform the data into the data class`() {
         // given
         // header cells
-        val team = HeaderCell("team")
-        val plays = HeaderCell("plays")
-        val wins = HeaderCell("wins")
-        val goalDiff = HeaderCell("goal diff")
-        val points = HeaderCell("points")
-        val date = HeaderCell("date")
+        val team = StringHeaderCell("team")
+        val plays = StringHeaderCell("plays")
+        val wins = StringHeaderCell("wins")
+        val goalDiff = StringHeaderCell("goal diff")
+        val points = StringHeaderCell("points")
+        val date = StringHeaderCell("date")
 
         // and data class to store the data
         data class TeamStat(

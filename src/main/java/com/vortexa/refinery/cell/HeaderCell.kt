@@ -1,12 +1,10 @@
 package com.vortexa.refinery.cell
 
-data class HeaderCell(val patterns: List<String>) : IHeaderCell {
+import org.apache.poi.ss.usermodel.Cell
 
-    constructor(pattern: String) : this(listOf(pattern))
+sealed class HeaderCell {
 
-    override fun contains(s: String)  = patterns.any { s.trim().lowercase().contains(it.lowercase()) }
+    abstract fun matches(cell: Cell): Boolean
 
+    fun inside(values: Set<Cell>) = values.any { this.matches(it) }
 }
-
-
-

@@ -1,7 +1,7 @@
 package com.vortexa.refinery
 
-import com.vortexa.refinery.cell.HeaderCell
 import com.vortexa.refinery.cell.MergedHeaderCell
+import com.vortexa.refinery.cell.StringHeaderCell
 import com.vortexa.refinery.configuration.date
 import com.vortexa.refinery.configuration.number
 import com.vortexa.refinery.configuration.optionalString
@@ -94,10 +94,10 @@ class TestReportsParser {
     @Test
     fun `test parsing multiple tables without anchors and with bad formatting`() {
         // given
-        val string = HeaderCell("string")
-        val number = HeaderCell("number")
-        val date = HeaderCell("date")
-        val optionalString = HeaderCell("optional_str")
+        val string = StringHeaderCell("string")
+        val number = StringHeaderCell("number")
+        val date = StringHeaderCell("date")
+        val optionalString = StringHeaderCell("optional_str")
 
         val definition = WorkbookParserDefinition(
             spreadsheetParserDefinitions = listOf(
@@ -162,10 +162,10 @@ class TestReportsParser {
     @Test
     fun `test parsing multiple sheets with a sheet filter`() {
         // given
-        val string = HeaderCell("string")
-        val number = HeaderCell("number")
-        val date = HeaderCell("date")
-        val optionalString = HeaderCell("optional_str")
+        val string = StringHeaderCell("string")
+        val number = StringHeaderCell("number")
+        val date = StringHeaderCell("date")
+        val optionalString = StringHeaderCell("optional_str")
 
         val definition = WorkbookParserDefinition(
             spreadsheetParserDefinitions = listOf(
@@ -231,12 +231,12 @@ class TestReportsParser {
     @Test
     fun `test parsing merged rows and columns`() {
         //given
-        val string = HeaderCell("string")
-        val number = HeaderCell("number")
-        val date = HeaderCell("date")
-        val optionalString = HeaderCell("optional_str")
-        val optionalString2 = HeaderCell("optional_str2")
-        val mergedCols = MergedHeaderCell(HeaderCell("optional_str"), listOf(optionalString, optionalString2))
+        val string = StringHeaderCell("string")
+        val number = StringHeaderCell("number")
+        val date = StringHeaderCell("date")
+        val optionalString = StringHeaderCell("optional_str")
+        val optionalString2 = StringHeaderCell("optional_str2")
+        val mergedCols = MergedHeaderCell(StringHeaderCell("optional_str"), listOf(optionalString, optionalString2))
 
         val definition = WorkbookParserDefinition(
             spreadsheetParserDefinitions = listOf(
@@ -324,10 +324,10 @@ class TestReportsParser {
     @Test
     fun `test parsing non string rows and formulas`() {
         // given
-        val number1 = HeaderCell("number1")
-        val number2 = HeaderCell("number2")
-        val date = HeaderCell("date")
-        val formula = HeaderCell("formula")
+        val number1 = StringHeaderCell("number1")
+        val number2 = StringHeaderCell("number2")
+        val date = StringHeaderCell("date")
+        val formula = StringHeaderCell("formula")
 
         val definition = WorkbookParserDefinition(
             spreadsheetParserDefinitions = listOf(

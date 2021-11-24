@@ -1,6 +1,7 @@
 package com.vortexa.refinery
 
-import com.vortexa.refinery.cell.IHeaderCell
+import com.vortexa.refinery.cell.HeaderCell
+import com.vortexa.refinery.cell.HeaderRowResolver
 import com.vortexa.refinery.cell.MergedCellsResolver
 import com.vortexa.refinery.dsl.TableParserDefinition
 import com.vortexa.refinery.exceptions.ExceptionManager
@@ -25,10 +26,12 @@ internal class TableParser(
     private val exceptionManager: ExceptionManager
 ) {
 
+    private val headerRowResolver = HeaderRowResolver()
+
     fun parse(): List<ParsedRecord> {
         val headerRow = findHeaderRow() ?: return emptyList()
         val tableLocationWithHeader = TableLocationWithHeader(location.minRow, headerRow.rowNum, location.maxRow)
-        val columnHeaders = definition.resolveHeaderCellIndex(headerRow)
+        val columnHeaders = headerRowResolver.resolveHeaderCellIndex(headerRow, definition.allColumns())
         val allHeadersMapping = mapAllHeaders(headerRow)
         checkUncapturedHeaders(columnHeaders, allHeadersMapping, tableLocationWithHeader)
         val enrichedMetadata = enrichMetadata()
@@ -49,7 +52,7 @@ internal class TableParser(
     }
 
     private fun checkUncapturedHeaders(
-        columnHeaders: Map<IHeaderCell, Int>,
+        columnHeaders: Map<HeaderCell, Int>,
         allHeadersMapping: Map<String, Int>,
         tableLocationWithHeader: TableLocationWithHeader
     ) {
@@ -78,7 +81,7 @@ internal class TableParser(
     }
 
     private fun parseTableWithDividers(
-        columnHeaders: Map<IHeaderCell, Int>,
+        columnHeaders: Map<HeaderCell, Int>,
         enrichedMetadata: Metadata,
         location: TableLocationWithHeader,
         allHeadersMapping: Map<String, Int>
