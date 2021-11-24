@@ -42,7 +42,7 @@ open class TestHeaderRowResolver {
 
     @Test
     fun `test string cell parser with exact matching`() {
-        //given
+        // given
         val headerRow = sheet.getHeaderRow()
 
         val simple1 = SimpleHeaderCell("simpleHeader1")
@@ -52,11 +52,11 @@ open class TestHeaderRowResolver {
         val regex1 = SimpleHeaderCell("regexHeader")
         val regex2 = SimpleHeaderCell("regexHeader2")
 
-        //when
+        // when
         val result = headerRowResolver.resolveHeaderCellIndex(headerRow,
             setOf(simple1, simple2, merged1, merged2, regex1, regex2))
 
-        //then
+        // then
         assertThat(result).containsExactlyEntriesOf(
             mapOf(simple1 to 0,
                 simple2 to 1,
@@ -70,15 +70,15 @@ open class TestHeaderRowResolver {
 
     @Test
     fun `test regex cell parser`() {
-        //given
+        // given
         val headerRow = sheet.getHeaderRow()
 
-        val regex1 = RegexHeaderCell("regexHeader$".toRegex())
-        val regex2 = RegexHeaderCell("regexHeader2".toRegex())
+        val regex1 = RegexHeaderCell("regexHeader$")
+        val regex2 = RegexHeaderCell("regexHeader2")
 
-        //when
+        // when
         val result = headerRowResolver.resolveHeaderCellIndex(headerRow, setOf(regex1, regex2))
-        //then
+        // then
         assertThat(result).containsExactlyEntriesOf(
             mapOf(regex1 to 6,
                 regex2 to 7)
@@ -88,7 +88,7 @@ open class TestHeaderRowResolver {
 
     @Test
     fun `test merged cell parser`() {
-        //given
+        // given
         val headerRow = sheet.getHeaderRow()
 
         val m1 = SimpleHeaderCell("merged1")
@@ -100,9 +100,9 @@ open class TestHeaderRowResolver {
         val merged1 = MergedHeaderCell(StringHeaderCell("mergedHeader1"), listOf(m1, m2))
         val merged2 = MergedHeaderCell(StringHeaderCell("mergedHeader2"), listOf(m3, m4))
 
-        //when
+        // when
         val result = headerRowResolver.resolveHeaderCellIndex(headerRow, setOf(merged1, merged2))
-        //then
+        // then
         assertThat(result).containsExactlyEntriesOf(
             mapOf(m1 to 2,
                 m2 to 3,
@@ -113,7 +113,7 @@ open class TestHeaderRowResolver {
 
     @Test
     fun `test ordered cell parser`() {
-        //given
+        // given
         val headerRow = sheet.getHeaderRow()
 
         val simple1 = StringHeaderCell("header")
@@ -131,10 +131,10 @@ open class TestHeaderRowResolver {
         val ordered5 = OrderedHeaderCell(simple5, 2)
         val ordered6 = OrderedHeaderCell(simple6, 1)
 
-        //when
+        // when
         val result = headerRowResolver.resolveHeaderCellIndex(headerRow,
             setOf(ordered5, ordered3, ordered2, ordered4, ordered6, ordered1))
-        //then
+        // then
         assertThat(result).containsExactlyEntriesOf(
             mapOf(simple6 to 0,
                 simple5 to 1,
@@ -147,7 +147,7 @@ open class TestHeaderRowResolver {
 
     @Test
     fun `test ordered merged cell parser`() {
-        //given
+        // given
         val headerRow = sheet.getHeaderRow()
 
         val m1 = SimpleHeaderCell("merged1")
@@ -161,9 +161,9 @@ open class TestHeaderRowResolver {
         val ordered1 = OrderedHeaderCell(merged1, 1)
         val ordered2 = OrderedHeaderCell(merged2, 2)
 
-        //when
+        // when
         val result = headerRowResolver.resolveHeaderCellIndex(headerRow, setOf(ordered1, ordered2))
-        //then
+        // then
         assertThat(result).containsExactlyEntriesOf(
             mapOf(m1 to 2,
                 m2 to 3,
