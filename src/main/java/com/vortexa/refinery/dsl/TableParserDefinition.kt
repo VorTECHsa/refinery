@@ -2,7 +2,7 @@ package com.vortexa.refinery.dsl
 
 import com.vortexa.refinery.GenericRowParser
 import com.vortexa.refinery.RowParser
-import com.vortexa.refinery.cell.HeaderCell
+import com.vortexa.refinery.cell.AbstractHeaderCell
 import com.vortexa.refinery.exceptions.ExceptionManager
 import com.vortexa.refinery.result.RowParserData
 import org.apache.poi.ss.usermodel.Row
@@ -17,8 +17,8 @@ import org.apache.poi.ss.usermodel.Row
  * @property hasDivider support for single rows within the table that split data (will end up in metadata)
  */
 data class TableParserDefinition(
-    val requiredColumns: Set<HeaderCell>,
-    val optionalColumns: Set<HeaderCell> = setOf(),
+    val requiredColumns: Set<AbstractHeaderCell>,
+    val optionalColumns: Set<AbstractHeaderCell> = setOf(),
     val rowParserFactory: (rowParserData: RowParserData, exceptionManager: ExceptionManager) -> RowParser = ::GenericRowParser,
     val anchor: String? = null,
     val hasDivider: Boolean = false
@@ -31,6 +31,6 @@ data class TableParserDefinition(
             .isEmpty()
     }
 
-    fun allColumns(): Set<HeaderCell> = requiredColumns + optionalColumns
+    fun allColumns(): Set<AbstractHeaderCell> = requiredColumns + optionalColumns
 
 }

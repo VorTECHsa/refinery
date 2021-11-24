@@ -3,7 +3,7 @@ package com.vortexa.refinery.cell
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellType
 
-class RegexHeaderCell(val patterns: List<Regex>) : HeaderCell() {
+class RegexHeaderCell(val patterns: List<Regex>) : AbstractHeaderCell() {
 
     constructor(pattern: Regex) : this(listOf(pattern))
 

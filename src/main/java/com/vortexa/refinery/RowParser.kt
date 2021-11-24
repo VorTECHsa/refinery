@@ -1,6 +1,6 @@
 package com.vortexa.refinery
 
-import com.vortexa.refinery.cell.*
+import com.vortexa.refinery.cell.AbstractHeaderCell
 import com.vortexa.refinery.cell.parser.*
 import com.vortexa.refinery.exceptions.ExceptionManager
 import com.vortexa.refinery.result.GenericParsedRecord
@@ -90,49 +90,49 @@ abstract class RowParser(
         return rowParserData.metadata.allData() + rowData + (Metadata.ROW_NUMBER to row.rowNum + 1)
     }
 
-    protected fun parseRequiredFieldAsString(row: Row, headerCell: HeaderCell): String {
+    protected fun parseRequiredFieldAsString(row: Row, headerCell: AbstractHeaderCell): String {
         val cell = findCell(row, headerCell)
         return stringParser.parse(cell)
     }
 
-    protected fun parseOptionalFieldAsString(row: Row, headerCell: HeaderCell): String? {
+    protected fun parseOptionalFieldAsString(row: Row, headerCell: AbstractHeaderCell): String? {
         val cell = findCell(row, headerCell)
         return stringParser.tryParse(cell)
     }
 
-    protected fun parseRequiredFieldAsDouble(row: Row, headerCell: HeaderCell): Double {
+    protected fun parseRequiredFieldAsDouble(row: Row, headerCell: AbstractHeaderCell): Double {
         val cell = findCell(row, headerCell)
         return doubleParser.parse(cell)
     }
 
-    protected fun parseOptionalFieldAsDouble(row: Row, headerCell: HeaderCell): Double? {
+    protected fun parseOptionalFieldAsDouble(row: Row, headerCell: AbstractHeaderCell): Double? {
         val cell = findCell(row, headerCell)
         return doubleParser.tryParse(cell)
     }
 
-    protected fun parseRequiredFieldAsInteger(row: Row, headerCell: HeaderCell): Int {
+    protected fun parseRequiredFieldAsInteger(row: Row, headerCell: AbstractHeaderCell): Int {
         val cell = findCell(row, headerCell)
         return intParser.parse(cell)
     }
 
-    protected fun parseOptionalFieldAsInteger(row: Row, headerCell: HeaderCell): Int? {
+    protected fun parseOptionalFieldAsInteger(row: Row, headerCell: AbstractHeaderCell): Int? {
         val cell = findCell(row, headerCell)
         return intParser.tryParse(cell)
     }
 
-    protected fun parseRequiredFieldAsDateTime(row: Row, headerCell: HeaderCell): LocalDateTime {
+    protected fun parseRequiredFieldAsDateTime(row: Row, headerCell: AbstractHeaderCell): LocalDateTime {
         val cell = findCell(row, headerCell)
         return dateTimeParser.parse(cell)
     }
 
-    protected fun parseOptionalFieldAsDateTime(row: Row, headerCell: HeaderCell): LocalDateTime? {
+    protected fun parseOptionalFieldAsDateTime(row: Row, headerCell: AbstractHeaderCell): LocalDateTime? {
         val cell = findCell(row, headerCell)
         return dateTimeParser.tryParse(cell)
     }
 
     protected fun parseRequiredFieldAsDateTime(
         row: Row,
-        headerCell: HeaderCell,
+        headerCell: AbstractHeaderCell,
         format: DateTimeFormatter
     ): LocalDateTime {
         val cell = findCell(row, headerCell)
@@ -141,14 +141,14 @@ abstract class RowParser(
 
     protected fun parseOptionalFieldAsDateTime(
         row: Row,
-        headerCell: HeaderCell,
+        headerCell: AbstractHeaderCell,
         format: DateTimeFormatter
     ): LocalDateTime? {
         val cell = findCell(row, headerCell)
         return DateTimeFormatCellParser(format).tryParse(cell)
     }
 
-    private fun findCell(row: Row, headerCell: HeaderCell): Cell? {
+    private fun findCell(row: Row, headerCell: AbstractHeaderCell): Cell? {
         val cellIndex = rowParserData.headerMap[headerCell] ?: return null
         return findCellByIndex(row, cellIndex)
     }

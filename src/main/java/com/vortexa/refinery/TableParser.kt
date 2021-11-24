@@ -1,6 +1,6 @@
 package com.vortexa.refinery
 
-import com.vortexa.refinery.cell.HeaderCell
+import com.vortexa.refinery.cell.AbstractHeaderCell
 import com.vortexa.refinery.cell.HeaderRowResolver
 import com.vortexa.refinery.cell.MergedCellsResolver
 import com.vortexa.refinery.dsl.TableParserDefinition
@@ -52,7 +52,7 @@ internal class TableParser(
     }
 
     private fun checkUncapturedHeaders(
-        columnHeaders: Map<HeaderCell, Int>,
+        columnHeaders: Map<AbstractHeaderCell, Int>,
         allHeadersMapping: Map<String, Int>,
         tableLocationWithHeader: TableLocationWithHeader
     ) {
@@ -81,7 +81,7 @@ internal class TableParser(
     }
 
     private fun parseTableWithDividers(
-        columnHeaders: Map<HeaderCell, Int>,
+        columnHeaders: Map<AbstractHeaderCell, Int>,
         enrichedMetadata: Metadata,
         location: TableLocationWithHeader,
         allHeadersMapping: Map<String, Int>

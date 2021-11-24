@@ -2,7 +2,7 @@ package com.vortexa.refinery.cell
 
 import org.apache.poi.ss.usermodel.Cell
 
-sealed class HeaderCell {
+sealed class AbstractHeaderCell {
 
     abstract fun matches(cell: Cell): Boolean
 
