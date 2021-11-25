@@ -5,8 +5,7 @@ import org.apache.poi.ss.usermodel.Row
 class HeaderRowResolver {
 
     fun resolveHeaderCellIndex(headerRow: Row, headerCells: Set<AbstractHeaderCell>): Map<AbstractHeaderCell, Int> {
-        val (orderedCells, unorderedCells) = headerCells.partition { it is OrderedHeaderCell }
-            .let { Pair(it.first as List<OrderedHeaderCell>, it.second) }
+        val (orderedCells, unorderedCells) = headerCells.partitionByType<OrderedHeaderCell, AbstractHeaderCell>()
 
         val result = resolveOrderedHeaders(headerRow, orderedCells) + resolveUnorderedHeaders(headerRow, unorderedCells)
 
@@ -35,5 +34,15 @@ class HeaderRowResolver {
             val headerCellOrNull = unorderedCells.firstOrNull { hc -> hc.matches(cell) }
             if (headerCellOrNull != null) Pair(headerCellOrNull, cell.columnIndex) else null
         }.toMap()
+    }
+
+    private inline fun <reified U : T, T> Iterable<T>.partitionByType(): Pair<List<U>, List<T>> {
+        val first = ArrayList<U>()
+        val second = ArrayList<T>()
+        for (element in this) {
+            if (element is U) first.add(element)
+            else second.add(element)
+        }
+        return Pair(first, second)
     }
 }

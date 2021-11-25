@@ -24,8 +24,8 @@ data class TableParserDefinition(
     val hasDivider: Boolean = false
 ) {
 
+    // todo: does not belong to TableParserDefinition, should be extracted to a separate class
     fun isHeaderRow(row: Row): Boolean {
-        // abstract HeaderRow implementation
         val cellValues = row.cellIterator().asSequence().toSet()
         return this.requiredColumns.filterNot { it.inside(cellValues) }
             .isEmpty()
