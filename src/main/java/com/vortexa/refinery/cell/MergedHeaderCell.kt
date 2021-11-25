@@ -1,6 +1,13 @@
 package com.vortexa.refinery.cell
 
-class MergedHeaderCell(pattern: String, val headerCells: List<HeaderCell>) :
-    AbstractHeaderCell(listOf(pattern)) {
+import org.apache.poi.ss.usermodel.Cell
 
+class MergedHeaderCell(val headerCell: AbstractHeaderCell, val headerCells: List<AbstractHeaderCell>) :
+    AbstractHeaderCell() {
+
+    init {
+        if (headerCell is OrderedHeaderCell) throw IllegalArgumentException("Use OrderedHeaderCell first instead")
+    }
+
+    override fun matches(cell: Cell) = headerCell.matches(cell)
 }

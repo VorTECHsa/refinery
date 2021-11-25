@@ -1,7 +1,7 @@
 package com.vortexa.refinery.example.extraction
 
 import com.vortexa.refinery.WorkbookParser
-import com.vortexa.refinery.cell.HeaderCell
+import com.vortexa.refinery.cell.StringHeaderCell
 import com.vortexa.refinery.dsl.SheetParserDefinition
 import com.vortexa.refinery.dsl.TableParserDefinition
 import com.vortexa.refinery.dsl.WorkbookParserDefinition
@@ -17,9 +17,9 @@ class MergedCellsDataExample {
     fun `should extract the data from the merged data cells and persist in each generic record`() {
         // given
         val headerColumns = setOf(
-            HeaderCell("team"),
-            HeaderCell("plays"),
-            HeaderCell("points")
+            StringHeaderCell("team"),
+            StringHeaderCell("plays"),
+            StringHeaderCell("points")
         )
         val definition = WorkbookParserDefinition(
             spreadsheetParserDefinitions = listOf(

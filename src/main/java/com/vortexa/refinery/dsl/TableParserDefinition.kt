@@ -5,8 +5,6 @@ import com.vortexa.refinery.RowParser
 import com.vortexa.refinery.cell.AbstractHeaderCell
 import com.vortexa.refinery.exceptions.ExceptionManager
 import com.vortexa.refinery.result.RowParserData
-import org.apache.poi.ss.usermodel.Cell
-import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.Row
 
 /**
@@ -26,21 +24,13 @@ data class TableParserDefinition(
     val hasDivider: Boolean = false
 ) {
 
+    // todo: does not belong to TableParserDefinition, should be extracted to a separate class
     fun isHeaderRow(row: Row): Boolean {
-        // abstract HeaderRow implementation
-        val cellValues = row.cellIterator().asSequence()
-            .filter { it.cellType == CellType.STRING }
-            .map { it.stringCellValue.trim().lowercase() }
-            .toSet()
+        val cellValues = row.cellIterator().asSequence().toSet()
         return this.requiredColumns.filterNot { it.inside(cellValues) }
             .isEmpty()
     }
 
-    fun resolveHeaderCellIndex(cell: Cell): Pair<AbstractHeaderCell, Int>? {
-        val headerCellOrNull = allColumns().firstOrNull { hc -> hc.contains(cell.stringCellValue) }
-        return if (headerCellOrNull == null) null else Pair(headerCellOrNull, cell.columnIndex)
-    }
-
-    private fun allColumns(): Set<AbstractHeaderCell> = requiredColumns + optionalColumns
+    fun allColumns(): Set<AbstractHeaderCell> = requiredColumns + optionalColumns
 
 }

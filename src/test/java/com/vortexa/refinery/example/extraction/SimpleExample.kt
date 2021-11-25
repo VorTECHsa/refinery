@@ -1,7 +1,7 @@
 package com.vortexa.refinery.example.extraction
 
 import com.vortexa.refinery.WorkbookParser
-import com.vortexa.refinery.cell.HeaderCell
+import com.vortexa.refinery.cell.StringHeaderCell
 import com.vortexa.refinery.dsl.SheetParserDefinition
 import com.vortexa.refinery.dsl.TableParserDefinition
 import com.vortexa.refinery.dsl.WorkbookParserDefinition
@@ -24,12 +24,12 @@ class SimpleExample {
                     tableDefinitions = listOf(
                         TableParserDefinition(
                             requiredColumns = setOf(
-                                HeaderCell("team"),
-                                HeaderCell("plays"),
-                                HeaderCell("wins"),
-                                HeaderCell("goal diff"),
-                                HeaderCell("points"),
-                                HeaderCell("date")
+                                StringHeaderCell("team"),
+                                StringHeaderCell("plays"),
+                                StringHeaderCell("wins"),
+                                StringHeaderCell("goal diff"),
+                                StringHeaderCell("points"),
+                                StringHeaderCell("date")
                             )
                         )
                     )

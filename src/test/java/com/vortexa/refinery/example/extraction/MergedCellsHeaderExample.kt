@@ -1,7 +1,7 @@
 package com.vortexa.refinery.example.extraction
 
 import com.vortexa.refinery.WorkbookParser
-import com.vortexa.refinery.cell.HeaderCell
+import com.vortexa.refinery.cell.StringHeaderCell
 import com.vortexa.refinery.dsl.SheetParserDefinition
 import com.vortexa.refinery.dsl.TableParserDefinition
 import com.vortexa.refinery.dsl.WorkbookParserDefinition
@@ -24,10 +24,10 @@ class MergedCellsHeaderExample {
                     tableDefinitions = listOf(
                         TableParserDefinition(
                             requiredColumns = setOf(
-                                HeaderCell("home team"),
-                                HeaderCell("guest team"),
-                                HeaderCell("score"),
-                                HeaderCell("date")
+                                StringHeaderCell("home team"),
+                                StringHeaderCell("guest team"),
+                                StringHeaderCell("score"),
+                                StringHeaderCell("date")
                             )
                         )
                     )

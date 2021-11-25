@@ -1,4 +1,4 @@
-package com.vortexa.refinery.cell
+package com.vortexa.refinery.cell.parser
 
 import com.vortexa.refinery.exceptions.CellParserException
 import org.assertj.core.api.Assertions.assertThat
@@ -28,6 +28,7 @@ class DateTimeCellParserTest : CellParserTest() {
         assertThat(parser.tryParse(nullCell())).isNull()
         assertThat(parser.tryParse(doubleAsStringCell())).isNull()
         assertThat(parser.tryParse(doubleInt())).isNull()
+        assertThat(parser.tryParse(dateTime())).isEqualTo(LocalDateTime.parse("2021-12-12T15:43:43"))
     }
 
     @Test
