@@ -3,6 +3,11 @@ package com.vortexa.refinery.cell
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellType
 
+/**
+ * Matches headers using case insensitive substring comparison
+ *
+ * @property patterns
+ */
 class StringHeaderCell(val patterns: List<String>) : AbstractHeaderCell() {
 
     constructor(pattern: String) : this(listOf(pattern))
