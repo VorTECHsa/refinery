@@ -14,7 +14,7 @@ class StringHeaderCell(val patterns: List<String>) : AbstractHeaderCell() {
 
     override fun matches(cell: Cell): Boolean {
         if (cell.cellType != CellType.STRING) return false
-        return patterns.any { cell.stringCellValue.trim().lowercase().contains(it.lowercase()) }
+        return patterns.any { cell.stringCellValue.trim().contains(it, ignoreCase = true) }
     }
 
 }
