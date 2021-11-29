@@ -39,8 +39,6 @@ class TableParserException(message: String) : ManagedException(message, Level.WA
 
 class SheetParserException(message: String) : ManagedException(message, Level.WARNING)
 
-class UncapturedHeadersException(message: String) : ManagedException(message, Level.WARNING)
-
 class WorkbookParserException(message: String) : ManagedException(message, Level.CRITICAL)
 
 class UncategorizedException(message: String) : ManagedException(message, Level.CRITICAL)
