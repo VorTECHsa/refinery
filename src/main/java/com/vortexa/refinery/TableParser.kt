@@ -59,11 +59,10 @@ internal class TableParser(
         val capturedColumnIndexes = columnHeaders.values.toSet()
         val uncapturedColumns = allHeadersMapping
             .filterNot { capturedColumnIndexes.contains(it.value) }
-            .map { "${it.key} @ ${it.value + 1}" }
+            .map { UncapturedHeadersException.UncapturedHeaderCell(it.key, it.value) }
         if (uncapturedColumns.isNotEmpty()) {
-            val uncapturedHeadersMessage = uncapturedColumns.joinToString { it }
             exceptionManager.register(
-                UncapturedHeadersException(uncapturedHeadersMessage),
+                UncapturedHeadersException(uncapturedColumns),
                 ExceptionManager.Location(sheet.sheetName, tableLocationWithHeader.headerRow + 1)
             )
         }
