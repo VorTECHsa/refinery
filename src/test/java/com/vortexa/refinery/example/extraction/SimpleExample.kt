@@ -41,10 +41,9 @@ class SimpleExample {
         val file = File(
             javaClass.classLoader.getResource("examples/basic_examples.xlsx")!!.file
         )
-        val workbook = WorkbookFactory.create(file)
 
         // when
-        val parsedRecords = WorkbookParser(definition, workbook).parse()
+        val parsedRecords  = WorkbookFactory.create(file).use { WorkbookParser(definition, it).parse() }
 
         // then
         assertThat(parsedRecords)
