@@ -2,6 +2,7 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "1.5.31"
     id "java-library"
     id "maven-publish"
+    id 'jacoco'
 }
 
 group 'com.vortexa.refinery'
@@ -33,6 +34,11 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
 }
 
 publishing {

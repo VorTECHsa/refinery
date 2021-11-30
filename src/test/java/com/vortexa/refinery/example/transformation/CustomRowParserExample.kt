@@ -85,13 +85,11 @@ class CustomRowParserExample {
         val file = File(
             javaClass.classLoader.getResource("examples/basic_examples.xlsx")!!.file
         )
-        val workbook = WorkbookFactory.create(file)
 
         // when
         val em = ExceptionManager()
-        val parsedRecords = WorkbookParser(definition, workbook, em).parse()
+        val parsedRecords  = WorkbookFactory.create(file).use { WorkbookParser(definition, it, em).parse() }
 
-        println(em.exceptions)
         // then
         assertThat(parsedRecords)
             .hasSize(8)

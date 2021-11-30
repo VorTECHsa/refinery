@@ -423,11 +423,11 @@ class TestReportsParser {
         val file = File(
             javaClass.classLoader.getResource("spreadsheet_examples/test_spreadsheet.xlsx")!!.file
         )
-        val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookParser(definition, workbook, exceptionManager).parse()
+        val records = WorkbookFactory.create(file).use { WorkbookParser(definition, it, exceptionManager).parse() }
+
         // then
         assertThat(records.map { it.groupId }).containsOnly(records.first().groupId!!)
     }
