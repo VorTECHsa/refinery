@@ -12,14 +12,14 @@ import org.apache.poi.ss.usermodel.Sheet
 internal class MetadataParser(
     private val definitions: List<MetadataEntryDefinition>,
     private val sheet: Sheet,
-    private val workbookName: String
+    private val workbookName: String?
 ) {
 
     fun extractMetadata(): Metadata {
         val metadata = hashMapOf<String, Any>(
-            WORKBOOK_NAME to workbookName,
             SPREADSHEET_NAME to sheet.sheetName
         )
+        if (workbookName != null) metadata[WORKBOOK_NAME] = workbookName
         definitions.forEach {
             val kv = findMetadata(it)
             metadata[kv.first] = kv.second

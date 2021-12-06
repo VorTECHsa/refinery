@@ -17,7 +17,7 @@ internal class SheetParser(
     private val definition: SheetParserDefinition,
     private val sheet: Sheet,
     private val exceptionManager: ExceptionManager,
-    private val workbookName: String
+    private val workbookName: String?
 ) {
     private val mergedCellsResolver = MergedCellsResolver(sheet)
 

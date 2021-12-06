@@ -10,7 +10,7 @@ class WorkbookParser(
     private val definition: WorkbookParserDefinition,
     private val workbook: Workbook,
     private val exceptionManager: ExceptionManager = ExceptionManager(),
-    private val workbookName: String = ""
+    private val workbookName: String? = null
 ) {
 
     fun parse(): List<ParsedRecord> {
