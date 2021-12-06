@@ -3,6 +3,7 @@ plugins {
     id "java-library"
     id "maven-publish"
     id 'jacoco'
+    id "com.diffplug.spotless" version "6.0.2"
 }
 
 group 'com.vortexa.refinery'
@@ -62,5 +63,11 @@ publishing {
                 password = System.getenv("GITHUB_TOKEN")
             }
         }
+    }
+}
+
+spotless {
+    kotlin {
+        ktlint("0.40.0")
     }
 }

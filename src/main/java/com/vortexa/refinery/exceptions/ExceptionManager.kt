@@ -42,5 +42,4 @@ class ExceptionManager {
             if (it.location == null) it.exception.extractData() else it.exception.extractData() + it.location.extractData()
         }
     }
-
 }

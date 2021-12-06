@@ -15,7 +15,7 @@ import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
-import java.util.*
+import java.util.UUID
 
 internal class TableParser(
     private val sheet: Sheet,
@@ -43,7 +43,8 @@ internal class TableParser(
                         mergedCellsResolver,
                         enrichedMetadata,
                         allHeadersMapping
-                    ), exceptionManager
+                    ),
+                    exceptionManager
                 )
                 parseTableWithoutDividers(rowParser, tableLocationWithHeader)
             }
@@ -93,7 +94,8 @@ internal class TableParser(
                     mergedCellsResolver,
                     enrichedMetadata,
                     allHeadersMapping
-                ), exceptionManager
+                ),
+                exceptionManager
             )
         for (rowIndex in location.range()) {
             val row = sheet.getRow(rowIndex)
@@ -204,7 +206,6 @@ internal class TableParser(
         .filter { it.cellType != CellType.BLANK }
         .filter { it.toString().isNotBlank() }
 
-
     internal data class TableLocation(val minRow: Int, val maxRow: Int)
 
     private data class TableLocationWithHeader(val minRow: Int, val headerRow: Int, val maxRow: Int) {
@@ -212,5 +213,4 @@ internal class TableParser(
             return headerRow..maxRow
         }
     }
-
 }

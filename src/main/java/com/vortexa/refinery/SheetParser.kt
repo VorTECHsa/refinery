@@ -30,7 +30,6 @@ internal class SheetParser(
             exceptionManager.register(e, ExceptionManager.Location(sheet.sheetName))
             emptyList()
         }
-
     }
 
     private fun resolveTableParsers(metadata: Metadata): List<TableParser> {
@@ -39,7 +38,6 @@ internal class SheetParser(
             TableParser(sheet, it.first, metadata, it.second, mergedCellsResolver, exceptionManager)
         }
     }
-
 
     private fun resolveTableLocations(): List<Pair<TableParserDefinition, TableLocation>> {
         val definitionsBeginning: List<Pair<TableParserDefinition, Int>> = sheet.rowIterator().asSequence()
@@ -80,6 +78,4 @@ internal class SheetParser(
         }
         return null
     }
-
-
 }

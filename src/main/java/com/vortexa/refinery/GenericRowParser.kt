@@ -5,10 +5,8 @@ import com.vortexa.refinery.result.GenericParsedRecord
 import com.vortexa.refinery.result.RowParserData
 import org.apache.poi.ss.usermodel.Row
 
-open class GenericRowParser(rowParserData: RowParserData, exceptionManager: ExceptionManager) : com.vortexa.refinery.RowParser(
-    rowParserData,
-    exceptionManager
-) {
+open class GenericRowParser(rowParserData: RowParserData, exceptionManager: ExceptionManager) :
+    RowParser(rowParserData, exceptionManager) {
 
     override fun toRecord(row: Row): GenericParsedRecord {
         val allData = extractAllData(row)

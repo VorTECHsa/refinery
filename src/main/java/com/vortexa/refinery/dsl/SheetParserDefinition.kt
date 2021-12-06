@@ -11,6 +11,4 @@ data class SheetParserDefinition(
     val sheetNameFilter: (String) -> Boolean,
     val tableDefinitions: List<TableParserDefinition>,
     val metadataParserDefinition: List<MetadataEntryDefinition> = emptyList(),
-) {
-
-}
+)

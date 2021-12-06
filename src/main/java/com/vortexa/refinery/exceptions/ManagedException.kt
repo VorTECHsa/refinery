@@ -1,7 +1,7 @@
 package com.vortexa.refinery.exceptions
 
 enum class Level {
-    //Please keep the order for now from most critical to least as using that for sorting.
+    // Please keep the order for now from most critical to least as using that for sorting.
 
     CRITICAL,
     WARNING
@@ -29,8 +29,6 @@ abstract class ManagedException(override val message: String, val level: Level) 
         result = 31 * result + level.hashCode()
         return result
     }
-
-
 }
 
 class CellParserException(message: String) : ManagedException(message, Level.WARNING)

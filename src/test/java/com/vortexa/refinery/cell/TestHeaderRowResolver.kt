@@ -53,19 +53,22 @@ open class TestHeaderRowResolver {
         val regex2 = SimpleHeaderCell("regexHeader2")
 
         // when
-        val result = headerRowResolver.resolveHeaderCellIndex(headerRow,
-            setOf(simple1, simple2, merged1, merged2, regex1, regex2))
+        val result = headerRowResolver.resolveHeaderCellIndex(
+            headerRow,
+            setOf(simple1, simple2, merged1, merged2, regex1, regex2)
+        )
 
         // then
         assertThat(result).containsExactlyEntriesOf(
-            mapOf(simple1 to 0,
+            mapOf(
+                simple1 to 0,
                 simple2 to 1,
                 merged1 to 2,
                 merged2 to 4,
                 regex1 to 6,
-                regex2 to 7)
+                regex2 to 7
+            )
         )
-
     }
 
     @Test
@@ -80,10 +83,11 @@ open class TestHeaderRowResolver {
         val result = headerRowResolver.resolveHeaderCellIndex(headerRow, setOf(regex1, regex2))
         // then
         assertThat(result).containsExactlyEntriesOf(
-            mapOf(regex1 to 6,
-                regex2 to 7)
+            mapOf(
+                regex1 to 6,
+                regex2 to 7
+            )
         )
-
     }
 
     @Test
@@ -96,7 +100,6 @@ open class TestHeaderRowResolver {
         val m3 = SimpleHeaderCell("merged3")
         val m4 = SimpleHeaderCell("merged4")
 
-
         val merged1 = MergedHeaderCell(StringHeaderCell("mergedHeader1"), listOf(m1, m2))
         val merged2 = MergedHeaderCell(StringHeaderCell("mergedHeader2"), listOf(m3, m4))
 
@@ -104,10 +107,12 @@ open class TestHeaderRowResolver {
         val result = headerRowResolver.resolveHeaderCellIndex(headerRow, setOf(merged1, merged2))
         // then
         assertThat(result).containsExactlyEntriesOf(
-            mapOf(m1 to 2,
+            mapOf(
+                m1 to 2,
                 m2 to 3,
                 m3 to 4,
-                m4 to 5)
+                m4 to 5
+            )
         )
     }
 
@@ -123,7 +128,6 @@ open class TestHeaderRowResolver {
         val simple5 = StringHeaderCell("header")
         val simple6 = StringHeaderCell("header")
 
-
         val ordered1 = OrderedHeaderCell(simple1, 6)
         val ordered2 = OrderedHeaderCell(simple2, 5)
         val ordered3 = OrderedHeaderCell(simple3, 4)
@@ -132,16 +136,20 @@ open class TestHeaderRowResolver {
         val ordered6 = OrderedHeaderCell(simple6, 1)
 
         // when
-        val result = headerRowResolver.resolveHeaderCellIndex(headerRow,
-            setOf(ordered5, ordered3, ordered2, ordered4, ordered6, ordered1))
+        val result = headerRowResolver.resolveHeaderCellIndex(
+            headerRow,
+            setOf(ordered5, ordered3, ordered2, ordered4, ordered6, ordered1)
+        )
         // then
         assertThat(result).containsExactlyEntriesOf(
-            mapOf(simple6 to 0,
+            mapOf(
+                simple6 to 0,
                 simple5 to 1,
                 simple4 to 2,
                 simple3 to 4,
                 simple2 to 6,
-                simple1 to 7)
+                simple1 to 7
+            )
         )
     }
 
@@ -155,7 +163,6 @@ open class TestHeaderRowResolver {
         val m3 = SimpleHeaderCell("merged3")
         val m4 = SimpleHeaderCell("merged4")
 
-
         val merged1 = MergedHeaderCell(StringHeaderCell("merged"), listOf(m1, m2))
         val merged2 = MergedHeaderCell(StringHeaderCell("merged"), listOf(m3, m4))
         val ordered1 = OrderedHeaderCell(merged1, 1)
@@ -165,10 +172,12 @@ open class TestHeaderRowResolver {
         val result = headerRowResolver.resolveHeaderCellIndex(headerRow, setOf(ordered1, ordered2))
         // then
         assertThat(result).containsExactlyEntriesOf(
-            mapOf(m1 to 2,
+            mapOf(
+                m1 to 2,
                 m2 to 3,
                 m3 to 4,
-                m4 to 5)
+                m4 to 5
+            )
         )
     }
 
@@ -177,5 +186,4 @@ open class TestHeaderRowResolver {
         assertThatThrownBy { MergedHeaderCell(OrderedHeaderCell(SimpleHeaderCell(""), 1), listOf()) }
             .isInstanceOf(IllegalArgumentException::class.java)
     }
-
 }

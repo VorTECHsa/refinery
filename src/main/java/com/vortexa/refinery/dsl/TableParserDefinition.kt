@@ -32,5 +32,4 @@ data class TableParserDefinition(
     }
 
     fun allColumns(): Set<AbstractHeaderCell> = requiredColumns + optionalColumns
-
 }

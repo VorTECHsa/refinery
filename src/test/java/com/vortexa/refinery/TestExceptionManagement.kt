@@ -1,12 +1,21 @@
 package com.vortexa.refinery
 
 import com.vortexa.refinery.cell.StringHeaderCell
-import com.vortexa.refinery.configuration.*
+import com.vortexa.refinery.configuration.date
+import com.vortexa.refinery.configuration.number
+import com.vortexa.refinery.configuration.optionalString
+import com.vortexa.refinery.configuration.string
+import com.vortexa.refinery.configuration.testDefinition
 import com.vortexa.refinery.dsl.SheetParserDefinition
 import com.vortexa.refinery.dsl.TableParserDefinition
 import com.vortexa.refinery.dsl.WorkbookParserDefinition
-import com.vortexa.refinery.exceptions.*
+import com.vortexa.refinery.exceptions.CellParserException
+import com.vortexa.refinery.exceptions.ExceptionManager
+import com.vortexa.refinery.exceptions.SheetParserException
+import com.vortexa.refinery.exceptions.TableParserException
+import com.vortexa.refinery.exceptions.UncapturedHeadersException
 import com.vortexa.refinery.exceptions.UncapturedHeadersException.UncapturedHeaderCell
+import com.vortexa.refinery.exceptions.UncategorizedException
 import com.vortexa.refinery.result.ParsedRecord
 import com.vortexa.refinery.result.RowParserData
 import org.apache.poi.ss.usermodel.Row
@@ -22,8 +31,10 @@ class TestExceptionManagement {
     @Test
     fun `test cell parsing raises exception when required cell is empty`() {
         // given
-        class RequiredCellsRowParser(rowParserData: RowParserData,
-                                     exceptionManager: ExceptionManager) : RowParser(rowParserData, exceptionManager) {
+        class RequiredCellsRowParser(
+            rowParserData: RowParserData,
+            exceptionManager: ExceptionManager
+        ) : RowParser(rowParserData, exceptionManager) {
             override fun toRecord(row: Row): ParsedRecord {
                 return object : ParsedRecord() {
                     val one = parseRequiredFieldAsString(row, string)
@@ -107,7 +118,6 @@ class TestExceptionManagement {
         exceptionManager.exceptions.forEach { exceptionData ->
             assertThat(exceptionData).satisfies { it.exception is SheetParserException }
         }
-
     }
 
     @Test
@@ -173,14 +183,14 @@ class TestExceptionManagement {
         val fileName = "spreadsheet_examples/test_spreadsheet_multitable_anchors_no_header.xlsx"
         val file = File(
             javaClass.classLoader.getResource(
-                fileName)!!.file
+                fileName
+            )!!.file
         )
         val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
         val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
-
 
         // then
         assertThat(exceptionManager.exceptions).hasSize(1)

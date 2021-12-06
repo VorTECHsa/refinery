@@ -92,7 +92,6 @@ class TestReportsParser {
                     )
                 )
             )
-
     }
 
     @Test
@@ -164,7 +163,6 @@ class TestReportsParser {
                     )
                 )
             )
-
     }
 
     @Test
@@ -237,12 +235,11 @@ class TestReportsParser {
                     )
                 )
             )
-
     }
 
     @Test
     fun `test parsing merged rows and columns`() {
-        //given
+        // given
         val string = StringHeaderCell("string")
         val number = StringHeaderCell("number")
         val date = StringHeaderCell("date")
@@ -336,7 +333,6 @@ class TestReportsParser {
                     )
                 )
             )
-
     }
 
     @Test
@@ -399,7 +395,6 @@ class TestReportsParser {
                     )
                 )
             )
-
     }
 
     @Test
@@ -454,5 +449,4 @@ class TestReportsParser {
         // then
         assertThat(records.map { it.groupId }).containsOnly(records.first().groupId!!)
     }
-
 }

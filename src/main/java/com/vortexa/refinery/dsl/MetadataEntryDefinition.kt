@@ -15,5 +15,4 @@ data class MetadataEntryDefinition(
     val matchingCellKey: String,
     val valueLocation: MetadataValueLocation,
     val extractor: (Cell) -> Any
-) {
-}
+)
