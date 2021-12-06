@@ -20,7 +20,6 @@ class Metadata(private val data: Map<String, Any>) {
         return data[SPREADSHEET_NAME]!! as String
     }
 
-
     fun getAnchor(): String {
         return data[ANCHOR]!! as String
     }
