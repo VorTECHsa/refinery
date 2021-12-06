@@ -15,14 +15,15 @@ class TestGenericRowParser {
     @Test
     fun `test generic row parser parses table and provides the correct raw parsed output including uncaptured headers`() {
         // given
+        val fileName = "spreadsheet_examples/test_spreadsheet_uncaptured.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("spreadsheet_examples/test_spreadsheet_uncaptured.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
         val workbook: Workbook = WorkbookFactory.create(file)
 
         // when
         val exceptionManager = ExceptionManager()
-        val parsedRecords = WorkbookParser(testDefinition, workbook, exceptionManager).parse()
+        val parsedRecords = WorkbookParser(testDefinition, workbook, exceptionManager, fileName).parse()
 
         // then
         assertThat(exceptionManager.exceptions).hasSize(1)
@@ -31,6 +32,7 @@ class TestGenericRowParser {
             .containsExactly(
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "string" to "one",
                         "number" to 1,
@@ -43,6 +45,7 @@ class TestGenericRowParser {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "string" to "two",
                         "number" to 2,
@@ -54,6 +57,7 @@ class TestGenericRowParser {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "string" to "three",
                         "number" to 3,

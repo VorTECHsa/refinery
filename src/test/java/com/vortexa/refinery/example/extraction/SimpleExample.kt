@@ -38,13 +38,14 @@ class SimpleExample {
         )
 
         // and
+        val fileName = "examples/basic_examples.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("examples/basic_examples.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
         val workbook = WorkbookFactory.create(file)
 
         // when
-        val parsedRecords = WorkbookParser(definition, workbook).parse()
+        val parsedRecords = WorkbookParser(definition, workbook, workbookName = fileName).parse()
 
         // then
         assertThat(parsedRecords)
@@ -52,6 +53,7 @@ class SimpleExample {
             .containsExactly(
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "simple spreadsheet",
                         "row_number" to 2,
                         "team" to "PSG",
@@ -64,6 +66,7 @@ class SimpleExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "simple spreadsheet",
                         "row_number" to 3,
                         "team" to "Manchester City",
@@ -76,6 +79,7 @@ class SimpleExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "simple spreadsheet",
                         "row_number" to 4,
                         "team" to "Club Brugge",
@@ -88,6 +92,7 @@ class SimpleExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "simple spreadsheet",
                         "row_number" to 5,
                         "team" to "RB Leipzig",

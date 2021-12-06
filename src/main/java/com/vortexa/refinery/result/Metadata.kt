@@ -36,6 +36,7 @@ class Metadata(private val data: Map<String, Any>) {
 
 
     companion object {
+        const val WORKBOOK_NAME = "workbook_name"
         const val SPREADSHEET_NAME = "spreadsheet_name"
         const val ANCHOR = "anchor"
         const val DIVIDER = "divider"

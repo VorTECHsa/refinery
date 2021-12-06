@@ -53,14 +53,15 @@ class TestExceptionManagement {
             )
         )
 
+        val fileName = "spreadsheet_examples/test_spreadsheet.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("spreadsheet_examples/test_spreadsheet.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
         val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookParser(definition, workbook, exceptionManager).parse()
+        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
 
         // then
         assertThat(exceptionManager.exceptions).hasSize(2)
@@ -90,14 +91,15 @@ class TestExceptionManagement {
             )
         )
 
+        val fileName = "spreadsheet_examples/test_spreadsheet.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("spreadsheet_examples/test_spreadsheet.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
         val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
-        WorkbookParser(definition, workbook, exceptionManager).parse()
+        WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
 
         // then
         assertThat(exceptionManager.exceptions).hasSize(1)
@@ -125,14 +127,15 @@ class TestExceptionManagement {
             )
         )
 
+        val fileName = "spreadsheet_examples/test_spreadsheet.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("spreadsheet_examples/test_spreadsheet.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
         val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
-        WorkbookParser(definition, workbook, exceptionManager).parse()
+        WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
 
         // then
         assertThat(exceptionManager.exceptions).hasSize(1)
@@ -166,15 +169,16 @@ class TestExceptionManagement {
             )
         )
 
+        val fileName = "spreadsheet_examples/test_spreadsheet_multitable_anchors_no_header.xlsx"
         val file = File(
             javaClass.classLoader.getResource(
-                "spreadsheet_examples/test_spreadsheet_multitable_anchors_no_header.xlsx")!!.file
+                fileName)!!.file
         )
         val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookParser(definition, workbook, exceptionManager).parse()
+        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
 
 
         // then
@@ -188,8 +192,9 @@ class TestExceptionManagement {
     @Test
     fun `test uncaptured header in registered as exception`() {
         // given
+        val fileName = "spreadsheet_examples/test_spreadsheet_uncaptured.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("spreadsheet_examples/test_spreadsheet_uncaptured.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
         val workbook: Workbook = WorkbookFactory.create(file)
         val expectedException = ExceptionManager.ExceptionData(
@@ -199,7 +204,7 @@ class TestExceptionManagement {
 
         // when
         val exceptionManager = ExceptionManager()
-        val parsedRecords = WorkbookParser(testDefinition, workbook, exceptionManager).parse()
+        val parsedRecords = WorkbookParser(testDefinition, workbook, exceptionManager, fileName).parse()
 
         // then
         assertThat(exceptionManager.exceptions)

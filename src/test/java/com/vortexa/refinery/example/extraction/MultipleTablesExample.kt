@@ -49,13 +49,14 @@ class MultipleTablesExample {
         )
 
         // and
+        val fileName = "examples/basic_examples.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("examples/basic_examples.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
 
         val workbook = WorkbookFactory.create(file)
         // when
-        val parsedRecords = WorkbookParser(definition, workbook).parse()
+        val parsedRecords = WorkbookParser(definition, workbook, workbookName = fileName).parse()
 
         // then
         assertThat(parsedRecords)
@@ -63,6 +64,7 @@ class MultipleTablesExample {
             .containsExactly(
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables",
                         "row_number" to 2,
                         "team" to "PSG",
@@ -75,6 +77,7 @@ class MultipleTablesExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables",
                         "row_number" to 3,
                         "team" to "Manchester City",
@@ -87,6 +90,7 @@ class MultipleTablesExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables",
                         "row_number" to 4,
                         "team" to "Club Brugge",
@@ -99,6 +103,7 @@ class MultipleTablesExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables",
                         "row_number" to 5,
                         "team" to "RB Leipzig",
@@ -112,6 +117,7 @@ class MultipleTablesExample {
                 // and denormalized records from the second table
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables",
                         "row_number" to 10,
                         "home team" to "Manchester City",
@@ -123,6 +129,7 @@ class MultipleTablesExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables",
                         "row_number" to 11,
                         "home team" to "Club Brugge",
@@ -134,6 +141,7 @@ class MultipleTablesExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables",
                         "row_number" to 12,
                         "home team" to "RB Leipzig",
@@ -145,6 +153,7 @@ class MultipleTablesExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables",
                         "row_number" to 13,
                         "home team" to "PSG",
@@ -156,6 +165,7 @@ class MultipleTablesExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables",
                         "row_number" to 14,
                         "home team" to "Club Brugge",
@@ -167,6 +177,7 @@ class MultipleTablesExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables",
                         "row_number" to 15,
                         "home team" to "PSG",
@@ -179,6 +190,7 @@ class MultipleTablesExample {
                 // and fixtures
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables",
                         "row_number" to 16,
                         "home team" to "Manchester City",
@@ -188,6 +200,7 @@ class MultipleTablesExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables",
                         "row_number" to 17,
                         "home team" to "RB Leipzig",

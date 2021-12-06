@@ -42,13 +42,14 @@ class MultipleTablesWithAnchorExample {
         )
 
         // and
+        val fileName = "examples/basic_examples.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("examples/basic_examples.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
         val workbook = WorkbookFactory.create(file)
 
         // when
-        val parsedRecords = WorkbookParser(definition, workbook).parse()
+        val parsedRecords = WorkbookParser(definition, workbook, workbookName = fileName).parse()
 
         // then
         assertThat(parsedRecords)
@@ -57,6 +58,7 @@ class MultipleTablesWithAnchorExample {
                 // data from table 1
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables with anchors",
                         "row_number" to 3,
                         "anchor" to "Group A",
@@ -67,6 +69,7 @@ class MultipleTablesWithAnchorExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables with anchors",
                         "row_number" to 4,
                         "anchor" to "Group A",
@@ -77,6 +80,7 @@ class MultipleTablesWithAnchorExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables with anchors",
                         "row_number" to 5,
                         "anchor" to "Group A",
@@ -87,6 +91,7 @@ class MultipleTablesWithAnchorExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables with anchors",
                         "row_number" to 6,
                         "anchor" to "Group A",
@@ -98,6 +103,7 @@ class MultipleTablesWithAnchorExample {
                 // data from table 2
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables with anchors",
                         "row_number" to 11,
                         "anchor" to "Group B",
@@ -108,6 +114,7 @@ class MultipleTablesWithAnchorExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables with anchors",
                         "row_number" to 12,
                         "anchor" to "Group B",
@@ -118,6 +125,7 @@ class MultipleTablesWithAnchorExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables with anchors",
                         "row_number" to 13,
                         "anchor" to "Group B",
@@ -128,6 +136,7 @@ class MultipleTablesWithAnchorExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "multiple tables with anchors",
                         "row_number" to 14,
                         "anchor" to "Group B",

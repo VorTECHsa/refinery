@@ -36,13 +36,14 @@ class MergedCellsHeaderExample {
         )
 
         // and
+        val fileName = "examples/basic_examples.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("examples/basic_examples.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
         val workbook = WorkbookFactory.create(file)
 
         // when
-        val parsedRecords = WorkbookParser(definition, workbook).parse()
+        val parsedRecords = WorkbookParser(definition, workbook, workbookName = fileName).parse()
 
         // then
         assertThat(parsedRecords)
@@ -50,6 +51,7 @@ class MergedCellsHeaderExample {
             .containsExactly(
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "merged cells header",
                         "row_number" to 2,
                         "home team" to "Manchester City",
@@ -61,6 +63,7 @@ class MergedCellsHeaderExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "merged cells header",
                         "row_number" to 3,
                         "home team" to "Club Brugge",
@@ -72,6 +75,7 @@ class MergedCellsHeaderExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "merged cells header",
                         "row_number" to 4,
                         "home team" to "RB Leipzig",
@@ -83,6 +87,7 @@ class MergedCellsHeaderExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "merged cells header",
                         "row_number" to 5,
                         "home team" to "PSG",
@@ -94,6 +99,7 @@ class MergedCellsHeaderExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "merged cells header",
                         "row_number" to 6,
                         "home team" to "Club Brugge",
@@ -105,6 +111,7 @@ class MergedCellsHeaderExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "merged cells header",
                         "row_number" to 7,
                         "home team" to "PSG",
