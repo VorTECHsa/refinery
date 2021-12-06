@@ -12,9 +12,14 @@ class Metadata(private val data: Map<String, Any>) {
         this.divider = value
     }
 
+    fun getWorkbookName(): String {
+        return data[WORKBOOK_NAME]!! as String
+    }
+
     fun getSheetName(): String {
         return data[SPREADSHEET_NAME]!! as String
     }
+
 
     fun getAnchor(): String {
         return data[ANCHOR]!! as String
