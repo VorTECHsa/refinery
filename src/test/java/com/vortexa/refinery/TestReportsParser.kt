@@ -445,11 +445,12 @@ class TestReportsParser {
         val file = File(
             javaClass.classLoader.getResource(fileName)!!.file
         )
-        val workbook: Workbook = WorkbookFactory.create(file)
+
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
+        val records =
+            WorkbookFactory.create(file).use { WorkbookParser(definition, it, exceptionManager, fileName).parse() }
         // then
         assertThat(records.map { it.groupId }).containsOnly(records.first().groupId!!)
     }

@@ -46,10 +46,10 @@ class MultipleTablesWithAnchorExample {
         val file = File(
             javaClass.classLoader.getResource(fileName)!!.file
         )
-        val workbook = WorkbookFactory.create(file)
 
         // when
-        val parsedRecords = WorkbookParser(definition, workbook, workbookName = fileName).parse()
+        val parsedRecords =
+            WorkbookFactory.create(file).use { WorkbookParser(definition, it, workbookName = fileName).parse() }
 
         // then
         assertThat(parsedRecords)
