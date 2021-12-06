@@ -9,7 +9,8 @@ import org.apache.poi.ss.usermodel.Workbook
 class WorkbookParser(
     private val definition: WorkbookParserDefinition,
     private val workbook: Workbook,
-    private val exceptionManager: ExceptionManager = ExceptionManager()
+    private val exceptionManager: ExceptionManager = ExceptionManager(),
+    private val workbookName: String? = null
 ) {
 
     fun parse(): List<ParsedRecord> {
@@ -28,7 +29,7 @@ class WorkbookParser(
     private fun resolveSheetParser(sheet: Sheet): SheetParser? {
         return definition.spreadsheetParserDefinitions
             .filter { definition -> definition.sheetNameFilter.invoke(sheet.sheetName) }
-            .map { definition -> SheetParser(definition, sheet, exceptionManager) }
+            .map { definition -> SheetParser(definition, sheet, exceptionManager, workbookName) }
             .firstOrNull()
     }
 

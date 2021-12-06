@@ -43,14 +43,15 @@ class TestReportsParser {
             )
         )
 
+        val fileName = "spreadsheet_examples/test_spreadsheet_multitable_anchors.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("spreadsheet_examples/test_spreadsheet_multitable_anchors.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
         val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookParser(definition, workbook, exceptionManager).parse()
+        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
 
         // then
         assertThat(exceptionManager.exceptions).isEmpty()
@@ -58,6 +59,7 @@ class TestReportsParser {
             .contains(
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "string" to "one",
                         "number" to 1,
@@ -69,6 +71,7 @@ class TestReportsParser {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "string" to "four",
                         "number" to 4,
@@ -79,6 +82,7 @@ class TestReportsParser {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "string" to "three",
                         "number" to 3,
@@ -114,14 +118,15 @@ class TestReportsParser {
             )
         )
 
+        val fileName = "spreadsheet_examples/test_spreadsheet_multitable_unaligned.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("spreadsheet_examples/test_spreadsheet_multitable_unaligned.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
         val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookParser(definition, workbook, exceptionManager).parse()
+        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
 
         // then
         assertThat(exceptionManager.exceptions).isEmpty()
@@ -129,6 +134,7 @@ class TestReportsParser {
             .contains(
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "string" to "one",
                         "number" to 1,
@@ -139,6 +145,7 @@ class TestReportsParser {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "string" to "four",
                         "number" to 4,
@@ -148,6 +155,7 @@ class TestReportsParser {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "string" to "three",
                         "number" to 3,
@@ -182,14 +190,15 @@ class TestReportsParser {
             )
         )
 
+        val fileName = "spreadsheet_examples/test_spreadsheet_multisheet.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("spreadsheet_examples/test_spreadsheet_multisheet.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
         val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookParser(definition, workbook, exceptionManager).parse()
+        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
 
         // then
         assertThat(exceptionManager.exceptions).isEmpty()
@@ -197,6 +206,7 @@ class TestReportsParser {
             .contains(
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "string" to "one",
                         "number" to 1,
@@ -207,6 +217,7 @@ class TestReportsParser {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet2",
                         "string" to "four",
                         "number" to 4,
@@ -217,6 +228,7 @@ class TestReportsParser {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet2",
                         "string" to "six",
                         "number" to 6,
@@ -253,14 +265,15 @@ class TestReportsParser {
             )
         )
 
+        val fileName = "spreadsheet_examples/test_spreadsheet_merged_cells.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("spreadsheet_examples/test_spreadsheet_merged_cells.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
         val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookParser(definition, workbook, exceptionManager).parse()
+        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
 
         // then
         assertTrue(exceptionManager.exceptions.isEmpty())
@@ -268,6 +281,7 @@ class TestReportsParser {
             .contains(
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "string" to "one",
                         "number" to 1,
@@ -279,6 +293,7 @@ class TestReportsParser {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "string" to "two",
                         "number" to 2,
@@ -290,6 +305,7 @@ class TestReportsParser {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "string" to "three",
                         "number" to 3,
@@ -299,6 +315,7 @@ class TestReportsParser {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "string" to "four and five",
                         "number" to 4,
@@ -310,6 +327,7 @@ class TestReportsParser {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "string" to "four and five",
                         "number" to 5,
@@ -344,14 +362,15 @@ class TestReportsParser {
             )
         )
 
+        val fileName = "spreadsheet_examples/test_spreadsheet_numbers_and_formulas.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("spreadsheet_examples/test_spreadsheet_numbers_and_formulas.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
         val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookParser(definition, workbook, exceptionManager).parse()
+        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
 
         // then
         assertThat(exceptionManager.exceptions).isEmpty()
@@ -359,6 +378,7 @@ class TestReportsParser {
             .contains(
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "number1" to 1,
                         "number2" to 1,
@@ -369,6 +389,7 @@ class TestReportsParser {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "Sheet1",
                         "number1" to 1,
                         "number2" to 2,
@@ -420,14 +441,16 @@ class TestReportsParser {
             )
         )
 
+        val fileName = "spreadsheet_examples/test_spreadsheet.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("spreadsheet_examples/test_spreadsheet.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
+
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookFactory.create(file).use { WorkbookParser(definition, it, exceptionManager).parse() }
-
+        val records =
+            WorkbookFactory.create(file).use { WorkbookParser(definition, it, exceptionManager, fileName).parse() }
         // then
         assertThat(records.map { it.groupId }).containsOnly(records.first().groupId!!)
     }

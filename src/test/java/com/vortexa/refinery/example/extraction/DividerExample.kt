@@ -36,12 +36,14 @@ class DividerExample {
         )
 
         // and
+        val fileName = "examples/basic_examples.xlsx"
         val file = File(
-            javaClass.classLoader.getResource("examples/basic_examples.xlsx")!!.file
+            javaClass.classLoader.getResource(fileName)!!.file
         )
 
         // when
-        val parsedRecords  = WorkbookFactory.create(file).use { WorkbookParser(definition, it).parse() }
+        val parsedRecords =
+            WorkbookFactory.create(file).use { WorkbookParser(definition, it, workbookName = fileName).parse() }
 
         // then
         assertThat(parsedRecords)
@@ -50,6 +52,7 @@ class DividerExample {
                 // data after the 1st divider "Group A"
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "table with dividers",
                         "row_number" to 3,
                         "divider" to "Group A",
@@ -60,6 +63,7 @@ class DividerExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "table with dividers",
                         "row_number" to 4,
                         "divider" to "Group A",
@@ -70,6 +74,7 @@ class DividerExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "table with dividers",
                         "row_number" to 5,
                         "divider" to "Group A",
@@ -80,6 +85,7 @@ class DividerExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "table with dividers",
                         "row_number" to 6,
                         "divider" to "Group A",
@@ -91,6 +97,7 @@ class DividerExample {
                 // data after the 2nd divider "Group B"
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "table with dividers",
                         "row_number" to 8,
                         "divider" to "Group B",
@@ -101,6 +108,7 @@ class DividerExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "table with dividers",
                         "row_number" to 9,
                         "divider" to "Group B",
@@ -111,6 +119,7 @@ class DividerExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "table with dividers",
                         "row_number" to 10,
                         "divider" to "Group B",
@@ -121,6 +130,7 @@ class DividerExample {
                 ),
                 GenericParsedRecord(
                     mapOf(
+                        "workbook_name" to fileName,
                         "spreadsheet_name" to "table with dividers",
                         "row_number" to 11,
                         "divider" to "Group B",

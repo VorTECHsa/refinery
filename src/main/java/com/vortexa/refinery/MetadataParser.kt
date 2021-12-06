@@ -5,18 +5,21 @@ import com.vortexa.refinery.dsl.MetadataValueLocation.NEXT_CELL_VALUE
 import com.vortexa.refinery.dsl.MetadataValueLocation.SAME_CELL_VALUE
 import com.vortexa.refinery.result.Metadata
 import com.vortexa.refinery.result.Metadata.Companion.SPREADSHEET_NAME
+import com.vortexa.refinery.result.Metadata.Companion.WORKBOOK_NAME
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.Sheet
 
 internal class MetadataParser(
     private val definitions: List<MetadataEntryDefinition>,
-    private val sheet: Sheet
+    private val sheet: Sheet,
+    private val workbookName: String?
 ) {
 
     fun extractMetadata(): Metadata {
         val metadata = hashMapOf<String, Any>(
             SPREADSHEET_NAME to sheet.sheetName
         )
+        if (workbookName != null) metadata[WORKBOOK_NAME] = workbookName
         definitions.forEach {
             val kv = findMetadata(it)
             metadata[kv.first] = kv.second

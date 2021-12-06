@@ -17,12 +17,13 @@ internal class SheetParser(
     private val definition: SheetParserDefinition,
     private val sheet: Sheet,
     private val exceptionManager: ExceptionManager,
+    private val workbookName: String?
 ) {
     private val mergedCellsResolver = MergedCellsResolver(sheet)
 
     fun parse(): List<ParsedRecord> {
         return try {
-            val metadata = MetadataParser(definition.metadataParserDefinition, sheet).extractMetadata()
+            val metadata = MetadataParser(definition.metadataParserDefinition, sheet, workbookName).extractMetadata()
             val tableParsers = resolveTableParsers(metadata)
             tableParsers.flatMap { it.parse() }
         } catch (e: ManagedException) {
