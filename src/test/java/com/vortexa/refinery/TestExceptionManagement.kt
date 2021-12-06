@@ -6,6 +6,7 @@ import com.vortexa.refinery.dsl.SheetParserDefinition
 import com.vortexa.refinery.dsl.TableParserDefinition
 import com.vortexa.refinery.dsl.WorkbookParserDefinition
 import com.vortexa.refinery.exceptions.*
+import com.vortexa.refinery.exceptions.UncapturedHeadersException.UncapturedHeaderCell
 import com.vortexa.refinery.result.ParsedRecord
 import com.vortexa.refinery.result.RowParserData
 import org.apache.poi.ss.usermodel.Row
@@ -198,7 +199,7 @@ class TestExceptionManagement {
         )
         val workbook: Workbook = WorkbookFactory.create(file)
         val expectedException = ExceptionManager.ExceptionData(
-            UncapturedHeadersException("uncaptured @ 5, double @ 6"),
+            UncapturedHeadersException(listOf(UncapturedHeaderCell("uncaptured", 4), UncapturedHeaderCell("double", 5))),
             ExceptionManager.Location("Sheet1", 1)
         )
 

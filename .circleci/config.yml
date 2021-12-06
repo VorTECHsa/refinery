@@ -21,7 +21,7 @@ jobs:
       - store_test_results:
           path: ~/test-results
       - store_artifacts:
-          path: ~/test-results/junit
+          path: ~/refinery/build/reports
 
 workflows:
   version: 2
