@@ -88,7 +88,7 @@ class CustomRowParserExample {
 
         // when
         val em = ExceptionManager()
-        val parsedRecords  = WorkbookFactory.create(file).use { WorkbookParser(definition, it, em).parse() }
+        val parsedRecords = WorkbookFactory.create(file).use { WorkbookParser(definition, it, em).parse() }
 
         // then
         assertThat(parsedRecords)
