@@ -28,8 +28,10 @@ class HeaderRowResolver {
         return matches
     }
 
-    private fun resolveUnorderedHeaders(row: Row,
-                                        unorderedCells: List<AbstractHeaderCell>): Map<AbstractHeaderCell, Int> {
+    private fun resolveUnorderedHeaders(
+        row: Row,
+        unorderedCells: List<AbstractHeaderCell>
+    ): Map<AbstractHeaderCell, Int> {
         return row.cellIterator().asSequence().mapNotNull { cell ->
             val headerCellOrNull = unorderedCells.firstOrNull { hc -> hc.matches(cell) }
             if (headerCellOrNull != null) Pair(headerCellOrNull, cell.columnIndex) else null

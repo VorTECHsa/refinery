@@ -3,7 +3,7 @@ package com.vortexa.refinery.cell
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.Row.MissingCellPolicy.RETURN_BLANK_AS_NULL
 import org.apache.poi.ss.usermodel.Sheet
-import java.util.*
+import java.util.Collections
 
 class MergedCellsResolver(sheet: Sheet) {
 

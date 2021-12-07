@@ -53,7 +53,7 @@ class MultipleTablesExample {
         val file = File(
             javaClass.classLoader.getResource(fileName)!!.file
         )
-        
+
         // when
         val parsedRecords =
             WorkbookFactory.create(file).use { WorkbookParser(definition, it, workbookName = fileName).parse() }

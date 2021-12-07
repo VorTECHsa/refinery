@@ -38,7 +38,6 @@ class Metadata(private val data: Map<String, Any>) {
         }
     }
 
-
     companion object {
         const val WORKBOOK_NAME = "workbook_name"
         const val SPREADSHEET_NAME = "spreadsheet_name"
@@ -46,5 +45,4 @@ class Metadata(private val data: Map<String, Any>) {
         const val DIVIDER = "divider"
         const val ROW_NUMBER = "row_number"
     }
-
 }

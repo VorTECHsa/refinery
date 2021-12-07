@@ -32,5 +32,4 @@ class WorkbookParser(
             .map { definition -> SheetParser(definition, sheet, exceptionManager, workbookName) }
             .firstOrNull()
     }
-
 }

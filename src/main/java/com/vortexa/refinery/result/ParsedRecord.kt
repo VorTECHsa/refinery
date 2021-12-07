@@ -1,6 +1,6 @@
 package com.vortexa.refinery.result
 
-import java.util.*
+import java.util.UUID
 
 abstract class ParsedRecord {
     var groupId: UUID? = null

@@ -16,8 +16,4 @@ class StringHeaderCell(val patterns: List<String>) : AbstractHeaderCell() {
         if (cell.cellType != CellType.STRING) return false
         return patterns.any { cell.stringCellValue.trim().contains(it, ignoreCase = true) }
     }
-
 }
-
-
-

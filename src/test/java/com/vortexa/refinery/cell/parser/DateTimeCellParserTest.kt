@@ -51,5 +51,4 @@ class DateTimeCellParserTest : CellParserTest() {
         assertThatThrownBy { parser.parse(intCell()) }
             .isInstanceOf(CellParserException::class.java)
     }
-
 }

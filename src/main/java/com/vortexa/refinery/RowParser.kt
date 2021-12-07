@@ -1,7 +1,11 @@
 package com.vortexa.refinery
 
 import com.vortexa.refinery.cell.AbstractHeaderCell
-import com.vortexa.refinery.cell.parser.*
+import com.vortexa.refinery.cell.parser.DateTimeCellParser
+import com.vortexa.refinery.cell.parser.DateTimeFormatCellParser
+import com.vortexa.refinery.cell.parser.DoubleCellParser
+import com.vortexa.refinery.cell.parser.IntCellParser
+import com.vortexa.refinery.cell.parser.StringCellParser
 import com.vortexa.refinery.exceptions.ExceptionManager
 import com.vortexa.refinery.result.GenericParsedRecord
 import com.vortexa.refinery.result.Metadata
@@ -186,5 +190,4 @@ abstract class RowParser(
             else -> null
         }
     }
-
 }

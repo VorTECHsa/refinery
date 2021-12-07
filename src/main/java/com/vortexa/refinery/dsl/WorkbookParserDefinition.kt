@@ -9,5 +9,4 @@ package com.vortexa.refinery.dsl
 data class WorkbookParserDefinition(
     val spreadsheetParserDefinitions: List<SheetParserDefinition>,
     val includeHidden: Boolean = false
-) {
-}
+)
