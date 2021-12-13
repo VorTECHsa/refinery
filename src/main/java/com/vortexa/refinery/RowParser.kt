@@ -53,6 +53,9 @@ abstract class RowParser(
 
     /**
      * Optionally skip extraction of the data from the row if it meets some condition
+     *
+     * @param row subject to skip data extraction if condition is met
+     * @return boolean whether the row should be skipped or not
      * */
     open fun skip(row: Row): Boolean = false
 
