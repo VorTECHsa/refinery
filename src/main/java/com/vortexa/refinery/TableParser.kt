@@ -111,9 +111,14 @@ internal class TableParser(
     }
 
     private fun isExtractableRow(
-        row: Row,
+        row: Row?,
         rowParser: RowParser
-    ) = row.containsSomethingMeaningful() && !definition.isHeaderRow(row) && !rowParser.skip(row)
+    ): Boolean {
+        if (row == null) {
+            return false
+        }
+        return row.prefilterCells().any() && !definition.isHeaderRow(row) && !rowParser.skip(row)
+    }
 
     private fun parseRecordAndAddToResults(
         rowParser: RowParser,
@@ -185,13 +190,6 @@ internal class TableParser(
         } else {
             metadata
         }
-    }
-
-    private fun Row?.containsSomethingMeaningful(): Boolean {
-        if (this == null) {
-            return false
-        }
-        return this.prefilterCells().any()
     }
 
     private fun Row.isDivider(): Boolean {
