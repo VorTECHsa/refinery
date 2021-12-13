@@ -73,7 +73,7 @@ internal class TableParser(
         val parsedRecords = mutableListOf<ParsedRecord>()
         for (rowIndex in location.range()) {
             val row = sheet.getRow(rowIndex)
-            if (row.containsSomethingMeaningful() && !definition.isHeaderRow(row) && !rowParser.skip(row)) {
+            if (isExtractableRow(row, rowParser)) {
                 parseRecordAndAddToResults(rowParser, row, parsedRecords)
             }
         }
@@ -99,7 +99,7 @@ internal class TableParser(
             )
         for (rowIndex in location.range()) {
             val row = sheet.getRow(rowIndex)
-            if (row.containsSomethingMeaningful() && !definition.isHeaderRow(row) && !rowParser.skip(row)) {
+            if (isExtractableRow(row, rowParser)) {
                 if (row.isDivider()) {
                     enrichedMetadata.setDivider(row.divider())
                     continue
@@ -109,6 +109,11 @@ internal class TableParser(
         }
         return parsedRecords
     }
+
+    private fun isExtractableRow(
+        row: Row,
+        rowParser: RowParser
+    ) = row.containsSomethingMeaningful() && !definition.isHeaderRow(row) && !rowParser.skip(row)
 
     private fun parseRecordAndAddToResults(
         rowParser: RowParser,
