@@ -245,7 +245,10 @@ class TestReportsParser {
         val date = StringHeaderCell("date")
         val optionalString = StringHeaderCell("optional_str")
         val optionalString2 = StringHeaderCell("optional_str2")
-        val mergedCols = MergedHeaderCell(StringHeaderCell("optional_str"), listOf(optionalString, optionalString2))
+        val mergedCols = MergedHeaderCell(
+            StringHeaderCell("optional_str"),
+            listOf(optionalString, optionalString2)
+        )
 
         val definition = WorkbookParserDefinition(
             spreadsheetParserDefinitions = listOf(
@@ -412,7 +415,10 @@ class TestReportsParser {
                 return true
             }
 
-            override fun extractDataFromPreviousRecord(current: ParsedRecord, previous: ParsedRecord): ParsedRecord {
+            override fun extractDataFromPreviousRecord(
+                current: ParsedRecord,
+                previous: ParsedRecord
+            ): ParsedRecord {
                 return object : ParsedRecord() {}
             }
         }
@@ -445,8 +451,68 @@ class TestReportsParser {
 
         // when
         val records =
-            WorkbookFactory.create(file).use { WorkbookParser(definition, it, exceptionManager, fileName).parse() }
+            WorkbookFactory.create(file)
+                .use { WorkbookParser(definition, it, exceptionManager, fileName).parse() }
         // then
         assertThat(records.map { it.groupId }).containsOnly(records.first().groupId!!)
+    }
+
+    @Test
+    fun `test skipping the rows`() {
+        // given
+        val fileName = "spreadsheet_examples/test_spreadsheet.xlsx"
+        val file = File(
+            javaClass.classLoader.getResource(fileName)!!.file
+        )
+
+        class SkippingGenericRowParser(rdp: RowParserData, em: ExceptionManager) :
+            GenericRowParser(rdp, em) {
+            override fun skip(row: Row): Boolean {
+                val optionalStr = parseOptionalFieldAsString(row, optionalString)
+                return optionalStr != "exist"
+            }
+        }
+
+        val testDefinition = WorkbookParserDefinition(
+            spreadsheetParserDefinitions = listOf(
+                SheetParserDefinition(
+                    sheetNameFilter = { true },
+                    tableDefinitions = listOf(
+                        TableParserDefinition(
+                            setOf(
+                                string,
+                                number,
+                                date,
+                                optionalString,
+                            ),
+                            setOf(),
+                            ::SkippingGenericRowParser
+                        )
+                    )
+                )
+            )
+        )
+
+        // when
+        val exceptionManager = ExceptionManager()
+        val parsedRecords = WorkbookFactory.create(file)
+            .use { WorkbookParser(testDefinition, it, exceptionManager, fileName).parse() }
+
+        // then
+        assertThat(parsedRecords)
+            .hasSize(1)
+            .containsExactly(
+                GenericParsedRecord(
+                    mapOf(
+                        "workbook_name" to fileName,
+                        "spreadsheet_name" to "Sheet1",
+                        "string" to "one",
+                        "number" to 1,
+                        "date" to LocalDateTime.of(2021, 1, 1, 0, 0),
+                        "optional_str" to "exist",
+                        "row_number" to 2,
+                    )
+                )
+            )
     }
 }

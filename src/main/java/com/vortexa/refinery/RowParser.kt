@@ -52,6 +52,11 @@ abstract class RowParser(
     }
 
     /**
+     * Optionally skip extraction of the data from the row if it meets some condition
+     * */
+    open fun skip(row: Row): Boolean = false
+
+    /**
      * Optionally override this to extract data from the previous row if it's missing.
      * An example use case if missing date defined in the previous row
      *
