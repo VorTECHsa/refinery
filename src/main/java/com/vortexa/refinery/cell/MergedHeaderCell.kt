@@ -18,4 +18,6 @@ class MergedHeaderCell(val headerCell: AbstractHeaderCell, val headerCells: List
     }
 
     override fun matches(cell: Cell) = headerCell.matches(cell)
+
+    override fun toString(): String = headerCells.toString()
 }

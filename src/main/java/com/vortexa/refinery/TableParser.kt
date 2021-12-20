@@ -23,10 +23,9 @@ internal class TableParser(
     private val metadata: Metadata,
     private val location: TableLocation,
     private val mergedCellsResolver: MergedCellsResolver,
-    private val exceptionManager: ExceptionManager
+    private val exceptionManager: ExceptionManager,
+    private val headerRowResolver: HeaderRowResolver
 ) {
-
-    private val headerRowResolver = HeaderRowResolver()
 
     fun parse(): List<ParsedRecord> {
         val headerRow = findHeaderRow() ?: return emptyList()
@@ -117,7 +116,7 @@ internal class TableParser(
         if (row == null) {
             return false
         }
-        return row.prefilterCells().any() && !definition.isHeaderRow(row) && !rowParser.skip(row)
+        return row.prefilterCells().any() && !headerRowResolver.isHeaderRow(row, definition) && !rowParser.skip(row)
     }
 
     private fun parseRecordAndAddToResults(
@@ -157,7 +156,7 @@ internal class TableParser(
             val locationRange = location.minRow..location.maxRow
             locationRange.asSequence()
                 .map { sheet.getRow(it) }
-                .first { row -> definition.isHeaderRow(row) }
+                .first { row -> headerRowResolver.isHeaderRow(row, definition) }
         } catch (e: RuntimeException) {
             exceptionManager.register(
                 TableParserException(

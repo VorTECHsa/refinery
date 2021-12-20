@@ -1,8 +1,10 @@
 package com.vortexa.refinery.cell
 
+import com.vortexa.refinery.dsl.TableParserDefinition
+import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.Row
 
-class HeaderRowResolver {
+class HeaderRowResolver(private val mergedCellsResolver: MergedCellsResolver) {
 
     fun resolveHeaderCellIndex(headerRow: Row, headerCells: Set<AbstractHeaderCell>): Map<AbstractHeaderCell, Int> {
         val (orderedCells, unorderedCells) = headerCells.partitionByType<OrderedHeaderCell, AbstractHeaderCell>()
@@ -17,10 +19,23 @@ class HeaderRowResolver {
         }.toMap()
     }
 
+    fun isHeaderRow(row: Row, definition: TableParserDefinition): Boolean {
+        val cellValues = row.asMappedSequence().toSet()
+        return definition.requiredColumns.filterNot { it.inside(cellValues) }
+            .isEmpty()
+    }
+
+    private fun Row.asMappedSequence(): Sequence<Cell> {
+        return this.cellIterator().asSequence().map {
+            val mergedCell = mergedCellsResolver[it.rowIndex, it.columnIndex]
+            return@map if (mergedCell != null && mergedCell.columnIndex == it.columnIndex) mergedCell else it
+        }
+    }
+
     private fun resolveOrderedHeaders(row: Row, orderedCells: List<OrderedHeaderCell>): Map<AbstractHeaderCell, Int> {
         val matches = mutableMapOf<AbstractHeaderCell, Int>()
         val sortedCells = orderedCells.sortedBy { it.priority }
-        row.cellIterator().asSequence().forEach { cell ->
+        row.asMappedSequence().forEach { cell ->
             val filtered = sortedCells.filterNot { matches.contains(it.headerCell) }
             val headerCellOrNull = filtered.firstOrNull { oc -> oc.matches(cell) }
             if (headerCellOrNull != null) matches[headerCellOrNull.headerCell] = cell.columnIndex
@@ -32,7 +47,7 @@ class HeaderRowResolver {
         row: Row,
         unorderedCells: List<AbstractHeaderCell>
     ): Map<AbstractHeaderCell, Int> {
-        return row.cellIterator().asSequence().mapNotNull { cell ->
+        return row.asMappedSequence().mapNotNull { cell ->
             val headerCellOrNull = unorderedCells.firstOrNull { hc -> hc.matches(cell) }
             if (headerCellOrNull != null) Pair(headerCellOrNull, cell.columnIndex) else null
         }.toMap()

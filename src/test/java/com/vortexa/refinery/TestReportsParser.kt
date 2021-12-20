@@ -253,7 +253,7 @@ class TestReportsParser {
         val definition = WorkbookParserDefinition(
             spreadsheetParserDefinitions = listOf(
                 SheetParserDefinition(
-                    sheetNameFilter = { it != "Sheet3" },
+                    sheetNameFilter = { it == "Sheet1" },
                     tableDefinitions = listOf(
                         TableParserDefinition(
                             setOf(string, number, date),
@@ -333,6 +333,103 @@ class TestReportsParser {
                         "number" to 5,
                         "date" to LocalDateTime.of(2021, 1, 5, 0, 0),
                         "row_number" to 6
+                    )
+                )
+            )
+    }
+
+    @Test
+    fun `test parsing merged row header`() {
+        // given
+        val string = StringHeaderCell("string")
+        val number = StringHeaderCell("number")
+        val date = StringHeaderCell("date")
+        val optionalString = StringHeaderCell("opt1")
+        val optionalString2 = StringHeaderCell("opt2")
+
+        val definition = WorkbookParserDefinition(
+            spreadsheetParserDefinitions = listOf(
+                SheetParserDefinition(
+                    sheetNameFilter = { it == "Sheet2" },
+                    tableDefinitions = listOf(
+                        TableParserDefinition(
+                            setOf(string, number, date, optionalString, optionalString2),
+                            setOf(),
+                            ::GenericRowParser,
+                        )
+                    )
+                )
+            )
+        )
+
+        val fileName = "spreadsheet_examples/test_spreadsheet_merged_cells.xlsx"
+        val file = File(
+            javaClass.classLoader.getResource(fileName)!!.file
+        )
+        val workbook: Workbook = WorkbookFactory.create(file)
+        val exceptionManager = ExceptionManager()
+
+        // when
+        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
+
+        // then
+        assertTrue(exceptionManager.exceptions.isEmpty())
+        assertThat(records).hasSize(5)
+            .contains(
+                GenericParsedRecord(
+                    mapOf(
+                        "workbook_name" to fileName,
+                        "spreadsheet_name" to "Sheet2",
+                        "string_1" to "one",
+                        "number_2" to 1,
+                        "date_3" to LocalDateTime.of(2021, 1, 1, 0, 0),
+                        "opt1" to "exist",
+                        "opt2" to "exist2",
+                        "row_number" to 3
+                    )
+                ),
+                GenericParsedRecord(
+                    mapOf(
+                        "workbook_name" to fileName,
+                        "spreadsheet_name" to "Sheet2",
+                        "string_1" to "two",
+                        "number_2" to 2,
+                        "date_3" to LocalDateTime.of(2021, 1, 2, 0, 0),
+                        "opt1" to "exist",
+                        "opt2" to "exist2",
+                        "row_number" to 4
+                    )
+                ),
+                GenericParsedRecord(
+                    mapOf(
+                        "workbook_name" to fileName,
+                        "spreadsheet_name" to "Sheet2",
+                        "string_1" to "three",
+                        "number_2" to 3,
+                        "date_3" to LocalDateTime.of(2021, 1, 3, 0, 0),
+                        "row_number" to 5
+                    )
+                ),
+                GenericParsedRecord(
+                    mapOf(
+                        "workbook_name" to fileName,
+                        "spreadsheet_name" to "Sheet2",
+                        "string_1" to "four and five",
+                        "number_2" to 4,
+                        "date_3" to LocalDateTime.of(2021, 1, 4, 0, 0),
+                        "opt1" to "same",
+                        "opt2" to "same",
+                        "row_number" to 6
+                    )
+                ),
+                GenericParsedRecord(
+                    mapOf(
+                        "workbook_name" to fileName,
+                        "spreadsheet_name" to "Sheet2",
+                        "string_1" to "four and five",
+                        "number_2" to 5,
+                        "date_3" to LocalDateTime.of(2021, 1, 5, 0, 0),
+                        "row_number" to 7
                     )
                 )
             )

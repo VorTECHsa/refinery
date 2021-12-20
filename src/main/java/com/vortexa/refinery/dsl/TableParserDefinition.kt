@@ -5,7 +5,6 @@ import com.vortexa.refinery.RowParser
 import com.vortexa.refinery.cell.AbstractHeaderCell
 import com.vortexa.refinery.exceptions.ExceptionManager
 import com.vortexa.refinery.result.RowParserData
-import org.apache.poi.ss.usermodel.Row
 
 /**
  * Tells us how to parse tables within spreadsheets
@@ -23,13 +22,6 @@ data class TableParserDefinition(
     val anchor: String? = null,
     val hasDivider: Boolean = false
 ) {
-
-    // todo: does not belong to TableParserDefinition, should be extracted to a separate class
-    fun isHeaderRow(row: Row): Boolean {
-        val cellValues = row.cellIterator().asSequence().toSet()
-        return this.requiredColumns.filterNot { it.inside(cellValues) }
-            .isEmpty()
-    }
 
     fun allColumns(): Set<AbstractHeaderCell> = requiredColumns + optionalColumns
 }
