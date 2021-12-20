@@ -18,3 +18,7 @@ A clear and concise description of what is happening now.
 
 **Additional context**
 Add any other context about the problem here.
+
+_If you are attaching the file or the screenshot please think twice
+whether the attached screenshot or file contains any private information
+that should not be exposed publicly_
