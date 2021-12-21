@@ -14,7 +14,6 @@ import com.vortexa.refinery.result.GenericParsedRecord
 import com.vortexa.refinery.result.ParsedRecord
 import com.vortexa.refinery.result.RowParserData
 import org.apache.poi.ss.usermodel.Row
-import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -35,7 +34,6 @@ class TestReportsParser {
                         TableParserDefinition(
                             setOf(string, number, date),
                             setOf(optionalString),
-                            ::GenericRowParser,
                             anchor = "table $it"
                         )
                     }
@@ -47,12 +45,13 @@ class TestReportsParser {
         val file = File(
             javaClass.classLoader.getResource(fileName)!!.file
         )
-        val workbook: Workbook = WorkbookFactory.create(file)
+
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
-
+        val records = WorkbookFactory.create(file).use {
+            WorkbookParser(definition, it, exceptionManager, fileName).parse()
+        }
         // then
         assertThat(exceptionManager.exceptions).isEmpty()
         assertThat(records).hasSize(9)
@@ -121,11 +120,12 @@ class TestReportsParser {
         val file = File(
             javaClass.classLoader.getResource(fileName)!!.file
         )
-        val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
+        val records = WorkbookFactory.create(file).use {
+            WorkbookParser(definition, it, exceptionManager, fileName).parse()
+        }
 
         // then
         assertThat(exceptionManager.exceptions).isEmpty()
@@ -192,11 +192,12 @@ class TestReportsParser {
         val file = File(
             javaClass.classLoader.getResource(fileName)!!.file
         )
-        val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
+        val records = WorkbookFactory.create(file).use {
+            WorkbookParser(definition, it, exceptionManager, fileName).parse()
+        }
 
         // then
         assertThat(exceptionManager.exceptions).isEmpty()
@@ -269,11 +270,12 @@ class TestReportsParser {
         val file = File(
             javaClass.classLoader.getResource(fileName)!!.file
         )
-        val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
+        val records = WorkbookFactory.create(file).use {
+            WorkbookParser(definition, it, exceptionManager, fileName).parse()
+        }
 
         // then
         assertTrue(exceptionManager.exceptions.isEmpty())
@@ -366,11 +368,12 @@ class TestReportsParser {
         val file = File(
             javaClass.classLoader.getResource(fileName)!!.file
         )
-        val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
+        val records = WorkbookFactory.create(file).use {
+            WorkbookParser(definition, it, exceptionManager, fileName).parse()
+        }
 
         // then
         assertTrue(exceptionManager.exceptions.isEmpty())
@@ -462,11 +465,12 @@ class TestReportsParser {
         val file = File(
             javaClass.classLoader.getResource(fileName)!!.file
         )
-        val workbook: Workbook = WorkbookFactory.create(file)
         val exceptionManager = ExceptionManager()
 
         // when
-        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
+        val records = WorkbookFactory.create(file).use {
+            WorkbookParser(definition, it, exceptionManager, fileName).parse()
+        }
 
         // then
         assertThat(exceptionManager.exceptions).isEmpty()
