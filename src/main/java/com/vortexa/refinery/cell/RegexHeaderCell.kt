@@ -18,4 +18,6 @@ class RegexHeaderCell(val patterns: List<Regex>) : AbstractHeaderCell() {
         if (cell.cellType != CellType.STRING) return false
         return patterns.any { it.containsMatchIn(cell.stringCellValue) }
     }
+
+    override fun toString(): String = patterns.toString()
 }
