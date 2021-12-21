@@ -19,7 +19,8 @@ open class TestHeaderRowResolver {
     private lateinit var workbook: Workbook
     private lateinit var sheet: Sheet
 
-    private val headerRowResolver = HeaderRowResolver()
+    private lateinit var mergedCellsResolver: MergedCellsResolver
+    private lateinit var headerRowResolver: HeaderRowResolver
 
     @BeforeAll
     fun setUp() {
@@ -29,6 +30,8 @@ open class TestHeaderRowResolver {
 
         workbook = WorkbookFactory.create(file)
         sheet = workbook.getSheet("header_cells")
+        mergedCellsResolver = MergedCellsResolver(sheet)
+        headerRowResolver = HeaderRowResolver(mergedCellsResolver)
     }
 
     @AfterAll
@@ -38,6 +41,10 @@ open class TestHeaderRowResolver {
 
     private fun Sheet.getHeaderRow(): Row {
         return this.getRow(0)
+    }
+
+    private fun Sheet.getComplexHeaderRow(): Row {
+        return this.getRow(5)
     }
 
     @Test
@@ -177,6 +184,40 @@ open class TestHeaderRowResolver {
                 m2 to 3,
                 m3 to 4,
                 m4 to 5
+            )
+        )
+    }
+
+    @Test
+    fun `test complex ordered merged cell parser`() {
+        // given
+        val headerRow = sheet.getComplexHeaderRow()
+
+        val s1 = SimpleHeaderCell("simpleHeader1")
+        val m1 = SimpleHeaderCell("merged1")
+        val m2 = SimpleHeaderCell("merged2")
+        val m3 = SimpleHeaderCell("merged3")
+        val m4 = SimpleHeaderCell("merged4")
+        val r1 = SimpleHeaderCell("regexHeader")
+        val r2 = SimpleHeaderCell("regexHeader2")
+
+        val merged1 = MergedHeaderCell(StringHeaderCell("merged"), listOf(m1, m2))
+        val merged2 = MergedHeaderCell(StringHeaderCell("merged"), listOf(m3, m4))
+        val ordered1 = OrderedHeaderCell(merged1, 1)
+        val ordered2 = OrderedHeaderCell(merged2, 2)
+
+        // when
+        val result = headerRowResolver.resolveHeaderCellIndex(headerRow, setOf(s1, ordered1, ordered2, r1, r2))
+        // then
+        assertThat(result).containsExactlyInAnyOrderEntriesOf(
+            mapOf(
+                s1 to 0,
+                m1 to 1,
+                m2 to 2,
+                m3 to 3,
+                m4 to 4,
+                r1 to 5,
+                r2 to 6
             )
         )
     }
