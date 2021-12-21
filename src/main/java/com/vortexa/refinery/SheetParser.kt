@@ -1,6 +1,7 @@
 package com.vortexa.refinery
 
 import com.vortexa.refinery.TableParser.TableLocation
+import com.vortexa.refinery.cell.HeaderRowResolver
 import com.vortexa.refinery.cell.MergedCellsResolver
 import com.vortexa.refinery.dsl.SheetParserDefinition
 import com.vortexa.refinery.dsl.TableParserDefinition
@@ -20,6 +21,7 @@ internal class SheetParser(
     private val workbookName: String?
 ) {
     private val mergedCellsResolver = MergedCellsResolver(sheet)
+    private val headerRowResolver = HeaderRowResolver(mergedCellsResolver)
 
     fun parse(): List<ParsedRecord> {
         return try {
@@ -35,7 +37,7 @@ internal class SheetParser(
     private fun resolveTableParsers(metadata: Metadata): List<TableParser> {
         val tableLocations = resolveTableLocations()
         return tableLocations.map {
-            TableParser(sheet, it.first, metadata, it.second, mergedCellsResolver, exceptionManager)
+            TableParser(sheet, it.first, metadata, it.second, mergedCellsResolver, exceptionManager, headerRowResolver)
         }
     }
 
@@ -69,10 +71,12 @@ internal class SheetParser(
                     .asSequence()
                     .filter { it.cellType == CellType.STRING }
                     .map { it.stringCellValue.trim().lowercase() }
-                if (cellValues.any { it.contains(sd.anchor.lowercase()) } && !sd.isHeaderRow(this)) {
+                if (cellValues.any { it.contains(sd.anchor.lowercase()) } &&
+                    !headerRowResolver.isHeaderRow(this, sd)
+                ) {
                     return sd
                 }
-            } else if (sd.isHeaderRow(this)) {
+            } else if (headerRowResolver.isHeaderRow(this, sd)) {
                 return sd
             }
         }
