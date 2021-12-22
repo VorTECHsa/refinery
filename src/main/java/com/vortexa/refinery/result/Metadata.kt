@@ -4,8 +4,8 @@ class Metadata(private val data: Map<String, Any>) {
 
     private var divider: String? = null
 
-    fun getDivider(): String {
-        return divider!!
+    fun getDivider(): String? {
+        return divider
     }
 
     fun setDivider(value: String) {
