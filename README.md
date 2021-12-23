@@ -8,4 +8,4 @@ With declarative DRY schemas representing the expectations for a given data sour
 
 All documentation is located under [GitHub Wiki](https://github.com/VorTECHsa/refinery/wiki)
 
-fork PR test
+fork PR CI test
