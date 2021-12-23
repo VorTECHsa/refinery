@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build:
+  test:
     working_directory: ~/refinery
 
     docker:
@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run:
           name: Build and deploy the artifact
-          command: ./gradlew build publish -Pversion=${CIRCLE_BRANCH}.${CIRCLE_BUILD_NUM}
+          command: ./gradlew build
       - run:
           name: Save test results
           command: |
@@ -22,9 +22,30 @@ jobs:
           path: ~/test-results
       - store_artifacts:
           path: ~/refinery/build/reports
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - ./
+
+  publish:
+    docker:
+      - image: cimg/openjdk:11.0.12
+    
+    steps:
+      - attach_workspace:
+          at: ./
+      - run:
+          name: Build and deploy the artifact
+          command: ./gradlew publish -Pversion=${CIRCLE_BRANCH}.${CIRCLE_BUILD_NUM}
+
 
 workflows:
   version: 2
   workflow:
     jobs:
-      - build
+      - test
+      - publish:
+        filters:
+          branches:
+            # Forked pull requests have CIRCLE_BRANCH set to pull/XXX
+            ignore: /pull\/[0-9]+/
