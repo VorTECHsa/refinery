@@ -648,6 +648,7 @@ class TestReportsParser {
             .use { WorkbookParser(testDefinition, it, exceptionManager, fileName).parse() }
 
         // then
+        assertThat(exceptionManager.exceptions).isEmpty()
         assertThat(parsedRecords)
             .hasSize(3)
             .containsExactly(
