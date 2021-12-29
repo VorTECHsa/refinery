@@ -616,4 +616,68 @@ class TestReportsParser {
                 )
             )
     }
+
+    @Test
+    fun `test ignore the columns`() {
+        // given
+        val fileName = "spreadsheet_examples/test_spreadsheet.xlsx"
+        val file = File(
+            javaClass.classLoader.getResource(fileName)!!.file
+        )
+
+        val testDefinition = WorkbookParserDefinition(
+            spreadsheetParserDefinitions = listOf(
+                SheetParserDefinition(
+                    sheetNameFilter = { true },
+                    tableDefinitions = listOf(
+                        TableParserDefinition(
+                            requiredColumns = setOf(
+                                string,
+                                number,
+                            ),
+                            ignoredColumns = setOf(optionalString, date)
+                        )
+                    )
+                )
+            )
+        )
+
+        // when
+        val exceptionManager = ExceptionManager()
+        val parsedRecords = WorkbookFactory.create(file)
+            .use { WorkbookParser(testDefinition, it, exceptionManager, fileName).parse() }
+
+        // then
+        assertThat(parsedRecords)
+            .hasSize(3)
+            .containsExactly(
+                GenericParsedRecord(
+                    mapOf(
+                        "workbook_name" to fileName,
+                        "spreadsheet_name" to "Sheet1",
+                        "string" to "one",
+                        "number" to 1,
+                        "row_number" to 2,
+                    )
+                ),
+                GenericParsedRecord(
+                    mapOf(
+                        "workbook_name" to fileName,
+                        "spreadsheet_name" to "Sheet1",
+                        "string" to "two",
+                        "number" to 2,
+                        "row_number" to 3,
+                    )
+                ),
+                GenericParsedRecord(
+                    mapOf(
+                        "workbook_name" to fileName,
+                        "spreadsheet_name" to "Sheet1",
+                        "string" to "three",
+                        "number" to 3,
+                        "row_number" to 4,
+                    )
+                )
+            )
+    }
 }
