@@ -20,7 +20,8 @@ data class TableParserDefinition(
     val optionalColumns: Set<AbstractHeaderCell> = setOf(),
     val rowParserFactory: (rowParserData: RowParserData, exceptionManager: ExceptionManager) -> RowParser = ::GenericRowParser,
     val anchor: String? = null,
-    val hasDivider: Boolean = false
+    val hasDivider: Boolean = false,
+    val ignoredColumns: Set<AbstractHeaderCell> = setOf(),
 ) {
 
     fun allColumns(): Set<AbstractHeaderCell> = requiredColumns + optionalColumns

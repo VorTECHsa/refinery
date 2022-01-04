@@ -29,8 +29,10 @@ internal class TableParser(
 
     fun parse(): List<ParsedRecord> {
         val headerRow = findHeaderRow() ?: return emptyList()
-        val tableLocationWithHeader = TableLocationWithHeader(location.minRow, headerRow.rowNum, location.maxRow)
-        val columnHeaders = headerRowResolver.resolveHeaderCellIndex(headerRow, definition.allColumns())
+        val tableLocationWithHeader =
+            TableLocationWithHeader(location.minRow, headerRow.rowNum, location.maxRow)
+        val columnHeaders =
+            headerRowResolver.resolveHeaderCellIndex(headerRow, definition.allColumns())
         val allHeadersMapping = mapAllHeaders(headerRow)
         checkUncapturedHeaders(columnHeaders, allHeadersMapping, tableLocationWithHeader)
         val enrichedMetadata = enrichMetadata()
@@ -47,7 +49,12 @@ internal class TableParser(
                 )
                 parseTableWithoutDividers(rowParser, tableLocationWithHeader)
             }
-            true -> parseTableWithDividers(columnHeaders, enrichedMetadata, tableLocationWithHeader, allHeadersMapping)
+            true -> parseTableWithDividers(
+                columnHeaders,
+                enrichedMetadata,
+                tableLocationWithHeader,
+                allHeadersMapping
+            )
         }
     }
 
@@ -68,7 +75,10 @@ internal class TableParser(
         }
     }
 
-    private fun parseTableWithoutDividers(rowParser: RowParser, location: TableLocationWithHeader): List<ParsedRecord> {
+    private fun parseTableWithoutDividers(
+        rowParser: RowParser,
+        location: TableLocationWithHeader
+    ): List<ParsedRecord> {
         val parsedRecords = mutableListOf<ParsedRecord>()
         for (rowIndex in location.range()) {
             val row = sheet.getRow(rowIndex)
@@ -131,7 +141,8 @@ internal class TableParser(
             if (parsedRecords.isEmpty() || parsedRecords.last() is GenericParsedRecord) {
                 parsedRecords.add(record)
             } else {
-                val recordToAdd = rowParser.extractDataFromPreviousRecord(record, parsedRecords.last())
+                val recordToAdd =
+                    rowParser.extractDataFromPreviousRecord(record, parsedRecords.last())
                 recordToAdd.cloneRawData(record)
                 if (rowParser.shouldGroupRows(recordToAdd, parsedRecords.last())) {
                     setGroupIdForRows(recordToAdd, parsedRecords.last())
@@ -172,15 +183,19 @@ internal class TableParser(
         return headerRow.cellIterator().asSequence()
             .mapNotNull { cell ->
                 val mergedCell: Cell? = mergedCellsResolver[cell.rowIndex, cell.columnIndex]
-                if (mergedCell != null) {
+                if (mergedCell != null && shouldNotBeIgnored(mergedCell)) {
                     return@mapNotNull ("${mergedCell}_${cell.columnIndex + 1}") to cell.columnIndex
-                } else if (cell.stringCellValue.isNotEmpty()) {
+                } else if (cell.stringCellValue.isNotEmpty() && shouldNotBeIgnored(cell)) {
                     return@mapNotNull cell.stringCellValue to cell.columnIndex
                 } else {
                     return@mapNotNull null
                 }
             }
             .toMap()
+    }
+
+    private fun shouldNotBeIgnored(cell: Cell): Boolean {
+        return definition.ignoredColumns.none { it.matches(cell) }
     }
 
     private fun enrichMetadata(): Metadata {
@@ -210,7 +225,11 @@ internal class TableParser(
 
     internal data class TableLocation(val minRow: Int, val maxRow: Int)
 
-    private data class TableLocationWithHeader(val minRow: Int, val headerRow: Int, val maxRow: Int) {
+    private data class TableLocationWithHeader(
+        val minRow: Int,
+        val headerRow: Int,
+        val maxRow: Int
+    ) {
         fun range(): IntRange {
             return headerRow..maxRow
         }
