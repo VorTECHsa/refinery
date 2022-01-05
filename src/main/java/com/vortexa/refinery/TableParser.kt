@@ -185,7 +185,10 @@ internal class TableParser(
                 val mergedCell: Cell? = mergedCellsResolver[cell.rowIndex, cell.columnIndex]
                 if (mergedCell != null && shouldNotBeIgnored(mergedCell)) {
                     return@mapNotNull ("${mergedCell}_${cell.columnIndex + 1}") to cell.columnIndex
-                } else if (cell.stringCellValue.isNotEmpty() && shouldNotBeIgnored(cell)) {
+                } else if (cell.cellType == CellType.STRING &&
+                    cell.stringCellValue.isNotEmpty() &&
+                    shouldNotBeIgnored(cell)
+                ) {
                     return@mapNotNull cell.stringCellValue to cell.columnIndex
                 } else {
                     return@mapNotNull null
