@@ -10,11 +10,11 @@ class IntCellParser : CellParser<Int> {
     override fun tryParse(cell: Cell?): Int? {
         if (cell == null) return null
         return when {
-            cell.cellType == CellType.NUMERIC && !DateUtil.isCellDateFormatted(cell) -> {
+            cell.getConcreteCellType() == CellType.NUMERIC && !DateUtil.isCellDateFormatted(cell) -> {
                 val doubleValue = cell.numericCellValue
                 if (doubleValue == round(doubleValue)) doubleValue.toInt() else null
             }
-            cell.cellType == CellType.STRING -> cell.stringCellValue.trim().toIntOrNull()
+            cell.getConcreteCellType() == CellType.STRING -> cell.stringCellValue.trim().toIntOrNull()
             else -> null
         }
     }

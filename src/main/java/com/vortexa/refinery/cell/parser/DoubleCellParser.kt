@@ -9,7 +9,7 @@ class DoubleCellParser : CellParser<Double> {
     override fun tryParse(cell: Cell?): Double? {
         if (cell == null) return null
         return when {
-            cell.cellType == NUMERIC && !DateUtil.isCellDateFormatted(cell) -> cell.numericCellValue
+            cell.getConcreteCellType() == NUMERIC && !DateUtil.isCellDateFormatted(cell) -> cell.numericCellValue
             else -> cell.toString().trim().toDoubleOrNull()
         }
     }

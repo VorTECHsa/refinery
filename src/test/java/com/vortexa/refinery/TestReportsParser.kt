@@ -19,6 +19,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.io.File
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 class TestReportsParser {
@@ -618,6 +619,69 @@ class TestReportsParser {
     }
 
     @Test
+    fun `test parsing formulas`() {
+        // given
+        val fileName = "spreadsheet_examples/test_spreadsheet.xlsx"
+        val file = File(
+            javaClass.classLoader.getResource(fileName)!!.file
+        )
+
+        data class ParsedExampledData(
+            val string: String,
+            val number: Double,
+            val date: LocalDateTime,
+            val optionalString: String?
+        ) : ParsedRecord()
+
+        class ExampleRowParser(rdp: RowParserData, em: ExceptionManager) :
+            RowParser(rdp, em) {
+            override fun toRecord(row: Row): ParsedRecord {
+                return ParsedExampledData(
+                    parseRequiredFieldAsString(row, string),
+                    parseRequiredFieldAsDouble(row, number),
+                    parseRequiredFieldAsDateTime(row, date),
+                    parseOptionalFieldAsString(row, optionalString)
+                )
+            }
+        }
+
+        val testDefinition = WorkbookParserDefinition(
+            spreadsheetParserDefinitions = listOf(
+                SheetParserDefinition(
+                    sheetNameFilter = { true },
+                    tableDefinitions = listOf(
+                        TableParserDefinition(
+                            setOf(
+                                string,
+                                number,
+                                date,
+                                optionalString,
+                            ),
+                            setOf(),
+                            ::ExampleRowParser
+                        )
+                    )
+                )
+            )
+        )
+
+        // when
+        val exceptionManager = ExceptionManager()
+        val parsedRecords = WorkbookFactory.create(file)
+            .use { WorkbookParser(testDefinition, it, exceptionManager, fileName).parse() }
+
+        // then
+        assertThat(parsedRecords.filterIsInstance<ParsedExampledData>())
+            .hasSize(4)
+            .containsExactly(
+                ParsedExampledData("one", 1.0, LocalDate.parse("2021-01-01").atStartOfDay(), "exist"),
+                ParsedExampledData("two", 2.0, LocalDate.parse("2021-01-02").atStartOfDay(), null),
+                ParsedExampledData("three", 3.0, LocalDate.parse("2021-01-03").atStartOfDay(), null),
+                ParsedExampledData("threetwo", 4.0, LocalDate.parse("2021-01-04").atStartOfDay(), null)
+            )
+    }
+
+    @Test
     fun `test ignore the columns`() {
         // given
         val fileName = "spreadsheet_examples/test_spreadsheet.xlsx"
@@ -650,7 +714,7 @@ class TestReportsParser {
         // then
         assertThat(exceptionManager.exceptions).isEmpty()
         assertThat(parsedRecords)
-            .hasSize(3)
+            .hasSize(4)
             .containsExactly(
                 GenericParsedRecord(
                     mapOf(
@@ -677,6 +741,15 @@ class TestReportsParser {
                         "string" to "three",
                         "number" to 3,
                         "row_number" to 4,
+                    )
+                ),
+                GenericParsedRecord(
+                    mapOf(
+                        "workbook_name" to fileName,
+                        "spreadsheet_name" to "Sheet1",
+                        "string" to "threetwo",
+                        "number" to 4,
+                        "row_number" to 5,
                     )
                 )
             )

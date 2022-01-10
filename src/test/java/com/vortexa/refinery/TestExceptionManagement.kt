@@ -76,7 +76,7 @@ class TestExceptionManagement {
         val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
 
         // then
-        assertThat(exceptionManager.exceptions).hasSize(2)
+        assertThat(exceptionManager.exceptions).hasSize(3)
         assertThat(exceptionManager.containsCritical()).isFalse
         exceptionManager.exceptions.forEach { exceptionData ->
             assertThat(exceptionData).satisfies { it.exception is CellParserException }
@@ -209,7 +209,9 @@ class TestExceptionManagement {
         )
         val workbook: Workbook = WorkbookFactory.create(file)
         val expectedException = ExceptionManager.ExceptionData(
-            UncapturedHeadersException(listOf(UncapturedHeaderCell("uncaptured", 4), UncapturedHeaderCell("double", 5))),
+            UncapturedHeadersException(
+                listOf(UncapturedHeaderCell("uncaptured", 4), UncapturedHeaderCell("double", 5))
+            ),
             ExceptionManager.Location("Sheet1", 1)
         )
 

@@ -13,8 +13,17 @@ class DateTimeFormatCellParser(private val format: DateTimeFormatter) : CellPars
     override fun tryParse(cell: Cell?): LocalDateTime? {
         if (cell == null) return null
         return when {
-            cell.cellType == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell) -> cell.localDateTimeCellValue
-            else -> parseStringWithFormatter(cell.toString().trim(), format)
+            cell.getConcreteCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(
+                cell
+            ) -> cell.localDateTimeCellValue
+            else -> parseStringWithFormatter(getStingValue(cell), format)
+        }
+    }
+
+    private fun getStingValue(cell: Cell): String {
+        return when {
+            cell.getConcreteCellType() == CellType.STRING -> cell.stringCellValue.trim()
+            else -> cell.toString().trim()
         }
     }
 

@@ -2,6 +2,7 @@ package com.vortexa.refinery.cell.parser
 
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.CellType.BOOLEAN
+import org.apache.poi.ss.usermodel.CellType.FORMULA
 import org.apache.poi.ss.usermodel.CellType.NUMERIC
 import org.apache.poi.ss.usermodel.CellType.STRING
 import org.apache.poi.ss.usermodel.Sheet
@@ -104,6 +105,72 @@ open class CellParserTest {
     protected fun dateTimeStr(): Cell {
         val cell = sheet[1, 11]!!
         assertThat(cell.cellType).isEqualTo(STRING)
+        return cell
+    }
+
+    protected fun stringCellFromFormula(): Cell {
+        val cell = sheet[2, 0]!!
+        assertThat(cell.cellType).isEqualTo(FORMULA)
+        return cell
+    }
+
+    protected fun emptyStringCellFromFormula(): Cell {
+        val cell = sheet[2, 1]!!
+        assertThat(cell.cellType).isEqualTo(FORMULA)
+        return cell
+    }
+
+    protected fun doubleCellFromFormula(): Cell {
+        val cell = sheet[2, 2]!!
+        assertThat(cell.cellType).isEqualTo(FORMULA)
+        return cell
+    }
+
+    protected fun intCellFromFormula(): Cell {
+        val cell = sheet[2, 3]!!
+        assertThat(cell.cellType).isEqualTo(FORMULA)
+        return cell
+    }
+
+    protected fun dateCellFromFormula(): Cell {
+        val cell = sheet[2, 4]!!
+        assertThat(cell.cellType).isEqualTo(FORMULA)
+        return cell
+    }
+
+    protected fun boolCellFromFormula(): Cell {
+        val cell = sheet[2, 5]!!
+        assertThat(cell.cellType).isEqualTo(FORMULA)
+        return cell
+    }
+
+    protected fun doubleAsStringCellFromFormula(): Cell {
+        val cell = sheet[2, 7]!!
+        assertThat(cell.cellType).isEqualTo(FORMULA)
+        return cell
+    }
+
+    protected fun doubleIntFromFormula(): Cell {
+        val cell = sheet[2, 8]!!
+        assertThat(cell.cellType).isEqualTo(FORMULA)
+        return cell
+    }
+
+    protected fun dateTimeFromFormula(): Cell {
+        val cell = sheet[2, 9]!!
+        assertThat(cell.cellType).isEqualTo(FORMULA)
+        return cell
+    }
+
+    protected fun dateStrFromFormula(): Cell {
+        val cell = sheet[2, 10]!!
+        assertThat(cell.cellType).isEqualTo(FORMULA)
+        return cell
+    }
+
+    protected fun dateTimeStrFromFormula(): Cell {
+        val cell = sheet[2, 11]!!
+        assertThat(cell.cellType).isEqualTo(FORMULA)
         return cell
     }
 

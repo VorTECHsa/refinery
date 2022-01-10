@@ -46,4 +46,25 @@ class DoubleCellParserTest : CellParserTest() {
         assertThatThrownBy { parser.parse(dateCell()) }
             .isInstanceOf(CellParserException::class.java)
     }
+
+    @Test
+    fun `should parse to double from formula`() {
+        // expect
+        assertThat(parser.parse(doubleCellFromFormula())).isEqualTo(3.1415)
+        assertThat(parser.parse(intCellFromFormula())).isEqualTo(1.0)
+        assertThat(parser.parse(doubleIntFromFormula())).isEqualTo(3.0)
+    }
+
+    @Test
+    fun `should try to parse to double or return null if failed to do that from formula`() {
+        // expect
+        assertThat(parser.tryParse(stringCellFromFormula())).isNull()
+        assertThat(parser.tryParse(emptyStringCellFromFormula())).isNull()
+        assertThat(parser.tryParse(doubleCellFromFormula())).isEqualTo(3.1415)
+        assertThat(parser.tryParse(intCellFromFormula())).isEqualTo(1.0)
+        assertThat(parser.tryParse(dateCellFromFormula())).isNull()
+        assertThat(parser.tryParse(boolCellFromFormula())).isNull()
+        assertThat(parser.tryParse(doubleAsStringCellFromFormula())).isNull() // Cannot parse double formula as string
+        assertThat(parser.tryParse(doubleIntFromFormula())).isEqualTo(3.0)
+    }
 }
