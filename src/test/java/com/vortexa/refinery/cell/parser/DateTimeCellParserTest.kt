@@ -51,4 +51,24 @@ class DateTimeCellParserTest : CellParserTest() {
         assertThatThrownBy { parser.parse(intCell()) }
             .isInstanceOf(CellParserException::class.java)
     }
+
+    @Test
+    fun `should parse to date time from formula`() {
+        // expect
+        assertThat(parser.parse(dateCellFromFormula())).isEqualTo(LocalDateTime.parse("2021-12-12T00:00"))
+    }
+
+    @Test
+    fun `should try to parse to date time or return null if failed to do that from formula`() {
+        // expect
+        assertThat(parser.tryParse(stringCellFromFormula())).isNull()
+        assertThat(parser.tryParse(emptyStringCellFromFormula())).isNull()
+        assertThat(parser.tryParse(doubleCellFromFormula())).isNull()
+        assertThat(parser.tryParse(intCellFromFormula())).isNull()
+        assertThat(parser.tryParse(dateCellFromFormula())).isEqualTo(LocalDateTime.parse("2021-12-12T00:00"))
+        assertThat(parser.tryParse(boolCellFromFormula())).isNull()
+        assertThat(parser.tryParse(doubleAsStringCellFromFormula())).isNull()
+        assertThat(parser.tryParse(doubleIntFromFormula())).isNull()
+        assertThat(parser.tryParse(dateTimeFromFormula())).isEqualTo(LocalDateTime.parse("2021-12-12T15:43:43"))
+    }
 }

@@ -28,4 +28,16 @@ class DateTimeFormatCellParserTest : CellParserTest() {
         assertThatThrownBy { parser.parse(stringCell()) }
             .isInstanceOf(CellParserException::class.java)
     }
+
+    @Test
+    fun `should parse date time with formatter from formula`() {
+        // expect
+        val parser = DateTimeFormatCellParser(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+        assertThat(parser.parse(dateStrFromFormula()))
+            .isEqualTo(LocalDate.of(2021, 11, 15).atStartOfDay())
+
+        val parser2 = DateTimeFormatCellParser(DateTimeFormatter.ofPattern("dd-MM-yyyy @ HH:mm"))
+        assertThat(parser2.parse(dateTimeStrFromFormula()))
+            .isEqualTo(LocalDateTime.of(2021, 11, 15, 15, 43))
+    }
 }

@@ -16,7 +16,14 @@ class DateTimeFormatCellParser(private val format: DateTimeFormatter) : CellPars
             cell.getConcreteCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(
                 cell
             ) -> cell.localDateTimeCellValue
-            else -> parseStringWithFormatter(cell.toString().trim(), format)
+            else -> parseStringWithFormatter(getStingValue(cell), format)
+        }
+    }
+
+    private fun getStingValue(cell: Cell): String {
+        return when {
+            cell.getConcreteCellType() == CellType.STRING -> cell.stringCellValue.trim()
+            else -> cell.toString().trim()
         }
     }
 

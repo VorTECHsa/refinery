@@ -48,4 +48,24 @@ class IntCellParserTest : CellParserTest() {
         assertThatThrownBy { parser.parse(nullCell()) }
             .isInstanceOf(CellParserException::class.java)
     }
+
+    @Test
+    fun `should parse to int from formula`() {
+        // expect
+        assertThat(parser.parse(intCellFromFormula())).isEqualTo(1)
+        assertThat(parser.parse(doubleIntFromFormula())).isEqualTo(3)
+    }
+
+    @Test
+    fun `should try to parse to int or return null if failed to do that from formula`() {
+        // expect
+        assertThat(parser.tryParse(stringCellFromFormula())).isNull()
+        assertThat(parser.tryParse(emptyStringCellFromFormula())).isNull()
+        assertThat(parser.tryParse(doubleCellFromFormula())).isNull()
+        assertThat(parser.tryParse(intCellFromFormula())).isEqualTo(1)
+        assertThat(parser.tryParse(dateCellFromFormula())).isNull()
+        assertThat(parser.tryParse(boolCellFromFormula())).isNull()
+        assertThat(parser.tryParse(doubleAsStringCellFromFormula())).isNull()
+        assertThat(parser.tryParse(doubleIntFromFormula())).isEqualTo(3)
+    }
 }
