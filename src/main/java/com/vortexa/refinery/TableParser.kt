@@ -30,7 +30,13 @@ internal class TableParser(
     fun parse(): List<ParsedRecord> {
         val headerRow = findHeaderRow() ?: return emptyList()
         val tableLocationWithHeader =
-            TableLocationWithHeader(location.minRow, headerRow.rowNum, location.maxRow)
+            TableLocationWithHeader(
+                location.minRow,
+                headerRow.rowNum,
+                location.maxRow,
+                headerRow.firstCellNum.toInt(),
+                headerRow.lastCellNum.toInt() - 1
+            )
         val columnHeaders =
             headerRowResolver.resolveHeaderCellIndex(headerRow, definition.allColumns())
         val allHeadersMapping = mapAllHeaders(headerRow)
@@ -109,8 +115,8 @@ internal class TableParser(
         for (rowIndex in location.range()) {
             val row = sheet.getRow(rowIndex)
             if (isExtractableRow(row)) {
-                if (row.isDivider()) {
-                    enrichedMetadata.setDivider(row.divider())
+                if (row.isDivider(location)) {
+                    enrichedMetadata.setDivider(row.divider(location))
                     continue
                 }
                 if (!rowParser.skip(row))
@@ -209,15 +215,17 @@ internal class TableParser(
         }
     }
 
-    private fun Row.isDivider(): Boolean {
+    private fun Row.isDivider(tableLocation: TableLocationWithHeader): Boolean {
         val cellValues = this.prefilterCells()
+            .filter { it.columnIndex >= tableLocation.minCol && it.columnIndex <= tableLocation.maxCol }
             .map { it.toString() }
             .toList()
         return cellValues.size == 1
     }
 
-    private fun Row.divider(): String {
+    private fun Row.divider(tableLocation: TableLocationWithHeader): String {
         return this.prefilterCells()
+            .filter { it.columnIndex >= tableLocation.minCol && it.columnIndex <= tableLocation.maxCol }
             .map { it.toString() }
             .single()
     }
@@ -231,8 +239,18 @@ internal class TableParser(
     private data class TableLocationWithHeader(
         val minRow: Int,
         val headerRow: Int,
-        val maxRow: Int
+        val maxRow: Int,
+        val minCol: Int,
+        val maxCol: Int
     ) {
+
+        init {
+            require(minRow <= maxRow)
+            require(headerRow >= minRow)
+            require(headerRow <= maxRow)
+            require(minCol <= maxCol)
+        }
+
         fun range(): IntRange {
             return headerRow..maxRow
         }

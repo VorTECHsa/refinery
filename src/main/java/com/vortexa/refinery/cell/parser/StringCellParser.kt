@@ -11,6 +11,6 @@ class StringCellParser : CellParser<String> {
             cell.getConcreteCellType() == CellType.STRING -> cell.stringCellValue.trim()
             else -> cell.toString().trim()
         }
-        return if (value == null || value.isEmpty()) null else value
+        return value.ifEmpty { null }
     }
 }
