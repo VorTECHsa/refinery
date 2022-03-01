@@ -21,6 +21,7 @@ class MergedDividerExample {
             StringHeaderCell("plays"),
             StringHeaderCell("points")
         )
+        val ignoredColumns = setOf(StringHeaderCell("ignored"))
         val definition = WorkbookParserDefinition(
             spreadsheetParserDefinitions = listOf(
                 SheetParserDefinition(
@@ -28,6 +29,7 @@ class MergedDividerExample {
                     tableDefinitions = listOf(
                         TableParserDefinition(
                             requiredColumns = headerColumns,
+                            ignoredColumns = ignoredColumns,
                             hasDivider = true
                         )
                     )

@@ -29,17 +29,16 @@ internal class TableParser(
 
     fun parse(): List<ParsedRecord> {
         val headerRow = findHeaderRow() ?: return emptyList()
+        val columnHeaders =
+            headerRowResolver.resolveHeaderCellIndex(headerRow, definition.allColumns())
+        val allHeadersMapping = mapAllHeaders(headerRow)
         val tableLocationWithHeader =
             TableLocationWithHeader(
                 location.minRow,
                 headerRow.rowNum,
                 location.maxRow,
-                headerRow.firstCellNum.toInt(),
-                headerRow.lastCellNum.toInt() - 1
+                allHeadersMapping.values
             )
-        val columnHeaders =
-            headerRowResolver.resolveHeaderCellIndex(headerRow, definition.allColumns())
-        val allHeadersMapping = mapAllHeaders(headerRow)
         checkUncapturedHeaders(columnHeaders, allHeadersMapping, tableLocationWithHeader)
         val enrichedMetadata = enrichMetadata()
         return when (definition.hasDivider) {
@@ -217,7 +216,7 @@ internal class TableParser(
 
     private fun Row.isDivider(tableLocation: TableLocationWithHeader): Boolean {
         val cellValues = this.prefilterCells()
-            .filter { it.columnIndex >= tableLocation.minCol && it.columnIndex <= tableLocation.maxCol }
+            .filter { tableLocation.colIndices.contains(it.columnIndex) }
             .map { it.toString() }
             .toList()
         return cellValues.size == 1
@@ -225,7 +224,7 @@ internal class TableParser(
 
     private fun Row.divider(tableLocation: TableLocationWithHeader): String {
         return this.prefilterCells()
-            .filter { it.columnIndex >= tableLocation.minCol && it.columnIndex <= tableLocation.maxCol }
+            .filter { tableLocation.colIndices.contains(it.columnIndex) }
             .map { it.toString() }
             .single()
     }
@@ -240,15 +239,13 @@ internal class TableParser(
         val minRow: Int,
         val headerRow: Int,
         val maxRow: Int,
-        val minCol: Int,
-        val maxCol: Int
+        val colIndices: Collection<Int>
     ) {
 
         init {
             require(minRow <= maxRow)
             require(headerRow >= minRow)
             require(headerRow <= maxRow)
-            require(minCol <= maxCol)
         }
 
         fun range(): IntRange {
