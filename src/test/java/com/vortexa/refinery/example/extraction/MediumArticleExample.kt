@@ -75,10 +75,65 @@ class MediumArticleExample {
                         "Report date" to LocalDate.of(2022, 4, 1).atStartOfDay(),
                         "anchor" to "Expected",
                         "divider" to "Crude oil",
-                        "Vessel" to "Lorem",
+                        "Vessel" to "Titanic",
                         "ETA" to LocalDate.of(2022, 4, 2).atStartOfDay(),
                         "Quantity" to 10000,
                         "row_number" to 6,
+                    )
+                )
+            )
+    }
+
+    @Test
+    internal fun `should extract from medium article for machines`() {
+        // given
+        val definition = WorkbookParserDefinition(
+            spreadsheetParserDefinitions = listOf(
+                SheetParserDefinition(
+                    sheetNameFilter = { it == "Loved by machines" },
+                    tableDefinitions = listOf(
+                        TableParserDefinition(
+                            requiredColumns = setOf(
+                                SimpleHeaderCell("Report date"),
+                                SimpleHeaderCell("Status"),
+                                SimpleHeaderCell("Vessel"),
+                                SimpleHeaderCell("ETA/Berthed"),
+                                SimpleHeaderCell("Cargo"),
+                                SimpleHeaderCell("Quantity"),
+                                SimpleHeaderCell("Port"),
+                            ),
+                        ),
+                    ),
+                )
+            )
+        )
+
+        // and
+        val fileName = "examples/medium_article_example.xlsx"
+        val file = File(
+            javaClass.classLoader.getResource(fileName)!!.file
+        )
+
+        // when
+        val parsedRecords =
+            WorkbookFactory.create(file).use { WorkbookParser(definition, it, workbookName = fileName).parse() }
+
+        // then
+        assertThat(parsedRecords)
+            .hasSize(7)
+            .startsWith(
+                GenericParsedRecord(
+                    mapOf(
+                        "spreadsheet_name" to "Loved by machines",
+                        "workbook_name" to fileName,
+                        "Report date" to LocalDate.of(2022, 4, 1).atStartOfDay(),
+                        "Status" to "Expected",
+                        "Cargo" to "Crude oil",
+                        "Vessel" to "Titanic",
+                        "Port" to "Awesome port",
+                        "ETA/Berthed" to LocalDate.of(2022, 4, 2).atStartOfDay(),
+                        "Quantity" to 10000,
+                        "row_number" to 2,
                     )
                 )
             )
