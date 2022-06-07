@@ -22,12 +22,11 @@ repositories {
 }
 
 dependencies {
-    // the only implementation it actually needs
-    api "org.apache.poi:poi:5.0.0"
-    api "org.apache.poi:poi-ooxml:5.0.0"
+    api 'org.apache.poi:poi:5.2.2'
+    api 'org.apache.poi:poi-ooxml:5.2.2'
 
     // testing
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
     testImplementation 'org.assertj:assertj-core:3.19.0'
 
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
