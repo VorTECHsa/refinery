@@ -41,25 +41,24 @@ internal class TableParser(
             )
         checkUncapturedHeaders(columnHeaders, allHeadersMapping, tableLocationWithHeader)
         val enrichedMetadata = enrichMetadata()
-        return when (definition.hasDivider) {
-            false -> {
-                val rowParser = definition.rowParserFactory.invoke(
-                    RowParserData(
-                        columnHeaders,
-                        mergedCellsResolver,
-                        enrichedMetadata,
-                        allHeadersMapping
-                    ),
-                    exceptionManager
-                )
-                parseTableWithoutDividers(rowParser, tableLocationWithHeader)
-            }
-            true -> parseTableWithDividers(
+        return if (definition.hasDivider) {
+            parseTableWithDividers(
                 columnHeaders,
                 enrichedMetadata,
                 tableLocationWithHeader,
                 allHeadersMapping
             )
+        } else {
+            val rowParser = definition.rowParserFactory.invoke(
+                RowParserData(
+                    columnHeaders,
+                    mergedCellsResolver,
+                    enrichedMetadata,
+                    allHeadersMapping
+                ),
+                exceptionManager
+            )
+            parseTableWithoutDividers(rowParser, tableLocationWithHeader)
         }
     }
 
@@ -115,11 +114,12 @@ internal class TableParser(
             val row = sheet.getRow(rowIndex)
             if (isExtractableRow(row)) {
                 if (row.isDivider(location)) {
-                    enrichedMetadata.setDivider(row.divider(location))
-                    continue
-                }
-                if (!rowParser.skip(row))
+                    if (row.isAllowedDivider(location, definition.allowedDividers)) {
+                        enrichedMetadata.setDivider(row.firstFilteredCell(location).toString())
+                    }
+                } else if (!rowParser.skip(row)) {
                     parseRecordAndAddToResults(rowParser, row, parsedRecords)
+                }
             }
         }
         return parsedRecords
@@ -214,24 +214,25 @@ internal class TableParser(
         }
     }
 
-    private fun Row.isDivider(tableLocation: TableLocationWithHeader): Boolean {
-        val cellValues = this.prefilterCells()
-            .filter { tableLocation.colIndices.contains(it.columnIndex) }
-            .map { it.toString() }
-            .toList()
-        return cellValues.size == 1
-    }
-
-    private fun Row.divider(tableLocation: TableLocationWithHeader): String {
-        return this.prefilterCells()
-            .filter { tableLocation.colIndices.contains(it.columnIndex) }
-            .map { it.toString() }
-            .single()
-    }
-
-    private fun Row.prefilterCells() = this.cellIterator().asSequence()
+    private fun Row.prefilterCells(): Sequence<Cell> = this.cellIterator().asSequence()
         .filter { it.cellType != CellType.BLANK }
         .filter { it.toString().isNotBlank() }
+
+    private fun Row.filteredCells(tableLocation: TableLocationWithHeader): Sequence<Cell> {
+        return this.prefilterCells().filter { tableLocation.colIndices.contains(it.columnIndex) }
+    }
+
+    private fun Row.firstFilteredCell(tableLocation: TableLocationWithHeader): Cell {
+        return this.filteredCells(tableLocation).single()
+    }
+
+    private fun Row.isDivider(tableLocation: TableLocationWithHeader): Boolean {
+        return this.filteredCells(tableLocation).toList().size == 1
+    }
+
+    private fun Row.isAllowedDivider(tableLocation: TableLocationWithHeader, allowedDividers: Set<AbstractHeaderCell>): Boolean {
+        return this.isDivider(tableLocation) and (allowedDividers.isEmpty() or allowedDividers.any { it.matches(this.firstFilteredCell(tableLocation)) })
+    }
 
     internal data class TableLocation(val minRow: Int, val maxRow: Int)
 
