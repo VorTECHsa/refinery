@@ -14,6 +14,7 @@ import com.vortexa.refinery.result.RowParserData
  * @property rowParserFactory a factory for creating a row parser
  * @property anchor support for table headers (will end up in metadata)
  * @property hasDivider support for single rows within the table that split data (will end up in metadata)
+ * @Property allowedDividers restrict divider cells to particular values/patterns etc.
  */
 data class TableParserDefinition(
     val requiredColumns: Set<AbstractHeaderCell>,
@@ -22,6 +23,7 @@ data class TableParserDefinition(
     val anchor: String? = null,
     val hasDivider: Boolean = false,
     val ignoredColumns: Set<AbstractHeaderCell> = setOf(),
+    val allowedDividers: Set<AbstractHeaderCell> = setOf()
 ) {
 
     fun allColumns(): Set<AbstractHeaderCell> = requiredColumns + optionalColumns
