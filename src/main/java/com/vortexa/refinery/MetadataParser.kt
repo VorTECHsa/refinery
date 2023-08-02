@@ -2,6 +2,9 @@ package com.vortexa.refinery
 
 import com.vortexa.refinery.dsl.MetadataEntryDefinition
 import com.vortexa.refinery.dsl.MetadataValueLocation.NEXT_CELL_VALUE
+import com.vortexa.refinery.dsl.MetadataValueLocation.NEXT_ROW_VALUE
+import com.vortexa.refinery.dsl.MetadataValueLocation.PREVIOUS_CELL_VALUE
+import com.vortexa.refinery.dsl.MetadataValueLocation.PREVIOUS_ROW_VALUE
 import com.vortexa.refinery.dsl.MetadataValueLocation.SAME_CELL_VALUE
 import com.vortexa.refinery.result.Metadata
 import com.vortexa.refinery.result.Metadata.Companion.SPREADSHEET_NAME
@@ -33,6 +36,9 @@ internal class MetadataParser(
             .filter { it.toString().contains(definition.matchingCellKey) }
             .first()
         val cell: Cell = when (definition.valueLocation) {
+            PREVIOUS_ROW_VALUE -> sheet.getRow(matchingCell.rowIndex - 1).getCell(matchingCell.columnIndex)
+            NEXT_ROW_VALUE -> sheet.getRow(matchingCell.rowIndex + 1).getCell(matchingCell.columnIndex)
+            PREVIOUS_CELL_VALUE -> sheet.getRow(matchingCell.rowIndex).getCell(matchingCell.columnIndex - 1)
             SAME_CELL_VALUE -> sheet.getRow(matchingCell.rowIndex).getCell(matchingCell.columnIndex)
             NEXT_CELL_VALUE -> sheet.getRow(matchingCell.rowIndex).getCell(matchingCell.columnIndex + 1)
         }
