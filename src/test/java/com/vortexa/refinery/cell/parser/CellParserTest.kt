@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import java.io.File
+import java.util.Locale
 
 @TestInstance(PER_CLASS)
 open class CellParserTest {
@@ -29,6 +30,7 @@ open class CellParserTest {
 
         workbook = WorkbookFactory.create(file)
         sheet = workbook.getSheet("cell_parsers")
+        Locale.setDefault(Locale.ENGLISH)
     }
 
     @AfterAll
