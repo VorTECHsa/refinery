@@ -85,6 +85,68 @@ class TestExceptionManagement {
     }
 
     @Test
+    fun `test cell parsing raises exception when required cell is incorrect type`() {
+        // given
+        class RequiredCellsRowParser(
+            rowParserData: RowParserData,
+            exceptionManager: ExceptionManager
+        ) : RowParser(rowParserData, exceptionManager) {
+            override fun toRecord(row: Row): ParsedRecord {
+                return object : ParsedRecord() {
+                    val one = parseRequiredFieldAsString(row, string)
+                    val two = parseRequiredFieldAsDouble(row, number)
+                    val three = parseRequiredFieldAsDateTime(row, date)
+                    val four = parseRequiredFieldAsString(row, optionalString)
+                }
+            }
+        }
+
+        val definition = WorkbookParserDefinition(
+            spreadsheetParserDefinitions = listOf(
+                SheetParserDefinition(
+                    sheetNameFilter = { true },
+                    tableDefinitions = listOf(
+                        TableParserDefinition(
+                            setOf(
+                                string,
+                                number,
+                                date,
+                                optionalString,
+                            ),
+                            setOf(),
+                            ::RequiredCellsRowParser
+                        )
+                    )
+                )
+            )
+        )
+
+        val fileName = "spreadsheet_examples/test_spreadsheet_bad_types.xlsx"
+        val file = File(
+            javaClass.classLoader.getResource(fileName)!!.file
+        )
+        val workbook: Workbook = WorkbookFactory.create(file)
+        val exceptionManager = ExceptionManager()
+
+        // when
+        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
+
+        // then
+        assertThat(exceptionManager.exceptions).hasSize(2)
+        assert(
+            exceptionManager.exceptions.all {
+                it.exception.message.contains("Cell is empty") ||
+                    it.exception.message.contains("conversion failed")
+            }
+        )
+        assertThat(exceptionManager.containsCritical()).isFalse
+        exceptionManager.exceptions.forEach { exceptionData ->
+            assertThat(exceptionData).satisfies { it.exception is CellParserException }
+        }
+        assertThat(records).isNotEmpty
+    }
+
+    @Test
     fun `test badly defined table parser cannot find tables`() {
         // given
         val definition = WorkbookParserDefinition(
