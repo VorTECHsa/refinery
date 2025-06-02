@@ -132,13 +132,10 @@ class TestExceptionManagement {
         val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
 
         // then
-        assertThat(exceptionManager.exceptions).hasSize(2)
-        assert(
-            exceptionManager.exceptions.all {
-                it.exception.message.contains("Cell is empty") ||
-                    it.exception.message.contains("conversion failed")
-            }
-        )
+        assertThat(exceptionManager.exceptions).hasSize(3)
+        assert(exceptionManager.exceptions.get(0).exception.message.contains("Type conversion failed"))
+        assert(exceptionManager.exceptions.get(1).exception.message.contains("Cell is empty"))
+        assert(exceptionManager.exceptions.get(2).exception.message.contains("Type conversion failed"))
         assertThat(exceptionManager.containsCritical()).isFalse
         exceptionManager.exceptions.forEach { exceptionData ->
             assertThat(exceptionData).satisfies { it.exception is CellParserException }
