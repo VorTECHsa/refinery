@@ -114,12 +114,13 @@ abstract class RowParser(
 
         val cellIndex = rowParserData.headerMap[headerCell]
         val columnMap = rowParserData.allHeadersMapping.entries.associate { (name, idx) -> idx to name }
-        val columnName = columnMap[cellIndex]
-        val parserName = parser::class.java.name.split(".").last()
-        val reason = if (cell == null) "Cell is empty" else "Invalid value '$cell'"
-        val message = "$parserName failed to parse field '$columnName' at column index ${cellIndex?.plus(1)}: $reason"
 
-        throw CellParserException(message)
+        throw CellParserException(
+            parserName = parser::class.java.name.split(".").last(),
+            columnName = columnMap[cellIndex],
+            columnNumber = cellIndex?.plus(1),
+            cellValue = cell?.toString()
+        )
     }
 
     protected fun <T> parseOptionalField(row: Row, headerCell: AbstractHeaderCell, parser: CellParser<T>): T? {
