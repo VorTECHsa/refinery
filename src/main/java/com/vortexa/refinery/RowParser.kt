@@ -104,13 +104,22 @@ abstract class RowParser(
         return rowParserData.metadata.allData() + rowData + (Metadata.ROW_NUMBER to row.rowNum + 1)
     }
 
-    protected fun <T> parseRequiredField(row: Row, headerCell: AbstractHeaderCell, parser: CellParser<T>): T {
+    protected fun <T> parseRequiredField(
+        row: Row,
+        headerCell: AbstractHeaderCell,
+        parser: CellParser<T>
+    ): T {
         val cell = findCell(row, headerCell)
-        return parser.tryParse(cell)
-            ?: throw CellParserException(
-                "${parser::class.java.name.split(".").last()} failed to parse required field $headerCell: " +
-                    if (cell == null) "Cell is empty" else "Type conversion failed on value '$cell'"
-            )
+        parser.tryParse(cell)?.let { return it }
+
+        val cellIndex = rowParserData.headerMap[headerCell]
+        val columnMap = rowParserData.allHeadersMapping.entries.associate { (name, idx) -> idx to name }
+        val columnName = columnMap[cellIndex]
+        val parserName = parser::class.java.name.split(".").last()
+        val reason = if (cell == null) "Cell is empty" else "Invalid value '$cell'"
+        val message = "$parserName failed to parse required field '$columnName' at row ${row.rowNum}, col $cellIndex: $reason"
+
+        throw CellParserException(message)
     }
 
     protected fun <T> parseOptionalField(row: Row, headerCell: AbstractHeaderCell, parser: CellParser<T>): T? {

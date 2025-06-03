@@ -87,20 +87,21 @@ class TestExceptionManagement {
     @Test
     fun `test cell parsing raises exception when required cell is incorrect type`() {
         // given
+        val strings = StringHeaderCell(listOf("string", "string2"))
+
         class RequiredCellsRowParser(
             rowParserData: RowParserData,
             exceptionManager: ExceptionManager
         ) : RowParser(rowParserData, exceptionManager) {
             override fun toRecord(row: Row): ParsedRecord {
                 return object : ParsedRecord() {
-                    val one = parseRequiredFieldAsString(row, string)
+                    val one = parseRequiredFieldAsString(row, strings)
                     val two = parseRequiredFieldAsDouble(row, number)
                     val three = parseRequiredFieldAsDateTime(row, date)
                     val four = parseRequiredFieldAsString(row, optionalString)
                 }
             }
         }
-
         val definition = WorkbookParserDefinition(
             spreadsheetParserDefinitions = listOf(
                 SheetParserDefinition(
@@ -108,7 +109,7 @@ class TestExceptionManagement {
                     tableDefinitions = listOf(
                         TableParserDefinition(
                             setOf(
-                                string,
+                                strings,
                                 number,
                                 date,
                                 optionalString,
@@ -133,9 +134,21 @@ class TestExceptionManagement {
 
         // then
         assertThat(exceptionManager.exceptions).hasSize(3)
-        assert(exceptionManager.exceptions.get(0).exception.message.contains("Type conversion failed"))
-        assert(exceptionManager.exceptions.get(1).exception.message.contains("Cell is empty"))
-        assert(exceptionManager.exceptions.get(2).exception.message.contains("Type conversion failed"))
+        assert(
+            listOf("DoubleCellParser", "'number'", "row 1, col 1", "Invalid value 'one'").all {
+                exceptionManager.exceptions.get(0).exception.message.contains(it)
+            }
+        )
+        assert(
+            listOf("DateTimeCellParser", "'date'", "row 2, col 2", "Cell is empty").all {
+                exceptionManager.exceptions.get(1).exception.message.contains(it)
+            }
+        )
+        assert(
+            listOf("DateTimeCellParser", "'date'", "row 3, col 2", "Invalid value '202/01/2020'").all {
+                exceptionManager.exceptions.get(2).exception.message.contains(it)
+            }
+        )
         assertThat(exceptionManager.containsCritical()).isFalse
         exceptionManager.exceptions.forEach { exceptionData ->
             assertThat(exceptionData).satisfies { it.exception is CellParserException }
