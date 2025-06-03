@@ -135,17 +135,17 @@ class TestExceptionManagement {
         // then
         assertThat(exceptionManager.exceptions).hasSize(3)
         assert(
-            listOf("DoubleCellParser", "'number'", "row 1, col 1", "Invalid value 'one'").all {
+            listOf("DoubleCellParser", "'number'", "column index 3", "Invalid value 'one'").all {
                 exceptionManager.exceptions[0].exception.message.contains(it)
             }
         )
         assert(
-            listOf("DateTimeCellParser", "'date'", "row 2, col 2", "Cell is empty").all {
+            listOf("DateTimeCellParser", "'date'", "column index 4", "Cell is empty").all {
                 exceptionManager.exceptions[1].exception.message.contains(it)
             }
         )
         assert(
-            listOf("DateTimeCellParser", "'date'", "row 3, col 2", "Invalid value '202/01/2020'").all {
+            listOf("DateTimeCellParser", "'date'", "column index 4", "Invalid value '202/01/2020'").all {
                 exceptionManager.exceptions[2].exception.message.contains(it)
             }
         )

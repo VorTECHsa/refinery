@@ -117,7 +117,7 @@ abstract class RowParser(
         val columnName = columnMap[cellIndex]
         val parserName = parser::class.java.name.split(".").last()
         val reason = if (cell == null) "Cell is empty" else "Invalid value '$cell'"
-        val message = "$parserName failed to parse required field '$columnName' at row ${row.rowNum}, col $cellIndex: $reason"
+        val message = "$parserName failed to parse field '$columnName' at column index ${cellIndex?.plus(1)}: $reason"
 
         throw CellParserException(message)
     }
