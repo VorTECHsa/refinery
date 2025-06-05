@@ -134,26 +134,39 @@ class TestExceptionManagement {
 
         // then
         assertThat(exceptionManager.exceptions).hasSize(3)
-        assert(
-            listOf("DoubleCellParser", "'number'", "column index 3", "Invalid value 'one'").all {
-                exceptionManager.exceptions[0].exception.message.contains(it)
-            }
-        )
-        assert(
-            listOf("DateTimeCellParser", "'date'", "column index 4", "Cell is empty").all {
-                exceptionManager.exceptions[1].exception.message.contains(it)
-            }
-        )
-        assert(
-            listOf("DateTimeCellParser", "'date'", "column index 4", "Invalid value '202/01/2020'").all {
-                exceptionManager.exceptions[2].exception.message.contains(it)
-            }
-        )
         assertThat(exceptionManager.containsCritical()).isFalse
         exceptionManager.exceptions.forEach { exceptionData ->
             assertThat(exceptionData).satisfies { it.exception is CellParserException }
         }
         assertThat(records).isNotEmpty
+
+        fun assertCellParserException(
+            exceptionData: ExceptionManager.ExceptionData,
+            expectedParser: String,
+            expectedColumn: String,
+            expectedColIndex: Int,
+            expectedValue: String?
+        ) {
+            val ex = exceptionData.exception as? CellParserException
+            assertThat(ex).isNotNull
+            assertThat(ex!!.parserName).isEqualTo(expectedParser)
+            assertThat(ex.columnName).isEqualTo(expectedColumn)
+            assertThat(ex.columnIndex).isEqualTo(expectedColIndex)
+            assertThat(ex.cellValue).isEqualTo(expectedValue)
+        }
+
+        assertCellParserException(
+            exceptionManager.exceptions[0], "DoubleCellParser",
+            "number", 3, "one"
+        )
+        assertCellParserException(
+            exceptionManager.exceptions[1], "DateTimeCellParser",
+            "date", 4, null
+        )
+        assertCellParserException(
+            exceptionManager.exceptions[2], "DateTimeCellParser",
+            "date", 4, "202/01/2020"
+        )
     }
 
     @Test

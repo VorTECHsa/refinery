@@ -118,7 +118,7 @@ abstract class RowParser(
         throw CellParserException(
             parserName = parser::class.java.name.split(".").last(),
             columnName = columnMap[cellIndex],
-            columnNumber = cellIndex?.plus(1),
+            columnIndex = cellIndex?.plus(1),
             cellValue = cell?.toString()
         )
     }

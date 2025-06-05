@@ -31,20 +31,29 @@ abstract class ManagedException(override val message: String, val level: Level) 
     }
 }
 
-class CellParserException : ManagedException {
-    constructor(message: String) : super(message, Level.WARNING)
-
-    constructor(
-        parserName: String,
-        columnName: String?,
-        columnNumber: Int?,
-        cellValue: String?
-    ) : super(
-        "$parserName failed to parse field '$columnName' at column index $columnNumber: " +
-            if (cellValue == null) "Cell is empty" else "Invalid value '$cellValue'",
-        Level.WARNING
-    )
+class CellParserException(
+    val parserName: String,
+    val columnName: String?,
+    val columnIndex: Int?,
+    val cellValue: String?
+) : ManagedException(
+    message = buildMessage(parserName, columnName, columnIndex, cellValue),
+    level = Level.WARNING
+) {
+    companion object {
+        private fun buildMessage(
+            parserName: String,
+            columnName: String?,
+            columnIndex: Int?,
+            cellValue: String?
+        ): String {
+            val reason = if (cellValue == null) "Cell is empty"
+            else "Invalid value '$cellValue'"
+            return "$parserName failed to parse field '$columnName' at column index $columnIndex: $reason"
+        }
+    }
 }
+
 class TableParserException(message: String) : ManagedException(message, Level.WARNING)
 
 class SheetParserException(message: String) : ManagedException(message, Level.WARNING)
