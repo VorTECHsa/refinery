@@ -31,15 +31,34 @@ abstract class ManagedException(override val message: String, val level: Level) 
     }
 }
 
-class CellParserException(
-    val parserName: String,
-    val columnName: String?,
-    val columnIndex: Int?,
+class CellParserException : ManagedException {
+    val parserName: String?
+    val columnName: String?
+    val columnIndex: Int?
     val cellValue: String?
-) : ManagedException(
-    message = buildMessage(parserName, columnName, columnIndex, cellValue),
-    level = Level.WARNING
-) {
+
+    constructor(message: String) : super(message, Level.WARNING) {
+        this.parserName = null
+        this.columnName = null
+        this.columnIndex = null
+        this.cellValue = null
+    }
+
+    constructor(
+        parserName: String,
+        columnName: String?,
+        columnIndex: Int?,
+        cellValue: String?,
+    ) : super(
+        buildMessage(parserName, columnName, columnIndex, cellValue),
+        Level.WARNING
+    ) {
+        this.parserName = parserName
+        this.columnName = columnName
+        this.columnIndex = columnIndex
+        this.cellValue = cellValue
+    }
+
     companion object {
         private fun buildMessage(
             parserName: String,
