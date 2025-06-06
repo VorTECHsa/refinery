@@ -45,7 +45,7 @@ class CellParserException : ManagedException {
     }
 
     constructor(
-        parserName: String?,
+        parserName: String,
         columnName: String?,
         columnIndex: Int?,
         cellValue: String?,
@@ -61,7 +61,7 @@ class CellParserException : ManagedException {
 
     companion object {
         private fun buildMessage(
-            parserName: String?,
+            parserName: String,
             columnName: String?,
             columnIndex: Int?,
             cellValue: String?
