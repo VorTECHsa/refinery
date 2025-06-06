@@ -85,6 +85,91 @@ class TestExceptionManagement {
     }
 
     @Test
+    fun `test cell parsing raises exception when required cell is incorrect type`() {
+        // given
+        val strings = StringHeaderCell(listOf("string", "string2"))
+
+        class RequiredCellsRowParser(
+            rowParserData: RowParserData,
+            exceptionManager: ExceptionManager
+        ) : RowParser(rowParserData, exceptionManager) {
+            override fun toRecord(row: Row): ParsedRecord {
+                return object : ParsedRecord() {
+                    val one = parseRequiredFieldAsString(row, strings)
+                    val two = parseRequiredFieldAsDouble(row, number)
+                    val three = parseRequiredFieldAsDateTime(row, date)
+                    val four = parseRequiredFieldAsString(row, optionalString)
+                }
+            }
+        }
+        val definition = WorkbookParserDefinition(
+            spreadsheetParserDefinitions = listOf(
+                SheetParserDefinition(
+                    sheetNameFilter = { true },
+                    tableDefinitions = listOf(
+                        TableParserDefinition(
+                            setOf(
+                                strings,
+                                number,
+                                date,
+                                optionalString,
+                            ),
+                            setOf(),
+                            ::RequiredCellsRowParser
+                        )
+                    )
+                )
+            )
+        )
+
+        val fileName = "spreadsheet_examples/test_spreadsheet_bad_types.xlsx"
+        val file = File(
+            javaClass.classLoader.getResource(fileName)!!.file
+        )
+        val workbook: Workbook = WorkbookFactory.create(file)
+        val exceptionManager = ExceptionManager()
+
+        // when
+        val records = WorkbookParser(definition, workbook, exceptionManager, fileName).parse()
+
+        // then
+        assertThat(exceptionManager.exceptions).hasSize(3)
+        assertThat(exceptionManager.containsCritical()).isFalse
+        exceptionManager.exceptions.forEach { exceptionData ->
+            assertThat(exceptionData).satisfies { it.exception is CellParserException }
+        }
+        assertThat(records).isNotEmpty
+
+        fun assertCellParserException(
+            exceptionData: ExceptionManager.ExceptionData,
+            expectedParser: String,
+            expectedColumn: String,
+            expectedColIndex: Int,
+            expectedValue: String?
+        ) {
+            val ex = exceptionData.exception as? CellParserException
+            assertThat(ex).isNotNull
+            assertThat(ex!!.parserName).isEqualTo(expectedParser)
+            assertThat(ex.columnName).isEqualTo(expectedColumn)
+            assertThat(ex.columnIndex).isEqualTo(expectedColIndex)
+            assertThat(ex.cellValue).isEqualTo(expectedValue)
+        }
+
+        assertCellParserException(
+            exceptionManager.exceptions[0], "DoubleCellParser",
+            "number", 3, "one"
+        )
+        assertCellParserException(
+            exceptionManager.exceptions[1], "DateTimeCellParser",
+            "date", 4, null
+        )
+        assertCellParserException(
+            exceptionManager.exceptions[2], "DateTimeCellParser",
+            "date", 4, "202/01/2020"
+        )
+    }
+
+    @Test
     fun `test badly defined table parser cannot find tables`() {
         // given
         val definition = WorkbookParserDefinition(

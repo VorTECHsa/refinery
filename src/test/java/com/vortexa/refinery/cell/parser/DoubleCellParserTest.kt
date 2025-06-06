@@ -1,8 +1,6 @@
 package com.vortexa.refinery.cell.parser
 
-import com.vortexa.refinery.exceptions.CellParserException
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 
 class DoubleCellParserTest : CellParserTest() {
@@ -12,10 +10,10 @@ class DoubleCellParserTest : CellParserTest() {
     @Test
     fun `should parse to double`() {
         // expect
-        assertThat(parser.parse(doubleCell())).isEqualTo(3.1415)
-        assertThat(parser.parse(intCell())).isEqualTo(1.0)
-        assertThat(parser.parse(doubleAsStringCell())).isEqualTo(2.78)
-        assertThat(parser.parse(doubleInt())).isEqualTo(3.0)
+        assertThat(parser.tryParse(doubleCell())).isEqualTo(3.1415)
+        assertThat(parser.tryParse(intCell())).isEqualTo(1.0)
+        assertThat(parser.tryParse(doubleAsStringCell())).isEqualTo(2.78)
+        assertThat(parser.tryParse(doubleInt())).isEqualTo(3.0)
     }
 
     @Test
@@ -33,26 +31,11 @@ class DoubleCellParserTest : CellParserTest() {
     }
 
     @Test
-    fun `should throw exception if failed to parse to double`() {
-        // expect
-        assertThatThrownBy { parser.parse(stringCell()) }
-            .isInstanceOf(CellParserException::class.java)
-        assertThatThrownBy { parser.parse(emptyStringCell()) }
-            .isInstanceOf(CellParserException::class.java)
-        assertThatThrownBy { parser.parse(boolCell()) }
-            .isInstanceOf(CellParserException::class.java)
-        assertThatThrownBy { parser.parse(nullCell()) }
-            .isInstanceOf(CellParserException::class.java)
-        assertThatThrownBy { parser.parse(dateCell()) }
-            .isInstanceOf(CellParserException::class.java)
-    }
-
-    @Test
     fun `should parse to double from formula`() {
         // expect
-        assertThat(parser.parse(doubleCellFromFormula())).isEqualTo(3.1415)
-        assertThat(parser.parse(intCellFromFormula())).isEqualTo(1.0)
-        assertThat(parser.parse(doubleIntFromFormula())).isEqualTo(3.0)
+        assertThat(parser.tryParse(doubleCellFromFormula())).isEqualTo(3.1415)
+        assertThat(parser.tryParse(intCellFromFormula())).isEqualTo(1.0)
+        assertThat(parser.tryParse(doubleIntFromFormula())).isEqualTo(3.0)
     }
 
     @Test
